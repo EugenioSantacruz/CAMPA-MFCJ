@@ -435,18 +435,22 @@ function consultarColor(cedula) {
     const colIdx = getColumnIndexes();
     for (let i = 0; i < records.length; i++) {
       if (String(records[i][colIdx.cedula] || '').trim() === target) {
-        return armarRespuestaConsulta(records[i][colIdx.nombre], records[i][colIdx.color], records[i][colIdx.sena]);
+        const senaVal = records[i][colIdx.sena];
+        const totalVal = colIdx.total !== undefined ? records[i][colIdx.total] : null;
+        return armarRespuestaConsulta(records[i][colIdx.nombre], records[i][colIdx.color], senaVal, totalVal);
       }
     }
 
-    // Tíos (una fila por pareja, una sola seña)
+    // Tíos (una fila por pareja, seña o total)
     const sheetTios = getTiosSheet();
     if (sheetTios.getLastRow() > 1) {
       const rows = sheetTios.getRange(2, 1, sheetTios.getLastRow() - 1, HEADERS_TIOS.length).getValues();
       for (let j = 0; j < rows.length; j++) {
         const r = rows[j];
         if (String(r[TIOS_COL.cedulaTio] || '').trim() === target || String(r[TIOS_COL.cedulaTia] || '').trim() === target) {
-          return armarRespuestaConsulta(r[0] + ' y ' + r[1], r[TIOS_COL.color], r[TIOS_COL.sena]);
+          const senaTios = r[TIOS_COL.sena];
+          const totalTios = r[TIOS_COL.total];
+          return armarRespuestaConsulta(r[0] + ' y ' + r[1], r[TIOS_COL.color], senaTios, totalTios);
         }
       }
     }
@@ -457,25 +461,35 @@ function consultarColor(cedula) {
   }
 }
 
-function armarRespuestaConsulta(nombre, color, sena) {
-  if (!senaPagada(sena)) {
+function armarRespuestaConsulta(nombre, color, sena, total) {
+  if (!estaPagado(sena, total)) {
     return {
       status: "pending",
       nombre: String(nombre),
-      message: "Tu inscripción aún no está confirmada, aboná la seña."
+      message: "Tu inscripción aún no está confirmada, aboná la seña o el total."
     };
   }
   return { status: "success", nombre: String(nombre), color: String(color || '') };
 }
 
 /**
- * Considera pagada la seña si la celda tiene un valor (monto > 0, "sí", "x", etc.)
+ * Valida si la inscripción tiene el pago registrado en Seña o en Total
+ * (monto > 0, "pagado", "pago", "sí", "ok", etc.)
  */
-function senaPagada(valor) {
+function estaPagado(sena, total) {
+  return tienePagoValido(sena) || tienePagoValido(total);
+}
+
+function tienePagoValido(valor) {
   if (valor === null || valor === undefined) return false;
   if (typeof valor === 'number') return valor > 0;
   const v = String(valor).trim().toLowerCase();
-  return v !== '' && v !== '0' && v !== 'no' && v !== 'false';
+  if (v === '' || v === '0' || v === 'no' || v === 'false' || v === 'pendiente' || v === 'debe') return false;
+  return true;
+}
+
+function senaPagada(valor) {
+  return tienePagoValido(valor);
 }
 
 /**
