@@ -5,7 +5,7 @@
 // 🔀 INTERRUPTOR DE MODO
 // false → Formulario de inscripción (el color se sortea pero NO se muestra)
 // true  → Solo pantalla de consulta de color por cédula (activar el 9 de noviembre)
-const MODO_CONSULTA = false;
+const MODO_CONSULTA = true;
 
 const SHEET_NAME = "Inscripciones";
 const SHEET_TIOS = "Tíos";
