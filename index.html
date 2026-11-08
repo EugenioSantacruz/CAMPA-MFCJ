@@ -2268,9 +2268,12 @@
 
         // ==========================================
         // MODO CONSULTA (se controla con MODO_CONSULTA en code.gs)
-        // Para probar localmente: abrir index.html#consulta
+        // Para probar localmente: abrir directamente en el navegador (o con #consulta / #inscripcion)
         // ==========================================
-        const MODO_CONSULTA = '<?= modoConsulta ?>' === 'true' || location.hash === '#consulta';
+        const isLocalEnvironment = !('<?= modoConsulta ?>' === 'true' || '<?= modoConsulta ?>' === 'false');
+        const MODO_CONSULTA = isLocalEnvironment 
+            ? (location.hash !== '#inscripcion') 
+            : ('<?= modoConsulta ?>' === 'true' || location.hash === '#consulta');
 
         function mostrarConsultaColor() {
             document.getElementById('form-view').style.display = 'none';
@@ -2328,6 +2331,19 @@
             }, 85);
 
             function mostrar(res) {
+                // Si estamos en entorno local y el backend en la nube responde que aún está "closed"
+                // (porque falta actualizar el deployment en Apps Script), permitimos simular en local para probar la interfaz
+                if (isLocalEnvironment && res && res.status === 'closed') {
+                    if (cedula === '0' || cedula === '000') {
+                        res = { status: 'not_found', message: 'No encontramos ninguna inscripción con esa cédula.' };
+                    } else if (cedula.endsWith('2')) {
+                        res = { status: 'pending', nombre: 'Participante de Prueba', message: 'Tu inscripción aún no está confirmada, aboná la seña.' };
+                    } else {
+                        const randomColor = COLORS_CONFIG[Math.abs(parseInt(cedula) || 3) % COLORS_CONFIG.length].name;
+                        res = { status: 'success', nombre: 'Participante de Prueba', color: randomColor };
+                    }
+                }
+
                 clearInterval(spin);
                 btn.disabled = false;
                 nameEl.textContent = res.nombre || '';
