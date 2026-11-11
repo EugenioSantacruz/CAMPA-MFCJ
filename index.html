@@ -1032,7 +1032,7 @@
                     <script>document.getElementById("hero-camp-logo").src = DEFAULT_CAMP_LOGO;</script>
                 </div>
 
-                <h1 class="hero-title">Inscripción Oficial</h1>
+                <h1 class="hero-title" id="hero-title">MFCJ CAMP 2026</h1>
                 <div class="hero-date" id="hero-camp-date">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1660,12 +1660,655 @@
                 </div>
             </div>
 
+            <!-- VISTA 4: INSCRIPCIONES FINALIZADAS Y PRÓXIMA ETAPA (MINIMALISTA) -->
+            <div id="closed-view" class="closed-view">
+                <div class="closed-badge-wrapper">
+                    <span class="closed-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        Inscripciones Cerradas
+                    </span>
+                </div>
+
+                <h2 class="closed-title">¡Inscripciones Finalizadas!</h2>
+                <p class="closed-subtitle-clean">
+                    Pronto te añadirán al grupo del color al que pertenecés.
+                </p>
+
+                <!-- CONTADOR REGRESIVO Y ANIMACIÓN BOMBA CARGANDO -->
+                <div class="countdown-card">
+                    <div class="countdown-header-clean">
+                        <div class="countdown-tag">
+                            <span class="bomb-badge-icon">💣</span>
+                            <span>PRÓXIMA ETAPA</span>
+                        </div>
+                        <div class="target-date-pill">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                            <span>Viernes 13 de Noviembre · 19:00 hs</span>
+                        </div>
+                    </div>
+
+                    <!-- ANIMACIÓN DE LA BOMBA CARGANDO -->
+                    <div class="bomb-loading-wrap">
+                        <div class="bomb-character">
+                            <div class="bomb-spark"></div>
+                            <svg class="bomb-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M 50 20 C 60 5, 74 12, 80 6" stroke="#D86843" stroke-width="4.5" stroke-linecap="round"/>
+                                <rect x="42" y="18" width="16" height="8" rx="2" fill="#E59F38"/>
+                                <circle cx="50" cy="56" r="34" fill="url(#bombGrad2)" stroke="#22382C" stroke-width="2.5"/>
+                                <ellipse cx="38" cy="44" rx="10" ry="5" transform="rotate(-35 38 44)" fill="rgba(255,255,255,0.3)"/>
+                                <text x="50" y="63" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="18" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">MFCJ</text>
+                                <defs>
+                                    <radialGradient id="bombGrad2" cx="35%" cy="35%" r="65%">
+                                        <stop offset="0%" stop-color="#35624E"/>
+                                        <stop offset="55%" stop-color="#14221B"/>
+                                        <stop offset="100%" stop-color="#080E0B"/>
+                                    </radialGradient>
+                                </defs>
+                            </svg>
+                        </div>
+
+                        <div class="bomb-loading-bar-container">
+                            <div class="bomb-loading-header">
+                                <div class="bomb-loading-left">
+                                    <span class="bomb-status-pulse"></span>
+                                    <span>CARGANDO ETAPA</span>
+                                </div>
+                                <span class="bomb-loading-pct" id="bomb-pct">82%</span>
+                            </div>
+                            <div class="bomb-progress-bar">
+                                <div class="bomb-progress-glow"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="countdown-grid" id="countdown-grid">
+                        <div class="countdown-unit">
+                            <div class="countdown-num-box">
+                                <span class="countdown-num" id="cd-days">00</span>
+                            </div>
+                            <span class="countdown-label">Días</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num-box">
+                                <span class="countdown-num" id="cd-hours">00</span>
+                            </div>
+                            <span class="countdown-label">Horas</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num-box">
+                                <span class="countdown-num" id="cd-mins">00</span>
+                            </div>
+                            <span class="countdown-label">Min</span>
+                        </div>
+                        <div class="countdown-sep">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-num-box">
+                                <span class="countdown-num" id="cd-secs">00</span>
+                            </div>
+                            <span class="countdown-label">Seg</span>
+                        </div>
+                    </div>
+
+                    <div id="countdown-finished-action" class="countdown-finished-action" style="display:none;">
+                        <div class="finished-alert">
+                            💣 <strong>¡Llegó la hora!</strong> La Próxima Etapa de <strong>MFCJ CAMP 2026</strong> ha sido desbloqueada.
+                        </div>
+                        <a href="fase2-bomba.html" class="btn-submit" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                            <span>💣 Ingresar a la Próxima Etapa</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RECORDATORIO SUTIL -->
+                <div class="minimal-reminder">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <span>Recordá confirmar tu lugar abonando la seña con los coordinadores de tu base.</span>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <style>
         .spin-icon {
             animation: spinRotate 1.5s linear infinite;
+        }
+
+        /* ==========================================
+           ESTILOS VISTA INSCRIPCIONES FINALIZADAS Y CONTADOR
+           ========================================== */
+        .closed-view {
+            display: none;
+            text-align: center;
+            animation: cardFadeIn 0.4s ease forwards;
+        }
+
+        .closed-badge-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .closed-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(216, 104, 67, 0.12);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(216, 104, 67, 0.28);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .closed-header {
+            margin-bottom: 24px;
+        }
+
+        .closed-icon-circle {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(216, 104, 67, 0.15) 0%, rgba(229, 159, 56, 0.2) 100%);
+            border: 2px solid rgba(216, 104, 67, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-terracotta);
+            box-shadow: 0 8px 24px rgba(216, 104, 67, 0.15);
+        }
+
+        .closed-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--green-dark);
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .closed-subtitle-clean {
+            font-size: 0.96rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .countdown-header-clean {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .minimal-reminder {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 16px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(25, 51, 39, 0.04);
+            border: 1px solid var(--border-color);
+            line-height: 1.4;
+        }
+
+        .minimal-reminder svg {
+            color: var(--green-matte);
+            flex-shrink: 0;
+        }
+
+        /* Tarjeta del Contador */
+        .countdown-card {
+            background: linear-gradient(145deg, #193327 0%, #254637 100%);
+            border-radius: var(--radius-lg);
+            padding: 26px 22px;
+            color: #FFFFFF;
+            box-shadow: 0 16px 36px rgba(25, 51, 39, 0.22);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(229, 159, 56, 0.25);
+            margin-bottom: 22px;
+        }
+
+        .countdown-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(229, 159, 56, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .countdown-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .countdown-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+            background: rgba(229, 159, 56, 0.15);
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(229, 159, 56, 0.3);
+        }
+
+        .countdown-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #FAF6EF;
+            margin-top: 2px;
+        }
+
+        .countdown-target-label {
+            font-size: 0.86rem;
+            color: rgba(250, 246, 239, 0.8);
+        }
+
+        .bomb-badge-icon {
+            font-size: 0.95rem;
+            animation: bombFloating 2s ease-in-out infinite;
+        }
+
+        /* ==========================================
+           ANIMACIÓN BOMBA CARGANDO
+           ========================================== */
+        .bomb-loading-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(0, 0, 0, 0.32);
+            border: 1px solid rgba(229, 159, 56, 0.35);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            margin: 12px 0 16px;
+            position: relative;
+            z-index: 1;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .bomb-character {
+            position: relative;
+            width: 78px;
+            height: 78px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bombFloating 2.6s ease-in-out infinite;
+        }
+
+        .bomb-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+        }
+
+        /* Chispa brillante en la punta de la mecha */
+        .bomb-spark {
+            position: absolute;
+            top: 2px;
+            right: 12px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #FFFBEB;
+            box-shadow:
+                0 0 8px 3px #FDE047,
+                0 0 16px 5px #F97316,
+                0 0 28px 8px #EF4444;
+            animation: sparkFlicker 0.22s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        .bomb-spark::before,
+        .bomb-spark::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: #FEF08A;
+            pointer-events: none;
+        }
+
+        .bomb-spark::before {
+            top: -4px;
+            left: 2px;
+            width: 4px;
+            height: 4px;
+            box-shadow: 0 0 6px #F97316;
+            animation: sparkEmber1 0.45s infinite ease-out;
+        }
+
+        .bomb-spark::after {
+            bottom: -3px;
+            right: -2px;
+            width: 3px;
+            height: 3px;
+            box-shadow: 0 0 6px #EAB308;
+            animation: sparkEmber2 0.38s infinite ease-out 0.12s;
+        }
+
+        .bomb-loading-bar-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+            min-width: 0;
+        }
+
+        .bomb-loading-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #FCEFD2;
+        }
+
+        .bomb-loading-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .bomb-status-pulse {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22C55E;
+            box-shadow: 0 0 8px #22C55E;
+            flex-shrink: 0;
+            animation: statusBlink 1.2s infinite ease-in-out;
+        }
+
+        .bomb-loading-pct {
+            font-family: 'Share Tech Mono', monospace, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            letter-spacing: 0.5px;
+        }
+
+        .bomb-progress-bar {
+            width: 100%;
+            height: 9px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bomb-progress-glow {
+            height: 100%;
+            width: 82%;
+            background: linear-gradient(90deg, #D86843 0%, #E59F38 50%, #22C55E 100%);
+            border-radius: 999px;
+            position: relative;
+            animation: progressCharging 3s ease-in-out infinite alternate;
+            box-shadow: 0 0 10px rgba(229, 159, 56, 0.5);
+        }
+
+        .bomb-progress-glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.65) 50%, transparent 100%);
+            animation: scanLight 1.8s infinite linear;
+        }
+
+        @keyframes sparkFlicker {
+            0% { transform: scale(0.85); opacity: 0.85; }
+            100% { transform: scale(1.35); opacity: 1; }
+        }
+
+        @keyframes sparkEmber1 {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(-7px, -9px) scale(0); opacity: 0; }
+        }
+
+        @keyframes sparkEmber2 {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(7px, -6px) scale(0); opacity: 0; }
+        }
+
+        @keyframes bombFloating {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(2deg); }
+        }
+
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.85); }
+        }
+
+        @keyframes progressCharging {
+            0% { width: 75%; }
+            50% { width: 85%; }
+            100% { width: 92%; }
+        }
+
+        @keyframes scanLight {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        .color-groups-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            background: rgba(37, 70, 55, 0.1);
+            color: var(--green-matte);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .notice-sub {
+            margin-top: 8px;
+            font-size: 0.8rem !important;
+            opacity: 0.88;
+        }
+
+        .target-date-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(229, 159, 56, 0.4);
+            padding: 7px 16px;
+            border-radius: 999px;
+            color: #FCEFD2;
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-top: 4px;
+        }
+
+        .countdown-grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+            margin-top: 6px;
+        }
+
+        .countdown-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-width: 64px;
+        }
+
+        .countdown-num-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            width: 100%;
+            padding: 12px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .countdown-num {
+            font-size: 1.95rem;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(250, 246, 239, 0.7);
+        }
+
+        .countdown-sep {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            line-height: 1;
+            margin-top: -18px;
+            opacity: 0.8;
+            user-select: none;
+        }
+
+        .countdown-finished-action {
+            margin-top: 22px;
+            position: relative;
+            z-index: 1;
+            animation: cardFadeIn 0.5s ease;
+        }
+
+        .finished-alert {
+            background: rgba(229, 159, 56, 0.2);
+            border: 1px solid var(--accent-gold);
+            color: #FFF2D6;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.92rem;
+            margin-bottom: 14px;
+        }
+
+        /* Tarjeta de Aviso Informativo */
+        .closed-notice-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            background: rgba(25, 51, 39, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            text-align: left;
+        }
+
+        .closed-notice-card .notice-icon {
+            color: var(--green-matte);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .closed-notice-card h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--green-dark);
+            margin-bottom: 4px;
+        }
+
+        .closed-notice-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .bomb-character {
+                width: 68px;
+                height: 68px;
+            }
+            .bomb-spark {
+                top: 2px;
+                right: 10px;
+                width: 10px;
+                height: 10px;
+            }
+            .countdown-grid {
+                gap: 4px;
+            }
+            .countdown-unit {
+                min-width: 52px;
+            }
+            .countdown-num {
+                font-size: 1.55rem;
+            }
+            .countdown-sep {
+                font-size: 1.3rem;
+                margin-top: -14px;
+            }
         }
 
         .consulta-view {
@@ -2136,18 +2779,133 @@
         }
 
         // ==========================================
-        // MODO CONSULTA (se controla con MODO_CONSULTA en code.gs)
-        // Para probar localmente: abrir index.html#consulta
+        // CONTROL DE VISTAS (CERRADO / CONSULTA / FORMULARIO)
         // ==========================================
-        const MODO_CONSULTA = '<?= modoConsulta ?>' === 'true' || location.hash === '#consulta';
+        const rawCerradas = '<?= inscripcionesCerradas ?>';
+        const rawConsulta = '<?= modoConsulta ?>';
+        const isAppsScript = !rawCerradas.startsWith('<?');
 
-        if (MODO_CONSULTA) {
-            document.getElementById('form-view').style.display = 'none';
-            document.getElementById('spinner-view').style.display = 'none';
-            document.getElementById('consulta-view').style.display = 'block';
-            document.getElementById('consulta-logo').src = DEFAULT_CAMP_LOGO;
-            document.title = 'Descubrí tu Color · Campamento 2026';
+        // Valores por defecto
+        const DEFAULT_CERRADAS = isAppsScript ? (rawCerradas === 'true') : true;
+        const DEFAULT_CONSULTA = isAppsScript ? (rawConsulta === 'true') : false;
+
+        let countdownInterval = null;
+
+        function aplicarVistaSegunHash() {
+            const h = (location.hash || '').toLowerCase();
+            const formView = document.getElementById('form-view');
+            const spinnerView = document.getElementById('spinner-view');
+            const consultaView = document.getElementById('consulta-view');
+            const closedView = document.getElementById('closed-view');
+
+            if (!closedView) return;
+
+            // Resetear vistas
+            formView.style.display = 'none';
+            spinnerView.style.display = 'none';
+            consultaView.style.display = 'none';
+            closedView.style.display = 'none';
+
+            if (h === '#form' || h === '#inscripcion') {
+                formView.style.display = 'block';
+                document.title = 'Inscripción · MFCJ CAMP 2026';
+                const ht = document.getElementById('hero-title');
+                if (ht) ht.textContent = 'Inscripción Oficial';
+            } else if (DEFAULT_CONSULTA || h === '#consulta') {
+                consultaView.style.display = 'block';
+                const cLogo = document.getElementById('consulta-logo');
+                if (cLogo) cLogo.src = DEFAULT_CAMP_LOGO;
+                document.title = 'Descubrí tu Color · MFCJ CAMP 2026';
+            } else if (DEFAULT_CERRADAS || h === '#cerrado') {
+                closedView.style.display = 'block';
+                document.title = 'MFCJ CAMP 2026 · Próxima Etapa';
+                const ht = document.getElementById('hero-title');
+                if (ht) ht.textContent = 'MFCJ CAMP 2026';
+                iniciarContador();
+            } else {
+                formView.style.display = 'block';
+                document.title = 'Inscripción · MFCJ CAMP 2026';
+            }
         }
+
+        function activarModoConsulta() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            location.hash = '#consulta';
+            aplicarVistaSegunHash();
+        }
+
+        function iniciarContador() {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            // Fecha y hora de finalización del contador: 13 de Noviembre a las 19:00 hs
+            const rawTarget = '<?= fechaRevelacion ?>';
+            let targetTime;
+
+            if (rawTarget && !rawTarget.startsWith('<?')) {
+                targetTime = new Date(rawTarget).getTime();
+            } else {
+                // Fallback seguro: año 2026, mes 10 (noviembre 0-based), día 13, 19:00:00 hora local
+                targetTime = new Date(2026, 10, 13, 19, 0, 0).getTime();
+            }
+
+            function tick() {
+                const now = new Date().getTime();
+                const diff = targetTime - now;
+
+                const daysEl = document.getElementById('cd-days');
+                const hoursEl = document.getElementById('cd-hours');
+                const minsEl = document.getElementById('cd-mins');
+                const secsEl = document.getElementById('cd-secs');
+                const actionEl = document.getElementById('countdown-finished-action');
+
+                if (!daysEl) return;
+
+                if (diff <= 0) {
+                    daysEl.textContent = '00';
+                    hoursEl.textContent = '00';
+                    minsEl.textContent = '00';
+                    secsEl.textContent = '00';
+                    const pctEl = document.getElementById('bomb-pct');
+                    if (pctEl) pctEl.textContent = '100%';
+                    if (actionEl) actionEl.style.display = 'block';
+                    if (countdownInterval) {
+                        clearInterval(countdownInterval);
+                        countdownInterval = null;
+                    }
+                    return;
+                }
+
+                // Cálculo de porcentaje para la barra de carga de la bomba
+                const pctEl = document.getElementById('bomb-pct');
+                if (pctEl) {
+                    const startTime = new Date(2026, 10, 9, 0, 0, 0).getTime();
+                    const totalDuration = targetTime - startTime;
+                    const elapsed = Math.max(0, now - startTime);
+                    const pct = Math.min(99, Math.max(15, Math.floor((elapsed / totalDuration) * 100)));
+                    pctEl.textContent = pct + '%';
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                daysEl.textContent = String(days).padStart(2, '0');
+                hoursEl.textContent = String(hours).padStart(2, '0');
+                minsEl.textContent = String(mins).padStart(2, '0');
+                secsEl.textContent = String(secs).padStart(2, '0');
+            }
+
+            tick();
+            countdownInterval = setInterval(tick, 1000);
+        }
+
+        // Inicializar vista al cargar y ante cambios de hash
+        aplicarVistaSegunHash();
+        window.addEventListener('hashchange', aplicarVistaSegunHash);
 
         function consultarMiColor() {
             const cedula = document.getElementById('consulta-cedula').value.trim();

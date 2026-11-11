@@ -2,10 +2,17 @@
 // CONFIGURACIÓN Y CONSTANTES
 // ==========================================
 
-// 🔀 INTERRUPTOR DE MODO
-// false → Formulario de inscripción (el color se sortea pero NO se muestra)
-// true  → Solo pantalla de consulta de color por cédula (activar el 9 de noviembre)
+// 🔀 INTERRUPTORES DE MODO
+// true  → Muestra la pantalla de inscripciones finalizadas con contador hacia el 13 de nov 19:00 hs
+// false → Formulario de inscripción activo
+const INSCRIPCIONES_CERRADAS = true;
+
+// false → El color sorteado se mantiene en secreto hasta la finalización del contador
+// true  → Habilita de inmediato la pantalla de consulta de color por cédula
 const MODO_CONSULTA = false;
+
+// Fecha y hora oficial en la que finaliza el contador (13 de Noviembre a las 19:00 hs)
+const FECHA_REVELACION = "2026-11-13T19:00:00-03:00";
 
 const SHEET_NAME = "Inscripciones";
 const SHEET_TIOS = "Tíos";
@@ -156,9 +163,11 @@ function doGet(e) {
 
   // Comportamiento por defecto: renderiza el HTML
   const template = HtmlService.createTemplateFromFile('index');
+  template.inscripcionesCerradas = INSCRIPCIONES_CERRADAS ? 'true' : 'false';
   template.modoConsulta = MODO_CONSULTA ? 'true' : 'false';
+  template.fechaRevelacion = FECHA_REVELACION;
   return template.evaluate()
-    .setTitle('Inscripción Campamento 2026')
+    .setTitle(INSCRIPCIONES_CERRADAS ? 'MFCJ CAMP 2026 · Próxima Etapa' : 'MFCJ CAMP 2026 · Inscripción')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
@@ -200,6 +209,13 @@ function procesarInscripcion(payload) {
   
   try {
     lock.waitLock(10000);
+    
+    if (INSCRIPCIONES_CERRADAS) {
+      return {
+        status: "closed",
+        message: "Las inscripciones para el MFCJ CAMP 2026 han finalizado. ¡Pronto te añadirán al grupo de color correspondiente!"
+      };
+    }
     
     const { 
       nombre, 
@@ -326,6 +342,13 @@ function procesarInscripcionTios(payload) {
   try {
     lock.waitLock(10000);
 
+    if (INSCRIPCIONES_CERRADAS) {
+      return {
+        status: "closed",
+        message: "Las inscripciones para el MFCJ CAMP 2026 han finalizado. ¡Pronto te añadirán al grupo de color correspondiente!"
+      };
+    }
+
     const {
       nombreTio, nombreTia, cedulaTio, cedulaTia, telefono, base,
       remeraTio, remeraTia, contactoEmergencia, llevaVehiculo,
@@ -424,8 +447,15 @@ function procesarInscripcionTios(payload) {
  */
 function consultarColor(cedula) {
   try {
-    if (!MODO_CONSULTA) {
-      return { status: "closed", message: "La consulta de colores todavía no está habilitada. ¡Esperá al 9 de noviembre!" };
+    const ahora = new Date();
+    const fechaApertura = new Date(FECHA_REVELACION);
+    const habilitado = MODO_CONSULTA || (ahora >= fechaApertura);
+
+    if (!habilitado) {
+      return { 
+        status: "closed", 
+        message: "La próxima etapa de MFCJ CAMP 2026 se habilitará este viernes 13 de noviembre a las 19:00 hs. ¡Falta muy poco!" 
+      };
     }
     const target = String(cedula || '').trim();
     if (!target) return { status: "error", message: "Ingresá tu número de cédula" };
