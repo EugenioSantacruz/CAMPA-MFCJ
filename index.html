@@ -1722,7 +1722,7 @@
                                 <line x1="8" y1="2" x2="8" y2="6"/>
                                 <line x1="3" y1="10" x2="21" y2="10"/>
                             </svg>
-                            <span>Viernes 13 de Noviembre · 19:00 hs</span>
+                            <span>Viernes 20 de Noviembre · 19:00 hs</span>
                         </div>
                     </div>
 
@@ -2987,15 +2987,15 @@
         function iniciarContador() {
             if (countdownInterval) clearInterval(countdownInterval);
 
-            // Fecha y hora de finalización del contador: 13 de Noviembre a las 19:00 hs
+            // Fecha y hora de finalización del contador: 20 de Noviembre a las 19:00 hs
             const rawTarget = '<?= fechaRevelacion ?>';
             let targetTime;
 
             if (rawTarget && !rawTarget.startsWith('<?')) {
                 targetTime = new Date(rawTarget).getTime();
             } else {
-                // Fallback seguro: año 2026, mes 10 (noviembre 0-based), día 13, 19:00:00 hora local
-                targetTime = new Date(2026, 10, 13, 19, 0, 0).getTime();
+                // Fallback seguro: año 2026, mes 10 (noviembre 0-based), día 20, 19:00:00 hora local
+                targetTime = new Date(2026, 10, 20, 19, 0, 0).getTime();
             }
 
             function tick() {

@@ -11,8 +11,8 @@ const INSCRIPCIONES_CERRADAS = true;
 // true  → Habilita de inmediato la pantalla de consulta de color por cédula
 const MODO_CONSULTA = false;
 
-// Fecha y hora oficial en la que finaliza el contador (13 de Noviembre a las 19:00 hs)
-const FECHA_REVELACION = "2026-11-13T19:00:00-03:00";
+// Fecha y hora oficial en la que finaliza el contador (20 de Noviembre a las 19:00 hs)
+const FECHA_REVELACION = "2026-11-20T19:00:00-03:00";
 
 const SHEET_NAME = "Inscripciones";
 const SHEET_TIOS = "Tíos";
@@ -454,7 +454,7 @@ function consultarColor(cedula) {
     if (!habilitado) {
       return { 
         status: "closed", 
-        message: "La próxima etapa de MFCJ CAMP 2026 se habilitará este viernes 13 de noviembre a las 19:00 hs. ¡Falta muy poco!" 
+        message: "La próxima etapa de MFCJ CAMP 2026 se habilitará este viernes 20 de noviembre a las 19:00 hs. ¡Falta muy poco!" 
       };
     }
     const target = String(cedula || '').trim();
