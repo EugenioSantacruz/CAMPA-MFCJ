@@ -3195,6 +3195,16 @@
             btn.textContent = 'Verificando...';
             errEl.style.display = 'none';
 
+            function irALaBomba() {
+                const isGAS = typeof google !== 'undefined' && google.script && google.script.run;
+                if (isGAS) {
+                    const base = window.location.href.split('?')[0].split('#')[0];
+                    window.top.location.href = base + '?view=bomba';
+                } else {
+                    window.location.href = 'fase2-bomba.html';
+                }
+            }
+
             fetch(bombaUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -3206,7 +3216,7 @@
                 btn.disabled = false;
                 btn.textContent = 'Ingresar';
                 if (res && res.success) {
-                    window.top.location.href = bombaUrl;
+                    irALaBomba();
                 } else {
                     errEl.textContent = (res && res.message) || 'PIN de Staff incorrecto.';
                     errEl.style.display = 'block';
@@ -3216,7 +3226,7 @@
                 btn.disabled = false;
                 btn.textContent = 'Ingresar';
                 if (pin === '002026') {
-                    window.top.location.href = bombaUrl;
+                    irALaBomba();
                 } else {
                     errEl.textContent = 'Error de conexión al validar el PIN.';
                     errEl.style.display = 'block';

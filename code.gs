@@ -165,6 +165,14 @@ function doGet(e) {
     }
   }
 
+  if (e && e.parameter && e.parameter.view === 'bomba') {
+    return HtmlService.createTemplateFromFile('fase2-bomba')
+      .evaluate()
+      .setTitle('Desactivá la Bomba · MFCJ Camp 2026')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
+
   // Comportamiento por defecto: renderiza el HTML
   const template = HtmlService.createTemplateFromFile('index');
   template.inscripcionesCerradas = INSCRIPCIONES_CERRADAS ? 'true' : 'false';
