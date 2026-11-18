@@ -14,6 +14,10 @@ const MODO_CONSULTA = false;
 // Fecha y hora oficial en la que finaliza el contador (20 de Noviembre a las 19:00 hs)
 const FECHA_REVELACION = "2026-11-20T19:00:00-03:00";
 
+// URL de la Web App de Google Apps Script donde está desplegado codeBomba.gs + fase2-bomba.html
+// (Reemplazar con el link .../exec de tu implementación de la Bomba)
+const URL_JUEGO_BOMBA = "https://script.google.com/macros/s/AKfycbyD_XH8p2NlwBB1V-xXtFjaZ-DHqsqSf3uL71yQUqfC-gxtH45VGg0TXERCFLPbaEx9DQ/exec";
+
 const SHEET_NAME = "Inscripciones";
 const SHEET_TIOS = "Tíos";
 
@@ -166,6 +170,7 @@ function doGet(e) {
   template.inscripcionesCerradas = INSCRIPCIONES_CERRADAS ? 'true' : 'false';
   template.modoConsulta = MODO_CONSULTA ? 'true' : 'false';
   template.fechaRevelacion = FECHA_REVELACION;
+  template.urlJuegoBomba = URL_JUEGO_BOMBA;
   return template.evaluate()
     .setTitle(INSCRIPCIONES_CERRADAS ? 'MFCJ CAMP 2026 · Próxima Etapa' : 'MFCJ CAMP 2026 · Inscripción')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')

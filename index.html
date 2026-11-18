@@ -1794,7 +1794,7 @@
                         <div class="finished-alert">
                             💣 <strong>¡Llegó la hora!</strong> La Próxima Etapa de <strong>MFCJ CAMP 2026</strong> ha sido desbloqueada.
                         </div>
-                        <a href="fase2-bomba.html" class="btn-submit" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+                        <a id="btn-proxima-etapa" href="fase2-bomba.html" target="_top" class="btn-submit" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
                             <span>💣 Ingresar a la Próxima Etapa</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <polyline points="9 18 15 12 9 6"/>
@@ -1803,8 +1803,8 @@
                     </div>
                 </div>
 
-                <!-- RECORDATORIO SUTIL -->
-                <div class="minimal-reminder">
+                <!-- RECORDATORIO SUTIL (acceso oculto Staff al hacer click) -->
+                <div class="minimal-reminder" onclick="abrirAccesoStaff()" title="Información">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"/>
                         <line x1="12" y1="16" x2="12" y2="12"/>
@@ -2987,6 +2987,12 @@
         function iniciarContador() {
             if (countdownInterval) clearInterval(countdownInterval);
 
+            const rawUrlBomba = '<?= urlJuegoBomba ?>';
+            const btnProxima = document.getElementById('btn-proxima-etapa');
+            if (btnProxima && rawUrlBomba && !rawUrlBomba.startsWith('<?')) {
+                btnProxima.href = rawUrlBomba;
+            }
+
             // Fecha y hora de finalización del contador: 20 de Noviembre a las 19:00 hs
             const rawTarget = '<?= fechaRevelacion ?>';
             let targetTime;
@@ -3147,7 +3153,92 @@
                     .catch(err => mostrar({ status: 'error', message: 'Error de conexión: ' + err }));
             }
         }
+
+        // ==========================================
+        // ACCESO OCULTO PARA STAFF (CON PIN DE BOMBA)
+        // ==========================================
+        function abrirAccesoStaff() {
+            const modal = document.getElementById('staff-pin-modal');
+            const input = document.getElementById('staff-pin-input');
+            const err = document.getElementById('staff-pin-error');
+            if (!modal) return;
+            if (err) { err.style.display = 'none'; err.textContent = ''; }
+            if (input) input.value = '';
+            modal.style.display = 'flex';
+            setTimeout(() => input && input.focus(), 50);
+        }
+
+        function cerrarAccesoStaff() {
+            const modal = document.getElementById('staff-pin-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function verificarPinStaff(e) {
+            e.preventDefault();
+            const input = document.getElementById('staff-pin-input');
+            const errEl = document.getElementById('staff-pin-error');
+            const btn = document.getElementById('staff-pin-btn');
+            const pin = (input ? input.value : '').trim();
+
+            if (!/^\d{6}$/.test(pin)) {
+                errEl.textContent = 'Ingresá los 6 dígitos del PIN de Staff.';
+                errEl.style.display = 'block';
+                return;
+            }
+
+            const rawUrl = '<?= urlJuegoBomba ?>';
+            const bombaUrl = (rawUrl && !rawUrl.startsWith('<?'))
+                ? rawUrl
+                : 'https://script.google.com/macros/s/AKfycbyD_XH8p2NlwBB1V-xXtFjaZ-DHqsqSf3uL71yQUqfC-gxtH45VGg0TXERCFLPbaEx9DQ/exec';
+
+            btn.disabled = true;
+            btn.textContent = 'Verificando...';
+            errEl.style.display = 'none';
+
+            fetch(bombaUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'autenticar', color: 'Staff', pin: pin }),
+                redirect: 'follow'
+            })
+            .then(r => r.json())
+            .then(res => {
+                btn.disabled = false;
+                btn.textContent = 'Ingresar';
+                if (res && res.success) {
+                    window.top.location.href = bombaUrl;
+                } else {
+                    errEl.textContent = (res && res.message) || 'PIN de Staff incorrecto.';
+                    errEl.style.display = 'block';
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.textContent = 'Ingresar';
+                errEl.textContent = 'Error de conexión al validar el PIN.';
+                errEl.style.display = 'block';
+            });
+        }
     </script>
+
+    <!-- MODAL OCULTO DE ACCESO STAFF -->
+    <div id="staff-pin-modal" style="display:none; position:fixed; inset:0; background:rgba(15,27,21,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarAccesoStaff()">
+        <div style="background:#FFFFFF; border-radius:20px; padding:24px; max-width:340px; width:100%; box-shadow:0 20px 50px rgba(0,0,0,0.35); text-align:center; border-top:6px solid #E59F38;">
+            <div style="font-size:1.8rem; margin-bottom:6px;">🔐</div>
+            <h3 style="margin:0 0 6px; font-size:1.15rem; color:#193327; font-weight:800;">Acceso Staff</h3>
+            <p style="margin:0 0 16px; font-size:0.84rem; color:#5F7167;">Ingresá el PIN de 6 dígitos del Staff para acceder antes del estreno.</p>
+            <form onsubmit="verificarPinStaff(event)">
+                <input type="password" id="staff-pin-input" maxlength="6" inputmode="numeric" placeholder="••••••" autocomplete="off"
+                    oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)"
+                    style="width:100%; padding:12px; font-size:1.4rem; text-align:center; letter-spacing:8px; border-radius:12px; border:2px solid #E2D9CA; margin-bottom:10px; font-family:monospace; outline:none;" required>
+                <div id="staff-pin-error" style="display:none; color:#DC2626; font-size:0.82rem; font-weight:600; margin-bottom:10px;"></div>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" onclick="cerrarAccesoStaff()" style="flex:1; padding:11px; border-radius:12px; border:1px solid #E2D9CA; background:#FAF6EF; color:#1A2821; font-weight:700; cursor:pointer;">Cancelar</button>
+                    <button type="submit" id="staff-pin-btn" style="flex:1.4; padding:11px; border-radius:12px; border:none; background:#193327; color:#FFFFFF; font-weight:700; cursor:pointer;">Ingresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>
