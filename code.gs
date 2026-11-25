@@ -2,14 +2,18 @@
 // CONFIGURACIÓN Y CONSTANTES
 // ==========================================
 
+// 🔀 ID DE LA PLANILLA OFICIAL
+// Permite que la Web App consuma directamente esta planilla sin importar desde dónde esté desplegado el script
+const SPREADSHEET_ID = "1XKyHmXWIzGtP9jcw_VZgj94eMjo9GjC0LwTJwjVvIIU";
+
 // 🔀 INTERRUPTORES DE MODO
-// true  → Muestra la pantalla de inscripciones finalizadas con contador hacia el 13 de nov 19:00 hs
+// true  → Muestra la pantalla de inscripciones finalizadas con contador hacia la fecha de revelación
 // false → Formulario de inscripción activo
 const INSCRIPCIONES_CERRADAS = true;
 
 // false → El color sorteado se mantiene en secreto hasta la finalización del contador
 // true  → Habilita de inmediato la pantalla de consulta de color por cédula
-const MODO_CONSULTA = false;
+const MODO_CONSULTA = true;
 
 // Fecha y hora oficial en la que finaliza el contador (20 de Noviembre a las 19:00 hs)
 const FECHA_REVELACION = "2026-11-20T19:00:00-03:00";
@@ -18,6 +22,8 @@ const FECHA_REVELACION = "2026-11-20T19:00:00-03:00";
 // (Reemplazar con el link .../exec de tu implementación de la Bomba)
 const URL_JUEGO_BOMBA = "https://script.google.com/macros/s/AKfycbyD_XH8p2NlwBB1V-xXtFjaZ-DHqsqSf3uL71yQUqfC-gxtH45VGg0TXERCFLPbaEx9DQ/exec";
 
+// Hojas oficiales de la base de datos
+const SHEET_PARTICIPANTES_OFICIAL = "PARTICIPANTES OFICIAL";
 const SHEET_NAME = "Inscripciones";
 const SHEET_TIOS = "Tíos";
 
@@ -79,6 +85,24 @@ const TIOS_COL = { cedulaTio: 2, cedulaTia: 3, base: 5, vehiculo: 9, color: 13, 
 // ==========================================
 
 /**
+ * Obtiene la planilla de cálculo oficial (por ID de Google Sheets o activa como fallback)
+ */
+function getSpreadsheet() {
+  if (typeof SPREADSHEET_ID !== 'undefined' && SPREADSHEET_ID) {
+    try {
+      return SpreadsheetApp.openById(SPREADSHEET_ID);
+    } catch (e) {
+      Logger.log("Aviso: No se pudo abrir por ID (" + e + "), intentando getActiveSpreadsheet()");
+    }
+  }
+  try {
+    return SpreadsheetApp.getActiveSpreadsheet();
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
  * Agrega un menú interactivo en Google Sheets al abrir la planilla
  */
 function onOpen() {
@@ -96,8 +120,8 @@ function onOpen() {
  * Inicializa los encabezados oficiales en la fila 1 de la hoja
  */
 function inicializarEncabezados(targetSheet) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = targetSheet || (ss ? ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0] : null);
+  const ss = getSpreadsheet();
+  let sheet = targetSheet || (ss ? ss.getSheetByName(SHEET_PARTICIPANTES_OFICIAL) || ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0] : null);
   if (!sheet) return;
 
   aplicarEncabezados(sheet, HEADERS);
@@ -486,14 +510,20 @@ function consultarColor(cedula) {
 
     // Tíos (una fila por pareja, seña o total)
     const sheetTios = getTiosSheet();
-    if (sheetTios.getLastRow() > 1) {
-      const rows = sheetTios.getRange(2, 1, sheetTios.getLastRow() - 1, HEADERS_TIOS.length).getValues();
+    if (sheetTios && sheetTios.getLastRow() > 1) {
+      const tiosCols = getTiosColumnIndexes(sheetTios);
+      const rows = sheetTios.getRange(2, 1, sheetTios.getLastRow() - 1, sheetTios.getLastColumn()).getValues();
       for (let j = 0; j < rows.length; j++) {
         const r = rows[j];
-        if (String(r[TIOS_COL.cedulaTio] || '').trim() === target || String(r[TIOS_COL.cedulaTia] || '').trim() === target) {
-          const senaTios = r[TIOS_COL.sena];
-          const totalTios = r[TIOS_COL.total];
-          return armarRespuestaConsulta(r[0] + ' y ' + r[1], r[TIOS_COL.color], senaTios, totalTios);
+        const cTio = String(r[tiosCols.cedulaTio] || '').trim();
+        const cTia = String(r[tiosCols.cedulaTia] || '').trim();
+        if (cTio === target || cTia === target) {
+          const senaTios = r[tiosCols.sena];
+          const totalTios = r[tiosCols.total];
+          const nomTio = String(r[tiosCols.nombreTio !== undefined ? tiosCols.nombreTio : 0] || '').trim();
+          const nomTia = String(r[tiosCols.nombreTia !== undefined ? tiosCols.nombreTia : 1] || '').trim();
+          const nombrePareja = (nomTio && nomTia) ? (nomTio + ' y ' + nomTia) : (nomTio || nomTia || 'Pareja de Tíos');
+          return armarRespuestaConsulta(nombrePareja, r[tiosCols.color], senaTios, totalTios);
         }
       }
     }
@@ -557,10 +587,37 @@ function calcularPesos(totalCounts, baseCounts) {
 }
 
 /**
+ * Detecta dinámicamente las posiciones de columnas en la hoja de Tíos
+ */
+function getTiosColumnIndexes(sheet) {
+  const targetSheet = sheet || getTiosSheet();
+  let indexes = Object.assign({}, TIOS_COL);
+  if (!targetSheet) return indexes;
+  const lastCol = targetSheet.getLastColumn();
+  if (lastCol <= 0) return indexes;
+
+  const headerRow = targetSheet.getRange(1, 1, 1, lastCol).getValues()[0] || [];
+  headerRow.forEach(function(h, idx) {
+    const s = String(h || '').trim().toLowerCase();
+    if (s.indexOf('nombre') !== -1 && (s.indexOf('tío') !== -1 || s.indexOf('tio') !== -1)) indexes.nombreTio = idx;
+    else if (s.indexOf('nombre') !== -1 && (s.indexOf('tía') !== -1 || s.indexOf('tia') !== -1)) indexes.nombreTia = idx;
+    else if ((s.indexOf('cédula') !== -1 || s.indexOf('cedula') !== -1) && (s.indexOf('tío') !== -1 || s.indexOf('tio') !== -1)) indexes.cedulaTio = idx;
+    else if ((s.indexOf('cédula') !== -1 || s.indexOf('cedula') !== -1) && (s.indexOf('tía') !== -1 || s.indexOf('tia') !== -1)) indexes.cedulaTia = idx;
+    else if (s.indexOf('base') !== -1) indexes.base = idx;
+    else if (s.indexOf('color') !== -1) indexes.color = idx;
+    else if (s.indexOf('seña') !== -1 || s.indexOf('sena') !== -1) indexes.sena = idx;
+    else if (s.indexOf('total') !== -1) indexes.total = idx;
+    else if (s.indexOf('vehículo') !== -1 || s.indexOf('vehiculo') !== -1) indexes.vehiculo = idx;
+  });
+  return indexes;
+}
+
+/**
  * Obtiene (o crea) la hoja de Tíos con sus encabezados
  */
 function getTiosSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet();
+  if (!ss) return null;
   let sheet = ss.getSheetByName(SHEET_TIOS);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_TIOS);
@@ -573,13 +630,12 @@ function getTiosSheet() {
 
 /**
  * [FUNCIÓN 4] getInscripcionesSheet
+ * Prioriza la hoja oficial "PARTICIPANTES OFICIAL", con fallback a "Inscripciones"
  */
 function getInscripcionesSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) {
-    sheet = ss.getSheets()[0];
-  }
+  const ss = getSpreadsheet();
+  if (!ss) return null;
+  let sheet = ss.getSheetByName(SHEET_PARTICIPANTES_OFICIAL) || ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
   if (sheet.getLastRow() === 0) {
     inicializarEncabezados(sheet);
   }
