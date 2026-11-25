@@ -688,6 +688,27 @@ function getColumnIndexes() {
 
   if (lastCol <= 0) return indexes;
 
+  // Detección para la hoja oficial "PARTICIPANTES OFICIAL" donde Col A es "Participante"
+  if (sheet.getName() === SHEET_PARTICIPANTES_OFICIAL || 
+      (sheet.getLastRow() > 1 && String(sheet.getRange(2, 1).getValue() || '').trim().toLowerCase() === 'participante')) {
+    return {
+      tipo: 0,
+      nombre: 1,
+      cedula: 2,
+      telefono: 3,
+      base: 4,
+      color: 5,
+      talleRemera: 6,
+      contactoEmergencia: 7,
+      enfermedades: 8,
+      limitacionesFisicas: 9,
+      alimentacion: 10,
+      sena: 11,
+      total: 12,
+      timestamp: 13
+    };
+  }
+
   const headerRow = sheet.getRange(1, 1, 1, lastCol).getValues()[0] || [];
   if (!headerRow || headerRow.length === 0 || !headerRow[0]) {
     return indexes;

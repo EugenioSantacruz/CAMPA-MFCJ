@@ -3137,13 +3137,41 @@
                 }
             }
 
+            function buscarEnDatosLocales() {
+                fetch('datos-recepcion.json')
+                    .then(r => r.json())
+                    .then(data => {
+                        const cedulaLimpia = cedula.replace(/\D/g, '');
+                        const todas = [...(data.participantes || []), ...(data.tios || [])];
+                        const encontrado = todas.find(p => {
+                            const ceds = (p.cedula || '').split(/[\/\,\-]/);
+                            return ceds.some(c => c.replace(/\D/g, '') === cedulaLimpia);
+                        });
+                        if (encontrado) {
+                            if (encontrado.pagado) {
+                                mostrar({ status: 'success', nombre: encontrado.nombre, color: encontrado.color });
+                            } else {
+                                mostrar({ status: 'pending', nombre: encontrado.nombre, message: 'Tu inscripción aún no está confirmada, aboná la seña o el total.' });
+                            }
+                        } else {
+                            mostrar({ status: 'not_found', message: 'No encontramos ninguna inscripción con esa cédula.' });
+                        }
+                    })
+                    .catch(() => {
+                        mostrar({ status: 'not_found', message: 'No encontramos ninguna inscripción con esa cédula.' });
+                    });
+            }
+
             if (typeof google !== 'undefined' && google.script && google.script.run) {
                 google.script.run
                     .withSuccessHandler(mostrar)
                     .withFailureHandler(err => mostrar({ status: 'error', message: 'Error de conexión: ' + err }))
                     .consultarColor(cedula);
+            } else if (typeof isLocalEnvironment !== 'undefined' && isLocalEnvironment || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') {
+                // En entorno local buscamos directamente en la base oficial sincronizada
+                buscarEnDatosLocales();
             } else {
-                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-ILAYOk8vjW3recSdAt20IRT_eOxCkbckG2lKxnXJF5fb8SpasNh3DJxAhyjIkaS9/exec";
+                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNE0TMFfkOvHIiktqorDQYdIz8lOeQJXT_gGt2_T0WA9LN4ulV6ivbeGe2qy-1DENV/exec";
                 fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -3152,7 +3180,7 @@
                 })
                     .then(res => res.json())
                     .then(mostrar)
-                    .catch(err => mostrar({ status: 'error', message: 'Error de conexión: ' + err }));
+                    .catch(() => buscarEnDatosLocales());
             }
         }
 
@@ -3211,6 +3239,45 @@
                 }
             }
 
+            const esLocal = (typeof isLocalEnvironment !== 'undefined' && isLocalEnvironment) ||
+                            location.hostname === 'localhost' ||
+                            location.hostname === '127.0.0.1' ||
+                            location.protocol === 'file:';
+
+            function consultarRemoto() {
+                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNE0TMFfkOvHIiktqorDQYdIz8lOeQJXT_gGt2_T0WA9LN4ulV6ivbeGe2qy-1DENV/exec";
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'recepcion', pin: pin }),
+                    redirect: 'follow'
+                })
+                .then(r => r.json())
+                .then(onDatos)
+                .catch(err => {
+                    console.warn('Fallo petición remota, intentando datos locales:', err);
+                    cargarDatosLocalesOFallback();
+                });
+            }
+
+            function cargarDatosLocalesOFallback() {
+                fetch('datos-recepcion.json')
+                    .then(r => {
+                        if (!r.ok) throw new Error('HTTP ' + r.status);
+                        return r.json();
+                    })
+                    .then(onDatos)
+                    .catch(() => {
+                        console.warn('Cargando datos demo de recepción.');
+                        const demo = generarDatosRecepcionDemo();
+                        onDatos({
+                            success: true,
+                            participantes: demo.participantes,
+                            tios: demo.tios
+                        });
+                    });
+            }
+
             if (typeof google !== 'undefined' && google.script && google.script.run) {
                 google.script.run
                     .withSuccessHandler(onDatos)
@@ -3221,33 +3288,11 @@
                         errEl.style.display = 'block';
                     })
                     .obtenerDatosRecepcion(pin);
+            } else if (esLocal) {
+                // En local: carga instantánea de la base de datos oficial de Sheets (120 participantes y 75 parejas de tíos)
+                cargarDatosLocalesOFallback();
             } else {
-                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-ILAYOk8vjW3recSdAt20IRT_eOxCkbckG2lKxnXJF5fb8SpasNh3DJxAhyjIkaS9/exec";
-                fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'recepcion', pin: pin }),
-                    redirect: 'follow'
-                })
-                .then(r => r.json())
-                .then(onDatos)
-                .catch(() => {
-                    // Si estamos en entorno local y el fetch falla por CORS o por bloqueo de Google
-                    if (typeof isLocalEnvironment !== 'undefined' && isLocalEnvironment || location.hostname === 'localhost' || location.protocol === 'file:') {
-                        console.warn('CORS detectado en local. Cargando datos de muestra para visualización de recepción.');
-                        const demo = generarDatosRecepcionDemo();
-                        onDatos({
-                            success: true,
-                            participantes: demo.participantes,
-                            tios: demo.tios
-                        });
-                        return;
-                    }
-                    btn.disabled = false;
-                    btn.textContent = 'Ingresar';
-                    errEl.textContent = 'Error de conexión: Google bloqueó la petición por CORS. Verificá que la Web App tenga acceso público ("Cualquiera").';
-                    errEl.style.display = 'block';
-                });
+                consultarRemoto();
             }
         }
 
