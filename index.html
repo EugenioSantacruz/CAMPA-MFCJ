@@ -1708,12 +1708,12 @@
                     Pronto te añadirán al grupo del color al que pertenecés.
                 </p>
 
-                <!-- CONTADOR REGRESIVO Y ANIMACIÓN BOMBA CARGANDO -->
+                <!-- CONTADOR REGRESIVO AL INICIO DEL CAMPAMENTO -->
                 <div class="countdown-card">
                     <div class="countdown-header-clean">
                         <div class="countdown-tag">
-                            <span class="bomb-badge-icon">💣</span>
-                            <span>PRÓXIMA ETAPA</span>
+                            <span class="bomb-badge-icon">🏕️</span>
+                            <span>INICIO DEL CAMPAMENTO</span>
                         </div>
                         <div class="target-date-pill">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -1722,41 +1722,7 @@
                                 <line x1="8" y1="2" x2="8" y2="6"/>
                                 <line x1="3" y1="10" x2="21" y2="10"/>
                             </svg>
-                            <span>Viernes 20 de Noviembre · 19:00 hs</span>
-                        </div>
-                    </div>
-
-                    <!-- ANIMACIÓN DE LA BOMBA CARGANDO -->
-                    <div class="bomb-loading-wrap">
-                        <div class="bomb-character">
-                            <div class="bomb-spark"></div>
-                            <svg class="bomb-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M 50 20 C 60 5, 74 12, 80 6" stroke="#D86843" stroke-width="4.5" stroke-linecap="round"/>
-                                <rect x="42" y="18" width="16" height="8" rx="2" fill="#E59F38"/>
-                                <circle cx="50" cy="56" r="34" fill="url(#bombGrad2)" stroke="#22382C" stroke-width="2.5"/>
-                                <ellipse cx="38" cy="44" rx="10" ry="5" transform="rotate(-35 38 44)" fill="rgba(255,255,255,0.3)"/>
-                                <text x="50" y="63" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="18" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">MFCJ</text>
-                                <defs>
-                                    <radialGradient id="bombGrad2" cx="35%" cy="35%" r="65%">
-                                        <stop offset="0%" stop-color="#35624E"/>
-                                        <stop offset="55%" stop-color="#14221B"/>
-                                        <stop offset="100%" stop-color="#080E0B"/>
-                                    </radialGradient>
-                                </defs>
-                            </svg>
-                        </div>
-
-                        <div class="bomb-loading-bar-container">
-                            <div class="bomb-loading-header">
-                                <div class="bomb-loading-left">
-                                    <span class="bomb-status-pulse"></span>
-                                    <span>CARGANDO ETAPA</span>
-                                </div>
-                                <span class="bomb-loading-pct" id="bomb-pct">82%</span>
-                            </div>
-                            <div class="bomb-progress-bar">
-                                <div class="bomb-progress-glow"></div>
-                            </div>
+                            <span>Sábado 28 de Noviembre · 14:00 hs</span>
                         </div>
                     </div>
 
@@ -1792,25 +1758,61 @@
 
                     <div id="countdown-finished-action" class="countdown-finished-action" style="display:none;">
                         <div class="finished-alert">
-                            💣 <strong>¡Llegó la hora!</strong> La Próxima Etapa de <strong>MFCJ CAMP 2026</strong> ha sido desbloqueada.
+                            🏕️ <strong>¡Llegó el día!</strong> ¡Bienvenidos al <strong>MFCJ CAMP 2026</strong>!
                         </div>
-                        <a id="btn-proxima-etapa" href="fase2-bomba.html" target="_top" class="btn-submit" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
-                            <span>💣 Ingresar a la Próxima Etapa</span>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <polyline points="9 18 15 12 9 6"/>
-                            </svg>
-                        </a>
                     </div>
                 </div>
 
-                <!-- RECORDATORIO SUTIL (acceso oculto Staff al hacer click) -->
-                <div class="minimal-reminder" onclick="abrirAccesoStaff()" title="Información">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="16" x2="12" y2="12"/>
-                        <line x1="12" y1="8" x2="12.01" y2="8"/>
-                    </svg>
-                    <span>Recordá confirmar tu lugar abonando la seña con los coordinadores de tu base.</span>
+                <!-- RECORDATORIO Y BOTÓN IR A RECEPCIÓN -->
+                <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:14px;">
+                    <div class="minimal-reminder" style="margin-top:0;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        <span>Recordá confirmar tu lugar abonando la seña con los coordinadores de tu base.</span>
+                    </div>
+                    <button type="button" onclick="abrirAccesoRecepcion()" style="display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--green-dark); font-size:0.82rem; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(25,51,39,0.06);">
+                        <span>🎫</span>
+                        <span>Ir a Recepción</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VISTA 5: SISTEMA DE RECEPCIÓN (12 TARJETAS DE COLORES) -->
+            <div id="recepcion-view" class="closed-view" style="text-align:left;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+                    <div>
+                        <h2 style="font-size:1.35rem; font-weight:800; color:var(--green-dark); margin:0;">🎫 Recepción · MFCJ CAMP 2026</h2>
+                        <p style="font-size:0.82rem; color:var(--text-muted); margin:2px 0 0;">Seleccioná un equipo para ver sus participantes y tíos</p>
+                    </div>
+                    <button type="button" onclick="cerrarRecepcion()" style="padding:7px 14px; border-radius:10px; border:1px solid var(--border-color); background:#FAF6EF; color:var(--green-dark); font-size:0.8rem; font-weight:700; cursor:pointer;">← Salir</button>
+                </div>
+
+                <!-- Buscador global por nombre o cédula -->
+                <div id="recepcion-global-search-wrap" style="margin-bottom:14px;">
+                    <input type="text" id="recepcion-global-search" placeholder="🔍 Buscar participante por nombre o cédula..." oninput="buscarGlobalRecepcion()"
+                        style="width:100%; padding:11px 14px; border-radius:12px; border:1.5px solid var(--border-color); font-size:0.9rem; outline:none; background:#FAF6EF;">
+                </div>
+
+                <!-- Resultados de búsqueda global -->
+                <div id="recepcion-global-results" style="display:none; margin-bottom:14px;"></div>
+
+                <!-- Grilla de 12 tarjetas grandes -->
+                <div id="recepcion-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(145px, 1fr)); gap:12px;"></div>
+
+                <!-- Detalle de un color seleccionado -->
+                <div id="recepcion-detalle" style="display:none;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+                        <button type="button" onclick="volverAGrillaRecepcion()" style="padding:8px 14px; border-radius:10px; border:1px solid var(--border-color); background:#FAF6EF; color:var(--green-dark); font-size:0.82rem; font-weight:700; cursor:pointer;">← Todos los colores</button>
+                        <div id="recepcion-color-badge" style="padding:6px 14px; border-radius:999px; font-weight:800; font-size:0.85rem;"></div>
+                    </div>
+
+                    <input type="text" id="recepcion-search" placeholder="Buscar por nombre o cédula..." oninput="filtrarListaRecepcion()"
+                        style="width:100%; padding:10px 14px; border-radius:12px; border:1.5px solid var(--border-color); margin-bottom:14px; font-size:0.9rem; outline:none;">
+
+                    <div id="recepcion-lista-contenido"></div>
                 </div>
             </div>
 
@@ -2993,15 +2995,15 @@
                 btnProxima.href = rawUrlBomba;
             }
 
-            // Fecha y hora de finalización del contador: 20 de Noviembre a las 19:00 hs
+            // Fecha y hora de finalización del contador: 28 de Noviembre a las 14:00 hs
             const rawTarget = '<?= fechaRevelacion ?>';
             let targetTime;
 
             if (rawTarget && !rawTarget.startsWith('<?')) {
                 targetTime = new Date(rawTarget).getTime();
             } else {
-                // Fallback seguro: año 2026, mes 10 (noviembre 0-based), día 20, 19:00:00 hora local
-                targetTime = new Date(2026, 10, 20, 19, 0, 0).getTime();
+                // Fallback seguro: año 2026, mes 10 (noviembre 0-based), día 28, 14:00:00 hora local
+                targetTime = new Date(2026, 10, 28, 14, 0, 0).getTime();
             }
 
             function tick() {
@@ -3155,12 +3157,15 @@
         }
 
         // ==========================================
-        // ACCESO OCULTO PARA STAFF (CON PIN DE BOMBA)
+        // SISTEMA DE RECEPCIÓN (PIN: 121997)
         // ==========================================
-        function abrirAccesoStaff() {
-            const modal = document.getElementById('staff-pin-modal');
-            const input = document.getElementById('staff-pin-input');
-            const err = document.getElementById('staff-pin-error');
+        let datosRecepcion = { participantes: [], tios: [] };
+        let colorSeleccionadoRecepcion = null;
+
+        function abrirAccesoRecepcion() {
+            const modal = document.getElementById('recepcion-pin-modal');
+            const input = document.getElementById('recepcion-pin-input');
+            const err = document.getElementById('recepcion-pin-error');
             if (!modal) return;
             if (err) { err.style.display = 'none'; err.textContent = ''; }
             if (input) input.value = '';
@@ -3168,87 +3173,295 @@
             setTimeout(() => input && input.focus(), 50);
         }
 
-        function cerrarAccesoStaff() {
-            const modal = document.getElementById('staff-pin-modal');
+        function cerrarAccesoRecepcion() {
+            const modal = document.getElementById('recepcion-pin-modal');
             if (modal) modal.style.display = 'none';
         }
 
-        function verificarPinStaff(e) {
+        function verificarPinRecepcion(e) {
             e.preventDefault();
-            const input = document.getElementById('staff-pin-input');
-            const errEl = document.getElementById('staff-pin-error');
-            const btn = document.getElementById('staff-pin-btn');
+            const input = document.getElementById('recepcion-pin-input');
+            const errEl = document.getElementById('recepcion-pin-error');
+            const btn = document.getElementById('recepcion-pin-btn');
             const pin = (input ? input.value : '').trim();
 
-            if (!/^\d{6}$/.test(pin)) {
-                errEl.textContent = 'Ingresá los 6 dígitos del PIN de Staff.';
+            if (pin !== '121997') {
+                errEl.textContent = 'PIN incorrecto. Verificá el código de recepción.';
                 errEl.style.display = 'block';
                 return;
             }
 
-            const rawUrl = '<?= urlJuegoBomba ?>';
-            const bombaUrl = (rawUrl && !rawUrl.startsWith('<?'))
-                ? rawUrl
-                : 'https://script.google.com/macros/s/AKfycbyD_XH8p2NlwBB1V-xXtFjaZ-DHqsqSf3uL71yQUqfC-gxtH45VGg0TXERCFLPbaEx9DQ/exec';
-
             btn.disabled = true;
-            btn.textContent = 'Verificando...';
+            btn.textContent = 'Cargando...';
             errEl.style.display = 'none';
 
-            function irALaBomba() {
-                const isGAS = typeof google !== 'undefined' && google.script && google.script.run;
-                if (isGAS) {
-                    const base = window.location.href.split('?')[0].split('#')[0];
-                    window.top.location.href = base + '?view=bomba';
-                } else {
-                    window.location.href = 'fase2-bomba.html';
-                }
-            }
-
-            fetch(bombaUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ action: 'autenticar', color: 'Staff', pin: pin }),
-                redirect: 'follow'
-            })
-            .then(r => r.json())
-            .then(res => {
+            function onDatos(res) {
                 btn.disabled = false;
                 btn.textContent = 'Ingresar';
                 if (res && res.success) {
-                    irALaBomba();
+                    datosRecepcion = {
+                        participantes: res.participantes || [],
+                        tios: res.tios || []
+                    };
+                    cerrarAccesoRecepcion();
+                    mostrarVistaRecepcion();
                 } else {
-                    errEl.textContent = (res && res.message) || 'PIN de Staff incorrecto.';
+                    errEl.textContent = (res && res.message) || 'No se pudieron cargar los datos.';
                     errEl.style.display = 'block';
                 }
-            })
-            .catch(() => {
-                btn.disabled = false;
-                btn.textContent = 'Ingresar';
-                if (pin === '002026') {
-                    irALaBomba();
-                } else {
-                    errEl.textContent = 'Error de conexión al validar el PIN.';
+            }
+
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                google.script.run
+                    .withSuccessHandler(onDatos)
+                    .withFailureHandler(err => {
+                        btn.disabled = false;
+                        btn.textContent = 'Ingresar';
+                        errEl.textContent = 'Error de conexión: ' + err;
+                        errEl.style.display = 'block';
+                    })
+                    .obtenerDatosRecepcion(pin);
+            } else {
+                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-ILAYOk8vjW3recSdAt20IRT_eOxCkbckG2lKxnXJF5fb8SpasNh3DJxAhyjIkaS9/exec";
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'recepcion', pin: pin }),
+                    redirect: 'follow'
+                })
+                .then(r => r.json())
+                .then(onDatos)
+                .catch(() => {
+                    btn.disabled = false;
+                    btn.textContent = 'Ingresar';
+                    errEl.textContent = 'Error de conexión al cargar recepción.';
                     errEl.style.display = 'block';
-                }
-            });
+                });
+            }
+        }
+
+        function mostrarVistaRecepcion() {
+            document.getElementById('closed-view').style.display = 'none';
+            document.getElementById('form-view').style.display = 'none';
+            document.getElementById('consulta-view').style.display = 'none';
+            document.getElementById('recepcion-view').style.display = 'block';
+            document.title = 'Recepción · MFCJ CAMP 2026';
+            volverAGrillaRecepcion();
+            renderizarTarjetasRecepcion();
+        }
+
+        function cerrarRecepcion() {
+            document.getElementById('recepcion-view').style.display = 'none';
+            document.getElementById('closed-view').style.display = 'block';
+            document.title = 'MFCJ CAMP 2026 · Inicio';
+        }
+
+        function renderizarTarjetasRecepcion() {
+            const grid = document.getElementById('recepcion-grid');
+            if (!grid) return;
+
+            grid.innerHTML = COLORS_CONFIG.map(c => {
+                const cantPart = datosRecepcion.participantes.filter(p => p.color.toLowerCase() === c.name.toLowerCase()).length;
+                const cantTios = datosRecepcion.tios.filter(t => t.color.toLowerCase() === c.name.toLowerCase()).length;
+                const dotColor = c.name === 'Blanco' ? '#CBD5E1' : c.hex;
+                return `
+                    <button type="button" onclick="abrirColorRecepcion('${c.name}')"
+                        style="display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:10px; padding:16px; border-radius:16px; border:2px solid ${c.borderColor}; background:${c.bgLight}; cursor:pointer; text-align:left; transition:transform 0.15s ease; box-shadow:0 6px 16px rgba(0,0,0,0.06);">
+                        <div style="display:flex; align-items:center; gap:8px; width:100%;">
+                            <span style="width:16px; height:16px; border-radius:50%; background:${dotColor}; border:1px solid rgba(0,0,0,0.15); flex-shrink:0;"></span>
+                            <span style="font-size:1.05rem; font-weight:800; color:${c.textColor || c.hex};">${c.name}</span>
+                        </div>
+                        <div style="font-size:0.78rem; color:#475569; font-weight:600; line-height:1.35;">
+                            <div>👤 ${cantPart} jóvenes</div>
+                            <div>👥 ${cantTios} parejas tíos</div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function abrirColorRecepcion(colorName) {
+            colorSeleccionadoRecepcion = colorName;
+            document.getElementById('recepcion-global-search-wrap').style.display = 'none';
+            document.getElementById('recepcion-global-results').style.display = 'none';
+            document.getElementById('recepcion-grid').style.display = 'none';
+            document.getElementById('recepcion-detalle').style.display = 'block';
+            document.getElementById('recepcion-search').value = '';
+
+            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === colorName.toLowerCase());
+            const badge = document.getElementById('recepcion-color-badge');
+            if (c && badge) {
+                badge.textContent = 'Equipo ' + c.name;
+                badge.style.background = c.bgLight;
+                badge.style.color = c.textColor || c.hex;
+                badge.style.border = '1.5px solid ' + c.borderColor;
+            }
+            filtrarListaRecepcion();
+        }
+
+        function volverAGrillaRecepcion() {
+            colorSeleccionadoRecepcion = null;
+            document.getElementById('recepcion-detalle').style.display = 'none';
+            document.getElementById('recepcion-global-search-wrap').style.display = 'block';
+            document.getElementById('recepcion-global-search').value = '';
+            document.getElementById('recepcion-global-results').style.display = 'none';
+            document.getElementById('recepcion-grid').style.display = 'grid';
+        }
+
+        function renderItemRecepcion(item, idx, tipoLista) {
+            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').toLowerCase());
+            const colorTag = c ? `<span style="font-size:0.7rem; font-weight:800; padding:2px 7px; border-radius:999px; background:${c.bgLight}; color:${c.textColor || c.hex}; border:1px solid ${c.borderColor};">${c.name}</span>` : '';
+            return `
+                <button type="button" onclick="abrirFichaParticipante('${tipoLista}', ${idx})"
+                    style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 13px; border-radius:12px; background:#FAF6EF; border:1px solid var(--border-color); margin-bottom:8px; cursor:pointer; text-align:left; transition:border-color 0.15s;">
+                    <div style="min-width:0; flex:1;">
+                        <div style="font-weight:700; font-size:0.9rem; color:var(--green-dark); display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                            <span>${item.nombre || 'Sin nombre'}</span>
+                            ${colorTag}
+                        </div>
+                        <div style="font-size:0.76rem; color:var(--text-muted); margin-top:2px;">CI: ${item.cedula || '-'} · ${item.base || '-'} · Talle: ${item.talle || '-'}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                        <span style="font-size:0.72rem; font-weight:800; padding:4px 9px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
+                            ${item.pagado ? '✅ Pagado' : '⏳ Pendiente'}
+                        </span>
+                        <span style="color:var(--text-muted); font-weight:800; font-size:1rem;">›</span>
+                    </div>
+                </button>
+            `;
+        }
+
+        function buscarGlobalRecepcion() {
+            const q = (document.getElementById('recepcion-global-search').value || '').trim().toLowerCase();
+            const grid = document.getElementById('recepcion-grid');
+            const resBox = document.getElementById('recepcion-global-results');
+
+            if (!q) {
+                resBox.style.display = 'none';
+                grid.style.display = 'grid';
+                return;
+            }
+
+            grid.style.display = 'none';
+            resBox.style.display = 'block';
+
+            const parts = datosRecepcion.participantes
+                .map((p, i) => ({ item: p, idx: i }))
+                .filter(x => x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q));
+
+            const tios = datosRecepcion.tios
+                .map((t, i) => ({ item: t, idx: i }))
+                .filter(x => x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q));
+
+            let html = `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:4px 0 8px;">👤 Participantes (${parts.length})</h4>`;
+            html += parts.length ? parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:10px;">Sin coincidencias.</p>';
+
+            html += `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:12px 0 8px;">👥 Tíos (${tios.length})</h4>`;
+            html += tios.length ? tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin coincidencias.</p>';
+
+            resBox.innerHTML = html;
+        }
+
+        function filtrarListaRecepcion() {
+            if (!colorSeleccionadoRecepcion) return;
+            const q = (document.getElementById('recepcion-search').value || '').trim().toLowerCase();
+            const cont = document.getElementById('recepcion-lista-contenido');
+
+            const parts = datosRecepcion.participantes
+                .map((p, i) => ({ item: p, idx: i }))
+                .filter(x =>
+                    x.item.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
+                    (!q || x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q))
+                );
+
+            const tios = datosRecepcion.tios
+                .map((t, i) => ({ item: t, idx: i }))
+                .filter(x =>
+                    x.item.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
+                    (!q || x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q))
+                );
+
+            let html = `<h4 style="font-size:0.85rem; text-transform:uppercase; color:var(--green-matte); margin:8px 0;">👤 Participantes (${parts.length})</h4>`;
+            html += parts.length ? parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Sin participantes.</p>';
+
+            html += `<h4 style="font-size:0.85rem; text-transform:uppercase; color:var(--green-matte); margin:14px 0 8px;">👥 Tíos (${tios.length})</h4>`;
+            html += tios.length ? tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin tíos asignados.</p>';
+
+            cont.innerHTML = html;
+        }
+
+        function abrirFichaParticipante(tipoLista, idx) {
+            const lista = tipoLista === 'tios' ? datosRecepcion.tios : datosRecepcion.participantes;
+            const item = lista[idx];
+            if (!item) return;
+
+            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').toLowerCase());
+            const body = document.getElementById('recepcion-ficha-body');
+            const badgeColor = c ? `<span style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:800; background:${c.bgLight}; color:${c.textColor || c.hex}; border:1.5px solid ${c.borderColor};">Equipo ${c.name}</span>` : '';
+
+            const filaDato = (label, val) => `
+                <div style="padding:8px 0; border-bottom:1px solid #F1ECE1; display:flex; justify-content:space-between; gap:12px; font-size:0.84rem;">
+                    <span style="color:var(--text-muted); font-weight:600;">${label}</span>
+                    <span style="color:var(--green-dark); font-weight:700; text-align:right; word-break:break-word;">${val || '—'}</span>
+                </div>
+            `;
+
+            body.innerHTML = `
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+                    <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted);">${item.tipo || 'Participante'}</span>
+                    ${badgeColor}
+                </div>
+                <h3 style="margin:0 0 12px; font-size:1.25rem; color:var(--green-dark); font-weight:800;">${item.nombre || 'Sin nombre'}</h3>
+                <div style="margin-bottom:14px;">
+                    <span style="display:inline-block; font-size:0.78rem; font-weight:800; padding:5px 12px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
+                        ${item.pagado ? '✅ Pago Confirmado' : '⏳ Pago Pendiente'}
+                    </span>
+                </div>
+                <div>
+                    ${filaDato('Cédula', item.cedula)}
+                    ${filaDato('Teléfono / WhatsApp', item.telefono)}
+                    ${filaDato('Base', item.base)}
+                    ${filaDato('Talle de Remera', item.talle)}
+                    ${filaDato('Contacto de Emergencia', item.contactoEmergencia)}
+                    ${filaDato('Enfermedades / Medicación', item.enfermedades)}
+                    ${filaDato('Limitación Física', item.limitacionesFisicas)}
+                    ${filaDato('Restricciones Alimentarias', item.alimentacion)}
+                    ${item.tipo === 'Tíos' ? filaDato('Vehículo', item.llevaVehiculo) : ''}
+                    ${filaDato('Seña', item.sena)}
+                    ${filaDato('Total', item.total)}
+                </div>
+            `;
+
+            document.getElementById('recepcion-ficha-modal').style.display = 'flex';
+        }
+
+        function cerrarFichaParticipante() {
+            document.getElementById('recepcion-ficha-modal').style.display = 'none';
         }
     </script>
 
-    <!-- MODAL OCULTO DE ACCESO STAFF -->
-    <div id="staff-pin-modal" style="display:none; position:fixed; inset:0; background:rgba(15,27,21,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarAccesoStaff()">
+    <!-- MODAL FICHA COMPLETA DEL PARTICIPANTE -->
+    <div id="recepcion-ficha-modal" style="display:none; position:fixed; inset:0; background:rgba(15,27,21,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarFichaParticipante()">
+        <div style="background:#FFFFFF; border-radius:20px; padding:22px; max-width:440px; width:100%; max-height:88vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.35); border-top:6px solid var(--green-matte); text-align:left;">
+            <div id="recepcion-ficha-body"></div>
+            <button type="button" onclick="cerrarFichaParticipante()" style="width:100%; margin-top:16px; padding:11px; border-radius:12px; border:none; background:var(--green-dark); color:#FFFFFF; font-weight:700; cursor:pointer;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE ACCESO RECEPCIÓN -->
+    <div id="recepcion-pin-modal" style="display:none; position:fixed; inset:0; background:rgba(15,27,21,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarAccesoRecepcion()">
         <div style="background:#FFFFFF; border-radius:20px; padding:24px; max-width:340px; width:100%; box-shadow:0 20px 50px rgba(0,0,0,0.35); text-align:center; border-top:6px solid #E59F38;">
-            <div style="font-size:1.8rem; margin-bottom:6px;">🔐</div>
-            <h3 style="margin:0 0 6px; font-size:1.15rem; color:#193327; font-weight:800;">Acceso Staff</h3>
-            <p style="margin:0 0 16px; font-size:0.84rem; color:#5F7167;">Ingresá el PIN de 6 dígitos del Staff para acceder antes del estreno.</p>
-            <form onsubmit="verificarPinStaff(event)">
-                <input type="password" id="staff-pin-input" maxlength="6" inputmode="numeric" placeholder="••••••" autocomplete="off"
+            <div style="font-size:1.8rem; margin-bottom:6px;">🎫</div>
+            <h3 style="margin:0 0 6px; font-size:1.15rem; color:#193327; font-weight:800;">Acceso Recepción</h3>
+            <p style="margin:0 0 16px; font-size:0.84rem; color:#5F7167;">Ingresá el PIN de 6 dígitos para acceder al panel de recepción.</p>
+            <form onsubmit="verificarPinRecepcion(event)">
+                <input type="password" id="recepcion-pin-input" maxlength="6" inputmode="numeric" placeholder="••••••" autocomplete="off"
                     oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)"
                     style="width:100%; padding:12px; font-size:1.4rem; text-align:center; letter-spacing:8px; border-radius:12px; border:2px solid #E2D9CA; margin-bottom:10px; font-family:monospace; outline:none;" required>
-                <div id="staff-pin-error" style="display:none; color:#DC2626; font-size:0.82rem; font-weight:600; margin-bottom:10px;"></div>
+                <div id="recepcion-pin-error" style="display:none; color:#DC2626; font-size:0.82rem; font-weight:600; margin-bottom:10px;"></div>
                 <div style="display:flex; gap:8px;">
-                    <button type="button" onclick="cerrarAccesoStaff()" style="flex:1; padding:11px; border-radius:12px; border:1px solid #E2D9CA; background:#FAF6EF; color:#1A2821; font-weight:700; cursor:pointer;">Cancelar</button>
-                    <button type="submit" id="staff-pin-btn" style="flex:1.4; padding:11px; border-radius:12px; border:none; background:#193327; color:#FFFFFF; font-weight:700; cursor:pointer;">Ingresar</button>
+                    <button type="button" onclick="cerrarAccesoRecepcion()" style="flex:1; padding:11px; border-radius:12px; border:1px solid #E2D9CA; background:#FAF6EF; color:#1A2821; font-weight:700; cursor:pointer;">Cancelar</button>
+                    <button type="submit" id="recepcion-pin-btn" style="flex:1.4; padding:11px; border-radius:12px; border:none; background:#193327; color:#FFFFFF; font-weight:700; cursor:pointer;">Ingresar</button>
                 </div>
             </form>
         </div>
