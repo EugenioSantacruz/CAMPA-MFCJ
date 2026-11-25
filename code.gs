@@ -88,21 +88,26 @@ const TIOS_COL = { cedulaTio: 2, cedulaTia: 3, base: 5, vehiculo: 9, color: 13, 
 // ==========================================
 
 /**
- * Obtiene la planilla de cálculo oficial (por ID de Google Sheets o activa como fallback)
+ * Obtiene la planilla de cálculo oficial (activa si está vinculada o por ID si es externa)
  */
 function getSpreadsheet() {
+  // 1. Si el script corre vinculado a la misma planilla, usarla directamente sin requerir permisos externos
+  try {
+    const active = SpreadsheetApp.getActiveSpreadsheet();
+    if (active) {
+      return active;
+    }
+  } catch (err) {}
+
+  // 2. Si corre de forma externa o standalone, abrir por ID
   if (typeof SPREADSHEET_ID !== 'undefined' && SPREADSHEET_ID) {
     try {
       return SpreadsheetApp.openById(SPREADSHEET_ID);
     } catch (e) {
-      Logger.log("Aviso: No se pudo abrir por ID (" + e + "), intentando getActiveSpreadsheet()");
+      Logger.log("Aviso: No se pudo abrir por ID (" + e + ")");
     }
   }
-  try {
-    return SpreadsheetApp.getActiveSpreadsheet();
-  } catch (err) {
-    return null;
-  }
+  return null;
 }
 
 /**
