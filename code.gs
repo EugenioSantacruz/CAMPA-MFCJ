@@ -150,6 +150,10 @@ function aplicarEncabezados(sheet, headers) {
  * Retorna la vista HTML por defecto, o JSON si se pasa ?api=true (pensado para Astro futuro)
  */
 function doGet(e) {
+  if (e && e.parameter && e.parameter.action === 'consultarColor') {
+    return createJsonResponse(consultarColor(e.parameter.cedula));
+  }
+
   if (e && e.parameter && e.parameter.api === 'true') {
     try {
       const records = getAllRecords();
