@@ -11,8 +11,11 @@ const INSCRIPCIONES_CERRADAS = true;
 // true  → Habilita de inmediato la pantalla de consulta de color por cédula
 const MODO_CONSULTA = false;
 
-// Fecha y hora oficial en la que finaliza el contador (20 de Noviembre a las 19:00 hs)
-const FECHA_REVELACION = "2026-11-20T19:00:00-03:00";
+// Fecha y hora oficial de inicio del campamento (28 de Noviembre a las 14:00 hs)
+const FECHA_REVELACION = "2026-11-28T14:00:00-03:00";
+
+// PIN de acceso para el sistema de Recepción
+const PIN_RECEPCION = "121997";
 
 // URL de la Web App de Google Apps Script donde está desplegado codeBomba.gs + fase2-bomba.html
 // (Reemplazar con el link .../exec de tu implementación de la Bomba)
@@ -203,6 +206,9 @@ function doPost(e) {
   
   if (payload && payload.action === 'consultarColor') {
     return createJsonResponse(consultarColor(payload.cedula));
+  }
+  if (payload && payload.action === 'recepcion') {
+    return createJsonResponse(obtenerDatosRecepcion(payload.pin));
   }
 
   const esParejaTios = payload && (payload.tipo === 'tios' || payload.nombreTio || payload.cedulaTio);
@@ -757,4 +763,61 @@ function weightedRandomSelect(items, weights) {
 function createJsonResponse(data) {
   return ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * [FUNCIÓN 11] obtenerDatosRecepcion
+ * Devuelve todos los participantes y tíos agrupables por color para el sistema de Recepción.
+ */
+function obtenerDatosRecepcion(pin) {
+  try {
+    if (String(pin || '').trim() !== PIN_RECEPCION) {
+      return { success: false, message: "PIN de recepción incorrecto." };
+    }
+
+    const records = getAllRecords();
+    const colIdx = getColumnIndexes();
+    const participantes = records.map(function(row) {
+      const senaVal = row[colIdx.sena];
+      const totalVal = colIdx.total !== undefined ? row[colIdx.total] : null;
+      return {
+        nombre: String(row[colIdx.nombre] || '').trim(),
+        cedula: String(row[colIdx.cedula] || '').trim(),
+        telefono: String(row[colIdx.telefono] || '').trim(),
+        base: String(row[colIdx.base] || '').trim(),
+        talle: String(row[colIdx.talleRemera] || '').trim(),
+        color: String(row[colIdx.color] || '').trim(),
+        pagado: estaPagado(senaVal, totalVal)
+      };
+    });
+
+    const tios = [];
+    const sheetTios = getTiosSheet();
+    if (sheetTios.getLastRow() > 1) {
+      const rows = sheetTios.getRange(2, 1, sheetTios.getLastRow() - 1, HEADERS_TIOS.length).getValues();
+      for (let j = 0; j < rows.length; j++) {
+        const r = rows[j];
+        tios.push({
+          nombre: (String(r[0] || '').trim() + ' y ' + String(r[1] || '').trim()).trim(),
+          cedula: String(r[TIOS_COL.cedulaTio] || '').trim() + ' / ' + String(r[TIOS_COL.cedulaTia] || '').trim(),
+          telefono: String(r[4] || '').trim(),
+          base: String(r[TIOS_COL.base] || '').trim(),
+          talle: String(r[6] || '').trim() + ' / ' + String(r[7] || '').trim(),
+          color: String(r[TIOS_COL.color] || '').trim(),
+          pagado: estaPagado(r[TIOS_COL.sena], r[TIOS_COL.total])
+        });
+      }
+    }
+
+    return {
+      success: true,
+      participantes: participantes,
+      tios: tios
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error al cargar datos de recepción: " + error.toString()
+    };
+  }
 }
