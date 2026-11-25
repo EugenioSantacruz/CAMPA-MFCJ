@@ -3232,12 +3232,94 @@
                 .then(r => r.json())
                 .then(onDatos)
                 .catch(() => {
+                    // Si estamos en entorno local y el fetch falla por CORS o por bloqueo de Google
+                    if (typeof isLocalEnvironment !== 'undefined' && isLocalEnvironment || location.hostname === 'localhost' || location.protocol === 'file:') {
+                        console.warn('CORS detectado en local. Cargando datos de muestra para visualización de recepción.');
+                        const demo = generarDatosRecepcionDemo();
+                        onDatos({
+                            success: true,
+                            participantes: demo.participantes,
+                            tios: demo.tios
+                        });
+                        return;
+                    }
                     btn.disabled = false;
                     btn.textContent = 'Ingresar';
-                    errEl.textContent = 'Error de conexión al cargar recepción.';
+                    errEl.textContent = 'Error de conexión: Google bloqueó la petición por CORS. Verificá que la Web App tenga acceso público ("Cualquiera").';
                     errEl.style.display = 'block';
                 });
             }
+        }
+
+        function generarDatosRecepcionDemo() {
+            const bases = ["San José Obrero", "Virgen de Fátima", "Espíritu Santo", "San Antonio de Padua", "San Lucas", "Sagrado Corazón de Jesús", "Niño Jesús"];
+            const talles = ["P", "M", "G", "XG"];
+            const nombres = [
+                "Sady Luján Quiroga", "Zamira Aylen Carrillo", "Tatiana Melissa Franco", "Jorge Valentino Brizueña",
+                "Fernando Emanuel López", "Damaris Paixão", "Kevin Damian Ortiz", "Josias David Ruiz Diaz",
+                "Guillermo Villar", "Matías Benítez", "Camila Rolón", "Lucas Vera",
+                "Sofía Galeano", "Álvaro Coronel", "Luciana Giménez", "Thiago Bogado"
+            ];
+
+            const participantes = [];
+            nombres.forEach((nom, i) => {
+                const color = COLORS_CONFIG[i % COLORS_CONFIG.length].name;
+                participantes.push({
+                    tipo: 'Participante',
+                    nombre: nom,
+                    cedula: String(6000000 + i * 11111),
+                    telefono: '0981' + String(100000 + i * 1234).slice(-6),
+                    base: bases[i % bases.length],
+                    talle: talles[i % talles.length],
+                    contactoEmergencia: '0971' + String(200000 + i * 2345).slice(-6),
+                    enfermedades: i % 3 === 0 ? 'Alergia al polvo' : 'Ninguna',
+                    limitacionesFisicas: i % 4 === 0 ? 'Lesión leve de tobillo' : 'Ninguna',
+                    alimentacion: i % 2 === 0 ? 'Intolerancia a la lactosa' : 'Ninguna',
+                    color: color,
+                    sena: i % 5 === 0 ? '' : '50.000',
+                    total: i % 3 === 0 ? '' : 'PAGADO',
+                    pagado: i % 5 !== 0 || i % 3 !== 0
+                });
+            });
+
+            const tios = [
+                {
+                    tipo: 'Tíos',
+                    nombre: 'Jorge y Griselda',
+                    cedula: '2147585 / 35403',
+                    telefono: '0973510868',
+                    base: 'Virgen de Fátima',
+                    talle: 'XXXG / M',
+                    contactoEmergencia: '0973510868',
+                    llevaVehiculo: 'SÍ',
+                    enfermedades: 'Alergia al cambio climático',
+                    limitacionesFisicas: 'Lesión de rodilla',
+                    alimentacion: 'Tía celíaca',
+                    color: 'Rojo',
+                    sena: '',
+                    total: 'PAGADO',
+                    pagado: true
+                },
+                {
+                    tipo: 'Tíos',
+                    nombre: 'Sergio Diaz y Mariela Fretes',
+                    cedula: '3222617 / 3198754',
+                    telefono: '0975616210',
+                    base: 'Virgen de Fátima',
+                    talle: 'XXXG / XG',
+                    contactoEmergencia: '0973334936',
+                    llevaVehiculo: 'SÍ',
+                    enfermedades: 'Ninguna',
+                    limitacionesFisicas: 'Tío lesión de rodilla',
+                    alimentacion: 'Ninguna',
+                    color: 'Lila',
+                    sena: '',
+                    total: 'PAGADO',
+                    pagado: true
+                }
+            ];
+
+            return { participantes, tios };
         }
 
         function mostrarVistaRecepcion() {
