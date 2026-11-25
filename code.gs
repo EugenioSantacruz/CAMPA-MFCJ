@@ -157,6 +157,10 @@ function doGet(e) {
     return createJsonResponse(consultarColor(e.parameter.cedula));
   }
 
+  if (e && e.parameter && e.parameter.action === 'recepcion') {
+    return createJsonResponse(obtenerDatosRecepcion(e.parameter.pin));
+  }
+
   if (e && e.parameter && e.parameter.api === 'true') {
     try {
       const records = getAllRecords();
@@ -860,26 +864,36 @@ function obtenerDatosRecepcion(pin) {
 
     const tios = [];
     const sheetTios = getTiosSheet();
-    if (sheetTios.getLastRow() > 1) {
-      const rows = sheetTios.getRange(2, 1, sheetTios.getLastRow() - 1, HEADERS_TIOS.length).getValues();
+    if (sheetTios && sheetTios.getLastRow() > 1) {
+      const tiosCols = getTiosColumnIndexes(sheetTios);
+      const rows = sheetTios.getRange(2, 1, sheetTios.getLastRow() - 1, sheetTios.getLastColumn()).getValues();
       for (let j = 0; j < rows.length; j++) {
         const r = rows[j];
+        const nomTio = String(r[tiosCols.nombreTio !== undefined ? tiosCols.nombreTio : 0] || '').trim();
+        const nomTia = String(r[tiosCols.nombreTia !== undefined ? tiosCols.nombreTia : 1] || '').trim();
+        const nombrePareja = (nomTio && nomTia) ? (nomTio + ' y ' + nomTia) : (nomTio || nomTia || 'Pareja de Tíos');
+        const cTio = String(r[tiosCols.cedulaTio] || '').trim();
+        const cTia = String(r[tiosCols.cedulaTia] || '').trim();
+        const cedulas = (cTio && cTia) ? (cTio + ' / ' + cTia) : (cTio || cTia);
+        const senaTios = r[tiosCols.sena];
+        const totalTios = r[tiosCols.total];
+
         tios.push({
           tipo: 'Tíos',
-          nombre: (String(r[0] || '').trim() + ' y ' + String(r[1] || '').trim()).trim(),
-          cedula: String(r[TIOS_COL.cedulaTio] || '').trim() + ' / ' + String(r[TIOS_COL.cedulaTia] || '').trim(),
+          nombre: nombrePareja,
+          cedula: cedulas,
           telefono: String(r[4] || '').trim(),
-          base: String(r[TIOS_COL.base] || '').trim(),
+          base: String(r[tiosCols.base] || '').trim(),
           talle: String(r[6] || '').trim() + ' / ' + String(r[7] || '').trim(),
           contactoEmergencia: String(r[8] || '').trim(),
-          llevaVehiculo: String(r[TIOS_COL.vehiculo] || '').trim(),
+          llevaVehiculo: String(r[tiosCols.vehiculo !== undefined ? tiosCols.vehiculo : 9] || '').trim(),
           enfermedades: String(r[10] || '').trim(),
           limitacionesFisicas: String(r[11] || '').trim(),
           alimentacion: String(r[12] || '').trim(),
-          color: String(r[TIOS_COL.color] || '').trim(),
-          sena: String(r[TIOS_COL.sena] || '').trim(),
-          total: String(r[TIOS_COL.total] || '').trim(),
-          pagado: estaPagado(r[TIOS_COL.sena], r[TIOS_COL.total])
+          color: String(r[tiosCols.color] || '').trim(),
+          sena: String(senaTios || '').trim(),
+          total: String(totalTios || '').trim(),
+          pagado: estaPagado(senaTios, totalTios)
         });
       }
     }
