@@ -781,12 +781,19 @@ function obtenerDatosRecepcion(pin) {
       const senaVal = row[colIdx.sena];
       const totalVal = colIdx.total !== undefined ? row[colIdx.total] : null;
       return {
+        tipo: 'Participante',
         nombre: String(row[colIdx.nombre] || '').trim(),
         cedula: String(row[colIdx.cedula] || '').trim(),
         telefono: String(row[colIdx.telefono] || '').trim(),
         base: String(row[colIdx.base] || '').trim(),
         talle: String(row[colIdx.talleRemera] || '').trim(),
+        contactoEmergencia: String(row[colIdx.contactoEmergencia] || '').trim(),
+        enfermedades: String(row[colIdx.enfermedades] || '').trim(),
+        limitacionesFisicas: String(row[colIdx.limitacionesFisicas] || '').trim(),
+        alimentacion: String(row[colIdx.alimentacion] || '').trim(),
         color: String(row[colIdx.color] || '').trim(),
+        sena: String(senaVal || '').trim(),
+        total: String(totalVal || '').trim(),
         pagado: estaPagado(senaVal, totalVal)
       };
     });
@@ -798,12 +805,20 @@ function obtenerDatosRecepcion(pin) {
       for (let j = 0; j < rows.length; j++) {
         const r = rows[j];
         tios.push({
+          tipo: 'Tíos',
           nombre: (String(r[0] || '').trim() + ' y ' + String(r[1] || '').trim()).trim(),
           cedula: String(r[TIOS_COL.cedulaTio] || '').trim() + ' / ' + String(r[TIOS_COL.cedulaTia] || '').trim(),
           telefono: String(r[4] || '').trim(),
           base: String(r[TIOS_COL.base] || '').trim(),
           talle: String(r[6] || '').trim() + ' / ' + String(r[7] || '').trim(),
+          contactoEmergencia: String(r[8] || '').trim(),
+          llevaVehiculo: String(r[TIOS_COL.vehiculo] || '').trim(),
+          enfermedades: String(r[10] || '').trim(),
+          limitacionesFisicas: String(r[11] || '').trim(),
+          alimentacion: String(r[12] || '').trim(),
           color: String(r[TIOS_COL.color] || '').trim(),
+          sena: String(r[TIOS_COL.sena] || '').trim(),
+          total: String(r[TIOS_COL.total] || '').trim(),
           pagado: estaPagado(r[TIOS_COL.sena], r[TIOS_COL.total])
         });
       }

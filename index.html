@@ -1790,6 +1790,15 @@
                     <button type="button" onclick="cerrarRecepcion()" style="padding:7px 14px; border-radius:10px; border:1px solid var(--border-color); background:#FAF6EF; color:var(--green-dark); font-size:0.8rem; font-weight:700; cursor:pointer;">← Salir</button>
                 </div>
 
+                <!-- Buscador global por nombre o cédula -->
+                <div id="recepcion-global-search-wrap" style="margin-bottom:14px;">
+                    <input type="text" id="recepcion-global-search" placeholder="🔍 Buscar participante por nombre o cédula..." oninput="buscarGlobalRecepcion()"
+                        style="width:100%; padding:11px 14px; border-radius:12px; border:1.5px solid var(--border-color); font-size:0.9rem; outline:none; background:#FAF6EF;">
+                </div>
+
+                <!-- Resultados de búsqueda global -->
+                <div id="recepcion-global-results" style="display:none; margin-bottom:14px;"></div>
+
                 <!-- Grilla de 12 tarjetas grandes -->
                 <div id="recepcion-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(145px, 1fr)); gap:12px;"></div>
 
@@ -3273,6 +3282,8 @@
 
         function abrirColorRecepcion(colorName) {
             colorSeleccionadoRecepcion = colorName;
+            document.getElementById('recepcion-global-search-wrap').style.display = 'none';
+            document.getElementById('recepcion-global-results').style.display = 'none';
             document.getElementById('recepcion-grid').style.display = 'none';
             document.getElementById('recepcion-detalle').style.display = 'block';
             document.getElementById('recepcion-search').value = '';
@@ -3291,7 +3302,64 @@
         function volverAGrillaRecepcion() {
             colorSeleccionadoRecepcion = null;
             document.getElementById('recepcion-detalle').style.display = 'none';
+            document.getElementById('recepcion-global-search-wrap').style.display = 'block';
+            document.getElementById('recepcion-global-search').value = '';
+            document.getElementById('recepcion-global-results').style.display = 'none';
             document.getElementById('recepcion-grid').style.display = 'grid';
+        }
+
+        function renderItemRecepcion(item, idx, tipoLista) {
+            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').toLowerCase());
+            const colorTag = c ? `<span style="font-size:0.7rem; font-weight:800; padding:2px 7px; border-radius:999px; background:${c.bgLight}; color:${c.textColor || c.hex}; border:1px solid ${c.borderColor};">${c.name}</span>` : '';
+            return `
+                <button type="button" onclick="abrirFichaParticipante('${tipoLista}', ${idx})"
+                    style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 13px; border-radius:12px; background:#FAF6EF; border:1px solid var(--border-color); margin-bottom:8px; cursor:pointer; text-align:left; transition:border-color 0.15s;">
+                    <div style="min-width:0; flex:1;">
+                        <div style="font-weight:700; font-size:0.9rem; color:var(--green-dark); display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                            <span>${item.nombre || 'Sin nombre'}</span>
+                            ${colorTag}
+                        </div>
+                        <div style="font-size:0.76rem; color:var(--text-muted); margin-top:2px;">CI: ${item.cedula || '-'} · ${item.base || '-'} · Talle: ${item.talle || '-'}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                        <span style="font-size:0.72rem; font-weight:800; padding:4px 9px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
+                            ${item.pagado ? '✅ Pagado' : '⏳ Pendiente'}
+                        </span>
+                        <span style="color:var(--text-muted); font-weight:800; font-size:1rem;">›</span>
+                    </div>
+                </button>
+            `;
+        }
+
+        function buscarGlobalRecepcion() {
+            const q = (document.getElementById('recepcion-global-search').value || '').trim().toLowerCase();
+            const grid = document.getElementById('recepcion-grid');
+            const resBox = document.getElementById('recepcion-global-results');
+
+            if (!q) {
+                resBox.style.display = 'none';
+                grid.style.display = 'grid';
+                return;
+            }
+
+            grid.style.display = 'none';
+            resBox.style.display = 'block';
+
+            const parts = datosRecepcion.participantes
+                .map((p, i) => ({ item: p, idx: i }))
+                .filter(x => x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q));
+
+            const tios = datosRecepcion.tios
+                .map((t, i) => ({ item: t, idx: i }))
+                .filter(x => x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q));
+
+            let html = `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:4px 0 8px;">👤 Participantes (${parts.length})</h4>`;
+            html += parts.length ? parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:10px;">Sin coincidencias.</p>';
+
+            html += `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:12px 0 8px;">👥 Tíos (${tios.length})</h4>`;
+            html += tios.length ? tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin coincidencias.</p>';
+
+            resBox.innerHTML = html;
         }
 
         function filtrarListaRecepcion() {
@@ -3299,37 +3367,86 @@
             const q = (document.getElementById('recepcion-search').value || '').trim().toLowerCase();
             const cont = document.getElementById('recepcion-lista-contenido');
 
-            const parts = datosRecepcion.participantes.filter(p =>
-                p.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
-                (!q || p.nombre.toLowerCase().includes(q) || p.cedula.toLowerCase().includes(q))
-            );
+            const parts = datosRecepcion.participantes
+                .map((p, i) => ({ item: p, idx: i }))
+                .filter(x =>
+                    x.item.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
+                    (!q || x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q))
+                );
 
-            const tios = datosRecepcion.tios.filter(t =>
-                t.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
-                (!q || t.nombre.toLowerCase().includes(q) || t.cedula.toLowerCase().includes(q))
-            );
-
-            const renderItem = (item, esTio) => `
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border-radius:10px; background:#FAF6EF; border:1px solid var(--border-color); margin-bottom:8px;">
-                    <div style="min-width:0;">
-                        <div style="font-weight:700; font-size:0.9rem; color:var(--green-dark);">${item.nombre || 'Sin nombre'}</div>
-                        <div style="font-size:0.76rem; color:var(--text-muted);">CI: ${item.cedula || '-'} · ${item.base || '-'} · Talle: ${item.talle || '-'}</div>
-                    </div>
-                    <span style="flex-shrink:0; font-size:0.72rem; font-weight:800; padding:4px 9px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
-                        ${item.pagado ? '✅ Pagado' : '⏳ Pendiente'}
-                    </span>
-                </div>
-            `;
+            const tios = datosRecepcion.tios
+                .map((t, i) => ({ item: t, idx: i }))
+                .filter(x =>
+                    x.item.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
+                    (!q || x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q))
+                );
 
             let html = `<h4 style="font-size:0.85rem; text-transform:uppercase; color:var(--green-matte); margin:8px 0;">👤 Participantes (${parts.length})</h4>`;
-            html += parts.length ? parts.map(p => renderItem(p, false)).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Sin participantes.</p>';
+            html += parts.length ? parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Sin participantes.</p>';
 
             html += `<h4 style="font-size:0.85rem; text-transform:uppercase; color:var(--green-matte); margin:14px 0 8px;">👥 Tíos (${tios.length})</h4>`;
-            html += tios.length ? tios.map(t => renderItem(t, true)).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin tíos asignados.</p>';
+            html += tios.length ? tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin tíos asignados.</p>';
 
             cont.innerHTML = html;
         }
+
+        function abrirFichaParticipante(tipoLista, idx) {
+            const lista = tipoLista === 'tios' ? datosRecepcion.tios : datosRecepcion.participantes;
+            const item = lista[idx];
+            if (!item) return;
+
+            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').toLowerCase());
+            const body = document.getElementById('recepcion-ficha-body');
+            const badgeColor = c ? `<span style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:800; background:${c.bgLight}; color:${c.textColor || c.hex}; border:1.5px solid ${c.borderColor};">Equipo ${c.name}</span>` : '';
+
+            const filaDato = (label, val) => `
+                <div style="padding:8px 0; border-bottom:1px solid #F1ECE1; display:flex; justify-content:space-between; gap:12px; font-size:0.84rem;">
+                    <span style="color:var(--text-muted); font-weight:600;">${label}</span>
+                    <span style="color:var(--green-dark); font-weight:700; text-align:right; word-break:break-word;">${val || '—'}</span>
+                </div>
+            `;
+
+            body.innerHTML = `
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+                    <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted);">${item.tipo || 'Participante'}</span>
+                    ${badgeColor}
+                </div>
+                <h3 style="margin:0 0 12px; font-size:1.25rem; color:var(--green-dark); font-weight:800;">${item.nombre || 'Sin nombre'}</h3>
+                <div style="margin-bottom:14px;">
+                    <span style="display:inline-block; font-size:0.78rem; font-weight:800; padding:5px 12px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
+                        ${item.pagado ? '✅ Pago Confirmado' : '⏳ Pago Pendiente'}
+                    </span>
+                </div>
+                <div>
+                    ${filaDato('Cédula', item.cedula)}
+                    ${filaDato('Teléfono / WhatsApp', item.telefono)}
+                    ${filaDato('Base', item.base)}
+                    ${filaDato('Talle de Remera', item.talle)}
+                    ${filaDato('Contacto de Emergencia', item.contactoEmergencia)}
+                    ${filaDato('Enfermedades / Medicación', item.enfermedades)}
+                    ${filaDato('Limitación Física', item.limitacionesFisicas)}
+                    ${filaDato('Restricciones Alimentarias', item.alimentacion)}
+                    ${item.tipo === 'Tíos' ? filaDato('Vehículo', item.llevaVehiculo) : ''}
+                    ${filaDato('Seña', item.sena)}
+                    ${filaDato('Total', item.total)}
+                </div>
+            `;
+
+            document.getElementById('recepcion-ficha-modal').style.display = 'flex';
+        }
+
+        function cerrarFichaParticipante() {
+            document.getElementById('recepcion-ficha-modal').style.display = 'none';
+        }
     </script>
+
+    <!-- MODAL FICHA COMPLETA DEL PARTICIPANTE -->
+    <div id="recepcion-ficha-modal" style="display:none; position:fixed; inset:0; background:rgba(15,27,21,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarFichaParticipante()">
+        <div style="background:#FFFFFF; border-radius:20px; padding:22px; max-width:440px; width:100%; max-height:88vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.35); border-top:6px solid var(--green-matte); text-align:left;">
+            <div id="recepcion-ficha-body"></div>
+            <button type="button" onclick="cerrarFichaParticipante()" style="width:100%; margin-top:16px; padding:11px; border-radius:12px; border:none; background:var(--green-dark); color:#FFFFFF; font-weight:700; cursor:pointer;">Cerrar</button>
+        </div>
+    </div>
 
     <!-- MODAL DE ACCESO RECEPCIÓN -->
     <div id="recepcion-pin-modal" style="display:none; position:fixed; inset:0; background:rgba(15,27,21,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarAccesoRecepcion()">
