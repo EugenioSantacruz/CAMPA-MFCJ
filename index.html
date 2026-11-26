@@ -1780,19 +1780,41 @@
                 </div>
             </div>
 
-            <!-- VISTA 5: SISTEMA DE RECEPCIÓN (12 TARJETAS DE COLORES) -->
+            <!-- VISTA 5: SISTEMA DE RECEPCIÓN (CHECK-IN Y ENTREGA DE KITS) -->
             <div id="recepcion-view" class="closed-view" style="text-align:left;">
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
                     <div>
                         <h2 style="font-size:1.35rem; font-weight:800; color:var(--green-dark); margin:0;">🎫 Recepción · MFCJ CAMP 2026</h2>
-                        <p style="font-size:0.82rem; color:var(--text-muted); margin:2px 0 0;">Seleccioná un equipo para ver sus participantes y tíos</p>
+                        <p style="font-size:0.82rem; color:var(--text-muted); margin:2px 0 0;">Control de check-in de llegada y entrega de kits oficiales</p>
                     </div>
                     <button type="button" onclick="cerrarRecepcion()" style="padding:7px 14px; border-radius:10px; border:1px solid var(--border-color); background:#FAF6EF; color:var(--green-dark); font-size:0.8rem; font-weight:700; cursor:pointer;">← Salir</button>
                 </div>
 
+                <!-- Métricas generales de recepción -->
+                <div id="recepcion-metricas-globales" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+                    <div style="background:#FFFFFF; border:1.5px solid #86EFAC; border-radius:14px; padding:10px 14px; box-shadow:0 2px 8px rgba(34,197,94,0.08);">
+                        <div style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:#15803D; display:flex; align-items:center; gap:5px;">
+                            <span>🟢</span><span>Presentes en Campa</span>
+                        </div>
+                        <div style="display:flex; align-items:baseline; gap:6px; margin-top:2px;">
+                            <span id="metric-presencia-total" style="font-size:1.35rem; font-weight:900; color:#15803D;">0</span>
+                            <span id="metric-presencia-sub" style="font-size:0.75rem; color:#475569; font-weight:700;">/ 0 (0%)</span>
+                        </div>
+                    </div>
+                    <div style="background:#FFFFFF; border:1.5px solid #93C5FD; border-radius:14px; padding:10px 14px; box-shadow:0 2px 8px rgba(37,99,235,0.08);">
+                        <div style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:#1D4ED8; display:flex; align-items:center; gap:5px;">
+                            <span>🎒</span><span>Kits Entregados</span>
+                        </div>
+                        <div style="display:flex; align-items:baseline; gap:6px; margin-top:2px;">
+                            <span id="metric-kit-total" style="font-size:1.35rem; font-weight:900; color:#1D4ED8;">0</span>
+                            <span id="metric-kit-sub" style="font-size:0.75rem; color:#475569; font-weight:700;">/ 0 (0%)</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Buscador global por nombre o cédula -->
                 <div id="recepcion-global-search-wrap" style="margin-bottom:14px;">
-                    <input type="text" id="recepcion-global-search" placeholder="🔍 Buscar participante por nombre o cédula..." oninput="buscarGlobalRecepcion()"
+                    <input type="text" id="recepcion-global-search" placeholder="🔍 Buscar participante o tío por nombre o cédula..." oninput="buscarGlobalRecepcion()"
                         style="width:100%; padding:11px 14px; border-radius:12px; border:1.5px solid var(--border-color); font-size:0.9rem; outline:none; background:#FAF6EF;">
                 </div>
 
@@ -1804,13 +1826,25 @@
 
                 <!-- Detalle de un color seleccionado -->
                 <div id="recepcion-detalle" style="display:none;">
-                    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
                         <button type="button" onclick="volverAGrillaRecepcion()" style="padding:8px 14px; border-radius:10px; border:1px solid var(--border-color); background:#FAF6EF; color:var(--green-dark); font-size:0.82rem; font-weight:700; cursor:pointer;">← Todos los colores</button>
                         <div id="recepcion-color-badge" style="padding:6px 14px; border-radius:999px; font-weight:800; font-size:0.85rem;"></div>
                     </div>
 
-                    <input type="text" id="recepcion-search" placeholder="Buscar por nombre o cédula..." oninput="filtrarListaRecepcion()"
-                        style="width:100%; padding:10px 14px; border-radius:12px; border:1.5px solid var(--border-color); margin-bottom:14px; font-size:0.9rem; outline:none;">
+                    <!-- Resumen del color -->
+                    <div id="recepcion-color-stats" style="background:#FAF6EF; border:1px solid var(--border-color); border-radius:12px; padding:10px 14px; margin-bottom:12px; font-size:0.8rem; font-weight:700; color:var(--green-dark); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                    </div>
+
+                    <!-- Pestañas de filtro rápido -->
+                    <div id="recepcion-filtros-estado" style="display:flex; gap:6px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px;">
+                        <button type="button" class="recepcion-filtro-btn active" onclick="setFiltroRecepcion('todos', this)" style="padding:6px 12px; border-radius:999px; border:1.5px solid var(--green-dark); background:var(--green-dark); color:#FFFFFF; font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">Todos</button>
+                        <button type="button" class="recepcion-filtro-btn" onclick="setFiltroRecepcion('sin_llegar', this)" style="padding:6px 12px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--text-main); font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">⚪ Sin Llegar</button>
+                        <button type="button" class="recepcion-filtro-btn" onclick="setFiltroRecepcion('sin_kit', this)" style="padding:6px 12px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--text-main); font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">📦 Falta Kit</button>
+                        <button type="button" class="recepcion-filtro-btn" onclick="setFiltroRecepcion('listos', this)" style="padding:6px 12px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--text-main); font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">✅ Listos</button>
+                    </div>
+
+                    <input type="text" id="recepcion-search" placeholder="Filtrar por nombre o cédula..." oninput="filtrarListaRecepcion()"
+                        style="width:100%; padding:10px 14px; border-radius:12px; border:1.5px solid var(--border-color); margin-bottom:12px; font-size:0.9rem; outline:none; background:#FAF6EF;">
 
                     <div id="recepcion-lista-contenido"></div>
                 </div>
@@ -3185,10 +3219,11 @@
         }
 
         // ==========================================
-        // SISTEMA DE RECEPCIÓN (PIN: 121997)
+        // SISTEMA DE RECEPCIÓN (CHECK-IN Y KITS)
         // ==========================================
         let datosRecepcion = { participantes: [], tios: [] };
         let colorSeleccionadoRecepcion = null;
+        let filtroEstadoRecepcion = 'todos';
 
         function abrirAccesoRecepcion() {
             const modal = document.getElementById('recepcion-pin-modal');
@@ -3231,6 +3266,35 @@
                         participantes: res.participantes || [],
                         tios: res.tios || []
                     };
+
+                    // Integrar posibles cambios guardados en localStorage
+                    try {
+                        const localSaved = localStorage.getItem('mfcj_recepcion_local');
+                        if (localSaved) {
+                            const parsed = JSON.parse(localSaved);
+                            if (parsed && parsed.participantes) {
+                                parsed.participantes.forEach(lp => {
+                                    const p = datosRecepcion.participantes.find(x => x.cedula === lp.cedula);
+                                    if (p) {
+                                        if (lp.presencia !== undefined) p.presencia = lp.presencia;
+                                        if (lp.entregaKit !== undefined) p.entregaKit = lp.entregaKit;
+                                    }
+                                });
+                            }
+                            if (parsed && parsed.tios) {
+                                parsed.tios.forEach(lt => {
+                                    const t = datosRecepcion.tios.find(x => x.cedula === lt.cedula);
+                                    if (t) {
+                                        if (lt.presencia !== undefined) t.presencia = lt.presencia;
+                                        if (lt.entregaKit !== undefined) t.entregaKit = lt.entregaKit;
+                                    }
+                                });
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Error leyendo localStorage:', e);
+                    }
+
                     cerrarAccesoRecepcion();
                     mostrarVistaRecepcion();
                 } else {
@@ -3245,7 +3309,7 @@
                             location.protocol === 'file:';
 
             function consultarRemoto() {
-                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNE0TMFfkOvHIiktqorDQYdIz8lOeQJXT_gGt2_T0WA9LN4ulV6ivbeGe2qy-1DENV/exec";
+                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSEPfNFDDqpfHYQilIE3VtLyAx4XSB0hsB36SXhw3yrl0NCvc-PiD0WP3xHWd1wlKU/exec";
                 fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -3289,7 +3353,6 @@
                     })
                     .obtenerDatosRecepcion(pin);
             } else if (esLocal) {
-                // En local: carga instantánea de la base de datos oficial de Sheets (120 participantes y 75 parejas de tíos)
                 cargarDatosLocalesOFallback();
             } else {
                 consultarRemoto();
@@ -3317,13 +3380,15 @@
                     base: bases[i % bases.length],
                     talle: talles[i % talles.length],
                     contactoEmergencia: '0971' + String(200000 + i * 2345).slice(-6),
-                    enfermedades: i % 3 === 0 ? 'Alergia al polvo' : 'Ninguna',
-                    limitacionesFisicas: i % 4 === 0 ? 'Lesión leve de tobillo' : 'Ninguna',
-                    alimentacion: i % 2 === 0 ? 'Intolerancia a la lactosa' : 'Ninguna',
+                    enfermedades: i % 3 === 0 ? 'Alergia al polvo' : '',
+                    limitacionesFisicas: i % 4 === 0 ? 'Lesión leve de tobillo' : '',
+                    alimentacion: i % 2 === 0 ? 'Intolerancia a la lactosa' : '',
                     color: color,
-                    sena: i % 5 === 0 ? '' : '50.000',
-                    total: i % 3 === 0 ? '' : 'PAGADO',
-                    pagado: i % 5 !== 0 || i % 3 !== 0
+                    sena: '',
+                    total: 'PAGADO',
+                    pagado: true,
+                    presencia: i % 2 === 0,
+                    entregaKit: i % 3 === 0
                 });
             });
 
@@ -3343,24 +3408,9 @@
                     color: 'Rojo',
                     sena: '',
                     total: 'PAGADO',
-                    pagado: true
-                },
-                {
-                    tipo: 'Tíos',
-                    nombre: 'Sergio Diaz y Mariela Fretes',
-                    cedula: '3222617 / 3198754',
-                    telefono: '0975616210',
-                    base: 'Virgen de Fátima',
-                    talle: 'XXXG / XG',
-                    contactoEmergencia: '0973334936',
-                    llevaVehiculo: 'SÍ',
-                    enfermedades: 'Ninguna',
-                    limitacionesFisicas: 'Tío lesión de rodilla',
-                    alimentacion: 'Ninguna',
-                    color: 'Lila',
-                    sena: '',
-                    total: 'PAGADO',
-                    pagado: true
+                    pagado: true,
+                    presencia: true,
+                    entregaKit: true
                 }
             ];
 
@@ -3373,6 +3423,7 @@
             document.getElementById('consulta-view').style.display = 'none';
             document.getElementById('recepcion-view').style.display = 'block';
             document.title = 'Recepción · MFCJ CAMP 2026';
+            actualizarMetricasGlobales();
             volverAGrillaRecepcion();
             renderizarTarjetasRecepcion();
         }
@@ -3383,24 +3434,64 @@
             document.title = 'MFCJ CAMP 2026 · Inicio';
         }
 
+        function actualizarMetricasGlobales() {
+            const parts = datosRecepcion.participantes || [];
+            const presTotal = parts.filter(p => p.presencia).length;
+            const kitTotal = parts.filter(p => p.entregaKit).length;
+            const total = parts.length || 1;
+
+            const pctPres = Math.round((presTotal / total) * 100);
+            const pctKit = Math.round((kitTotal / total) * 100);
+
+            const elPres = document.getElementById('metric-presencia-total');
+            const elPresSub = document.getElementById('metric-presencia-sub');
+            const elKit = document.getElementById('metric-kit-total');
+            const elKitSub = document.getElementById('metric-kit-sub');
+
+            if (elPres) elPres.textContent = presTotal;
+            if (elPresSub) elPresSub.textContent = `/ ${total} (${pctPres}%)`;
+            if (elKit) elKit.textContent = kitTotal;
+            if (elKitSub) elKitSub.textContent = `/ ${total} (${pctKit}%)`;
+        }
+
         function renderizarTarjetasRecepcion() {
             const grid = document.getElementById('recepcion-grid');
             if (!grid) return;
 
             grid.innerHTML = COLORS_CONFIG.map(c => {
-                const cantPart = datosRecepcion.participantes.filter(p => p.color.toLowerCase() === c.name.toLowerCase()).length;
+                const partsColor = datosRecepcion.participantes.filter(p => p.color.toLowerCase() === c.name.toLowerCase());
+                const cantPart = partsColor.length;
+                const cantPres = partsColor.filter(p => p.presencia).length;
+                const cantKits = partsColor.filter(p => p.entregaKit).length;
                 const cantTios = datosRecepcion.tios.filter(t => t.color.toLowerCase() === c.name.toLowerCase()).length;
                 const dotColor = c.name === 'Blanco' ? '#CBD5E1' : c.hex;
+                const pct = cantPart > 0 ? Math.round((cantPres / cantPart) * 100) : 0;
+
                 return `
                     <button type="button" onclick="abrirColorRecepcion('${c.name}')"
-                        style="display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:10px; padding:16px; border-radius:16px; border:2px solid ${c.borderColor}; background:${c.bgLight}; cursor:pointer; text-align:left; transition:transform 0.15s ease; box-shadow:0 6px 16px rgba(0,0,0,0.06);">
-                        <div style="display:flex; align-items:center; gap:8px; width:100%;">
-                            <span style="width:16px; height:16px; border-radius:50%; background:${dotColor}; border:1px solid rgba(0,0,0,0.15); flex-shrink:0;"></span>
-                            <span style="font-size:1.05rem; font-weight:800; color:${c.textColor || c.hex};">${c.name}</span>
+                        style="display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:10px; padding:15px; border-radius:16px; border:2px solid ${c.borderColor}; background:${c.bgLight}; cursor:pointer; text-align:left; transition:all 0.15s ease; box-shadow:0 4px 14px rgba(0,0,0,0.05); position:relative; overflow:hidden;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="width:16px; height:16px; border-radius:50%; background:${dotColor}; border:1px solid rgba(0,0,0,0.15); flex-shrink:0;"></span>
+                                <span style="font-size:1.05rem; font-weight:800; color:${c.textColor || c.hex};">${c.name}</span>
+                            </div>
+                            <span style="font-size:0.75rem; font-weight:800; color:${c.textColor || c.hex};">${cantPres}/${cantPart}</span>
                         </div>
-                        <div style="font-size:0.78rem; color:#475569; font-weight:600; line-height:1.35;">
-                            <div>👤 ${cantPart} jóvenes</div>
-                            <div>👥 ${cantTios} parejas tíos</div>
+                        
+                        <div style="width:100%; height:5px; background:rgba(0,0,0,0.08); border-radius:999px; overflow:hidden;">
+                            <div style="height:100%; width:${pct}%; background:${c.hex}; border-radius:999px;"></div>
+                        </div>
+
+                        <div style="font-size:0.75rem; color:#475569; font-weight:700; line-height:1.4; width:100%;">
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>🟢 Presentes:</span>
+                                <span><strong>${cantPres}</strong>/${cantPart}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span>🎒 Kits:</span>
+                                <span><strong>${cantKits}</strong>/${cantPart}</span>
+                            </div>
+                            <div style="font-size:0.7rem; color:#64748B; margin-top:2px;">👥 ${cantTios} parejas tíos</div>
                         </div>
                     </button>
                 `;
@@ -3409,6 +3500,7 @@
 
         function abrirColorRecepcion(colorName) {
             colorSeleccionadoRecepcion = colorName;
+            filtroEstadoRecepcion = 'todos';
             document.getElementById('recepcion-global-search-wrap').style.display = 'none';
             document.getElementById('recepcion-global-results').style.display = 'none';
             document.getElementById('recepcion-grid').style.display = 'none';
@@ -3423,6 +3515,55 @@
                 badge.style.color = c.textColor || c.hex;
                 badge.style.border = '1.5px solid ' + c.borderColor;
             }
+
+            // Resetear botones de filtro
+            document.querySelectorAll('.recepcion-filtro-btn').forEach((b, i) => {
+                if (i === 0) {
+                    b.style.background = 'var(--green-dark)';
+                    b.style.color = '#FFFFFF';
+                    b.style.borderColor = 'var(--green-dark)';
+                } else {
+                    b.style.background = '#FFFFFF';
+                    b.style.color = 'var(--text-main)';
+                    b.style.borderColor = 'var(--border-color)';
+                }
+            });
+
+            actualizarStatsColorSeleccionado();
+            filtrarListaRecepcion();
+        }
+
+        function actualizarStatsColorSeleccionado() {
+            if (!colorSeleccionadoRecepcion) return;
+            const parts = datosRecepcion.participantes.filter(p => p.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase());
+            const cantPres = parts.filter(p => p.presencia).length;
+            const cantKits = parts.filter(p => p.entregaKit).length;
+            const cantTios = datosRecepcion.tios.filter(t => t.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase()).length;
+
+            const box = document.getElementById('recepcion-color-stats');
+            if (box) {
+                box.innerHTML = `
+                    <div>👤 <strong>${parts.length}</strong> jóvenes · 👥 <strong>${cantTios}</strong> tíos</div>
+                    <div style="display:flex; gap:12px;">
+                        <span>🟢 Presentes: <strong>${cantPres}/${parts.length}</strong></span>
+                        <span>🎒 Kits: <strong>${cantKits}/${parts.length}</strong></span>
+                    </div>
+                `;
+            }
+        }
+
+        function setFiltroRecepcion(filtro, btnEl) {
+            filtroEstadoRecepcion = filtro;
+            document.querySelectorAll('.recepcion-filtro-btn').forEach(b => {
+                b.style.background = '#FFFFFF';
+                b.style.color = 'var(--text-main)';
+                b.style.borderColor = 'var(--border-color)';
+            });
+            if (btnEl) {
+                btnEl.style.background = 'var(--green-dark)';
+                btnEl.style.color = '#FFFFFF';
+                btnEl.style.borderColor = 'var(--green-dark)';
+            }
             filtrarListaRecepcion();
         }
 
@@ -3433,28 +3574,181 @@
             document.getElementById('recepcion-global-search').value = '';
             document.getElementById('recepcion-global-results').style.display = 'none';
             document.getElementById('recepcion-grid').style.display = 'grid';
+            actualizarMetricasGlobales();
+            renderizarTarjetasRecepcion();
+        }
+
+        function guardarCambiosRecepcionLocal() {
+            try {
+                localStorage.setItem('mfcj_recepcion_local', JSON.stringify(datosRecepcion));
+            } catch (e) {
+                console.warn('Error guardando en localStorage:', e);
+            }
+        }
+
+        function sincronizarCambioRecepcionRemoto(tipo, cedula, campo, valor) {
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                google.script.run
+                    .withSuccessHandler(r => console.log('Sincronizado con Sheets:', r))
+                    .withFailureHandler(err => console.warn('Error sincronizando con Sheets:', err))
+                    .actualizarRecepcion(tipo, cedula, campo, valor);
+            } else {
+                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSEPfNFDDqpfHYQilIE3VtLyAx4XSB0hsB36SXhw3yrl0NCvc-PiD0WP3xHWd1wlKU/exec";
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'actualizarRecepcion', tipo, cedula, campo, valor }),
+                    redirect: 'follow'
+                })
+                .then(r => r.json())
+                .then(r => console.log('Remoto OK:', r))
+                .catch(err => console.warn('Aviso conexión remota (guardado en local):', err));
+            }
+        }
+
+        function mostrarToastRecepcion(texto) {
+            let toast = document.getElementById('recepcion-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'recepcion-toast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '24px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.background = '#193327';
+                toast.style.color = '#FFFFFF';
+                toast.style.padding = '10px 18px';
+                toast.style.borderRadius = '999px';
+                toast.style.fontWeight = '700';
+                toast.style.fontSize = '0.84rem';
+                toast.style.boxShadow = '0 10px 30px rgba(0,0,0,0.35)';
+                toast.style.zIndex = '100000';
+                toast.style.pointerEvents = 'none';
+                toast.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = texto;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(10px)';
+            }, 1800);
+        }
+
+        function alternarPresencia(tipoLista, idx) {
+            const lista = tipoLista === 'tios' ? datosRecepcion.tios : datosRecepcion.participantes;
+            const item = lista[idx];
+            if (!item) return;
+
+            item.presencia = !item.presencia;
+            guardarCambiosRecepcionLocal();
+            sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'presencia', item.presencia);
+
+            mostrarToastRecepcion(item.presencia ? `🟢 Presencia marcada: ${item.nombre}` : `⚪ Presencia desmarcada: ${item.nombre}`);
+            actualizarMetricasGlobales();
+            actualizarStatsColorSeleccionado();
+
+            // Refrescar vistas
+            if (colorSeleccionadoRecepcion) {
+                filtrarListaRecepcion();
+            } else {
+                buscarGlobalRecepcion();
+            }
+        }
+
+        function alternarKit(tipoLista, idx) {
+            const lista = tipoLista === 'tios' ? datosRecepcion.tios : datosRecepcion.participantes;
+            const item = lista[idx];
+            if (!item) return;
+
+            item.entregaKit = !item.entregaKit;
+            // Si le entrega el kit y no estaba marcado presente, se marca automáticamente presente también
+            if (item.entregaKit && !item.presencia) {
+                item.presencia = true;
+                sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'presencia', true);
+            }
+
+            guardarCambiosRecepcionLocal();
+            sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'entregaKit', item.entregaKit);
+
+            mostrarToastRecepcion(item.entregaKit ? `🎒 Kit entregado: ${item.nombre}` : `📦 Kit desmarcado: ${item.nombre}`);
+            actualizarMetricasGlobales();
+            actualizarStatsColorSeleccionado();
+
+            // Refrescar vistas
+            if (colorSeleccionadoRecepcion) {
+                filtrarListaRecepcion();
+            } else {
+                buscarGlobalRecepcion();
+            }
         }
 
         function renderItemRecepcion(item, idx, tipoLista) {
             const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').toLowerCase());
             const colorTag = c ? `<span style="font-size:0.7rem; font-weight:800; padding:2px 7px; border-radius:999px; background:${c.bgLight}; color:${c.textColor || c.hex}; border:1px solid ${c.borderColor};">${c.name}</span>` : '';
-            return `
-                <button type="button" onclick="abrirFichaParticipante('${tipoLista}', ${idx})"
-                    style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 13px; border-radius:12px; background:#FAF6EF; border:1px solid var(--border-color); margin-bottom:8px; cursor:pointer; text-align:left; transition:border-color 0.15s;">
-                    <div style="min-width:0; flex:1;">
-                        <div style="font-weight:700; font-size:0.9rem; color:var(--green-dark); display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                            <span>${item.nombre || 'Sin nombre'}</span>
-                            ${colorTag}
-                        </div>
-                        <div style="font-size:0.76rem; color:var(--text-muted); margin-top:2px;">CI: ${item.cedula || '-'} · ${item.base || '-'} · Talle: ${item.talle || '-'}</div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
-                        <span style="font-size:0.72rem; font-weight:800; padding:4px 9px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
-                            ${item.pagado ? '✅ Pagado' : '⏳ Pendiente'}
-                        </span>
-                        <span style="color:var(--text-muted); font-weight:800; font-size:1rem;">›</span>
-                    </div>
+            
+            // Botón de Presencia
+            const btnPresencia = item.presencia ? `
+                <button type="button" onclick="event.stopPropagation(); alternarPresencia('${tipoLista}', ${idx})"
+                    style="padding:8px 12px; border-radius:10px; border:1.5px solid #16A34A; background:#DCFCE7; color:#166534; font-size:0.76rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:transform 0.1s ease;">
+                    <span>🟢</span><span>Presente</span>
                 </button>
+            ` : `
+                <button type="button" onclick="event.stopPropagation(); alternarPresencia('${tipoLista}', ${idx})"
+                    style="padding:8px 12px; border-radius:10px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#64748B; font-size:0.76rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:transform 0.1s ease;">
+                    <span>⚪</span><span>Llegada</span>
+                </button>
+            `;
+
+            // Botón de Entrega de Kit
+            const btnKit = item.entregaKit ? `
+                <button type="button" onclick="event.stopPropagation(); alternarKit('${tipoLista}', ${idx})"
+                    style="padding:8px 12px; border-radius:10px; border:1.5px solid #2563EB; background:#DBEAFE; color:#1D4ED8; font-size:0.76rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:transform 0.1s ease;">
+                    <span>🎒</span><span>Kit Entregado</span>
+                </button>
+            ` : `
+                <button type="button" onclick="event.stopPropagation(); alternarKit('${tipoLista}', ${idx})"
+                    style="padding:8px 12px; border-radius:10px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#64748B; font-size:0.76rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:transform 0.1s ease;">
+                    <span>📦</span><span>Entregar Kit</span>
+                </button>
+            `;
+
+            return `
+                <div onclick="abrirFichaParticipante('${tipoLista}', ${idx})"
+                    style="width:100%; display:flex; flex-direction:column; gap:10px; padding:12px 14px; border-radius:14px; background:#FFFFFF; border:1.5px solid ${item.presencia ? '#86EFAC' : 'var(--border-color)'}; margin-bottom:10px; cursor:pointer; text-align:left; transition:all 0.15s ease; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+                    
+                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                        <div style="min-width:0; flex:1;">
+                            <div style="font-weight:800; font-size:0.95rem; color:var(--green-dark); display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                <span>${item.nombre || 'Sin nombre'}</span>
+                                ${colorTag}
+                            </div>
+                            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:3px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                <span>CI: ${item.cedula || '-'}</span>
+                                <span>·</span>
+                                <span>${item.base || '-'}</span>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0;">
+                            <span style="font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px; background:#F1F5F9; color:#334155; border:1px solid #E2D9CA;">
+                                👕 ${item.talle || 'Sin talle'}
+                            </span>
+                            <span style="font-size:0.7rem; font-weight:800; padding:2px 7px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
+                                ${item.pagado ? '✅ Pago' : '⏳ Pendiente'}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción Rápida -->
+                    <div style="display:flex; gap:8px; align-items:center; justify-content:flex-end; border-top:1px dashed #F1ECE1; padding-top:8px;">
+                        ${btnPresencia}
+                        ${btnKit}
+                        <span style="color:var(--text-muted); font-size:0.9rem; margin-left:2px;">›</span>
+                    </div>
+                </div>
             `;
         }
 
@@ -3494,25 +3788,37 @@
             const q = (document.getElementById('recepcion-search').value || '').trim().toLowerCase();
             const cont = document.getElementById('recepcion-lista-contenido');
 
-            const parts = datosRecepcion.participantes
+            let parts = datosRecepcion.participantes
                 .map((p, i) => ({ item: p, idx: i }))
                 .filter(x =>
                     x.item.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
                     (!q || x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q))
                 );
 
-            const tios = datosRecepcion.tios
+            let tios = datosRecepcion.tios
                 .map((t, i) => ({ item: t, idx: i }))
                 .filter(x =>
                     x.item.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
                     (!q || x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q))
                 );
 
-            let html = `<h4 style="font-size:0.85rem; text-transform:uppercase; color:var(--green-matte); margin:8px 0;">👤 Participantes (${parts.length})</h4>`;
-            html += parts.length ? parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Sin participantes.</p>';
+            // Aplicar filtro de estado
+            if (filtroEstadoRecepcion === 'sin_llegar') {
+                parts = parts.filter(x => !x.item.presencia);
+                tios = tios.filter(x => !x.item.presencia);
+            } else if (filtroEstadoRecepcion === 'sin_kit') {
+                parts = parts.filter(x => x.item.presencia && !x.item.entregaKit);
+                tios = tios.filter(x => x.item.presencia && !x.item.entregaKit);
+            } else if (filtroEstadoRecepcion === 'listos') {
+                parts = parts.filter(x => x.item.presencia && x.item.entregaKit);
+                tios = tios.filter(x => x.item.presencia && x.item.entregaKit);
+            }
 
-            html += `<h4 style="font-size:0.85rem; text-transform:uppercase; color:var(--green-matte); margin:14px 0 8px;">👥 Tíos (${tios.length})</h4>`;
-            html += tios.length ? tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin tíos asignados.</p>';
+            let html = `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:8px 0;">👤 Jóvenes (${parts.length})</h4>`;
+            html += parts.length ? parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Sin participantes en esta categoría.</p>';
+
+            html += `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:14px 0 8px;">👥 Parejas de Tíos (${tios.length})</h4>`;
+            html += tios.length ? tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin tíos en esta categoría.</p>';
 
             cont.innerHTML = html;
         }
@@ -3526,6 +3832,10 @@
             const body = document.getElementById('recepcion-ficha-body');
             const badgeColor = c ? `<span style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:800; background:${c.bgLight}; color:${c.textColor || c.hex}; border:1.5px solid ${c.borderColor};">Equipo ${c.name}</span>` : '';
 
+            const tieneSalud = (item.enfermedades && item.enfermedades !== 'Ninguna' && item.enfermedades !== 'No') ||
+                               (item.limitacionesFisicas && item.limitacionesFisicas !== 'Ninguna' && item.limitacionesFisicas !== 'No') ||
+                               (item.alimentacion && item.alimentacion !== 'Ninguna' && item.alimentacion !== 'No');
+
             const filaDato = (label, val) => `
                 <div style="padding:8px 0; border-bottom:1px solid #F1ECE1; display:flex; justify-content:space-between; gap:12px; font-size:0.84rem;">
                     <span style="color:var(--text-muted); font-weight:600;">${label}</span>
@@ -3533,22 +3843,72 @@
                 </div>
             `;
 
+            // Botones de acción modal
+            const btnPresModal = item.presencia ? `
+                <button type="button" onclick="alternarPresencia('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})"
+                    style="flex:1; padding:11px; border-radius:12px; border:1.5px solid #16A34A; background:#DCFCE7; color:#166534; font-size:0.82rem; font-weight:800; cursor:pointer;">
+                    🟢 Presente (Quitar)
+                </button>
+            ` : `
+                <button type="button" onclick="alternarPresencia('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})"
+                    style="flex:1; padding:11px; border-radius:12px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#334155; font-size:0.82rem; font-weight:700; cursor:pointer;">
+                    ⚪ Marcar Presente
+                </button>
+            `;
+
+            const btnKitModal = item.entregaKit ? `
+                <button type="button" onclick="alternarKit('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})"
+                    style="flex:1; padding:11px; border-radius:12px; border:1.5px solid #2563EB; background:#DBEAFE; color:#1D4ED8; font-size:0.82rem; font-weight:800; cursor:pointer;">
+                    🎒 Kit Entregado (Quitar)
+                </button>
+            ` : `
+                <button type="button" onclick="alternarKit('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})"
+                    style="flex:1; padding:11px; border-radius:12px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#334155; font-size:0.82rem; font-weight:700; cursor:pointer;">
+                    📦 Entregar Kit
+                </button>
+            `;
+
+            const boxAlertaSalud = tieneSalud ? `
+                <div style="background:#FEF2F2; border:1.5px solid #F87171; border-radius:12px; padding:10px 12px; margin-bottom:12px;">
+                    <div style="font-size:0.75rem; font-weight:800; color:#B91C1C; text-transform:uppercase; margin-bottom:4px;">⚠️ Atención Médica / Especial:</div>
+                    <div style="font-size:0.82rem; color:#7F1D1D; line-height:1.4;">
+                        ${item.enfermedades ? `<div><strong>Medicación/Enfermedad:</strong> ${item.enfermedades}</div>` : ''}
+                        ${item.limitacionesFisicas ? `<div><strong>Físico:</strong> ${item.limitacionesFisicas}</div>` : ''}
+                        ${item.alimentacion ? `<div><strong>Comida:</strong> ${item.alimentacion}</div>` : ''}
+                    </div>
+                </div>
+            ` : '';
+
             body.innerHTML = `
                 <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
                     <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted);">${item.tipo || 'Participante'}</span>
                     ${badgeColor}
                 </div>
-                <h3 style="margin:0 0 12px; font-size:1.25rem; color:var(--green-dark); font-weight:800;">${item.nombre || 'Sin nombre'}</h3>
-                <div style="margin-bottom:14px;">
-                    <span style="display:inline-block; font-size:0.78rem; font-weight:800; padding:5px 12px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
+                
+                <h3 style="margin:0 0 10px; font-size:1.25rem; color:var(--green-dark); font-weight:800;">${item.nombre || 'Sin nombre'}</h3>
+
+                <!-- Acciones directas de Recepción -->
+                <div style="display:flex; gap:8px; margin-bottom:12px;">
+                    ${btnPresModal}
+                    ${btnKitModal}
+                </div>
+
+                <!-- Talle y Pago -->
+                <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
+                    <span style="font-size:0.82rem; font-weight:800; padding:5px 12px; border-radius:8px; background:#F1F5F9; color:#1E293B; border:1px solid #CBD5E1;">
+                        👕 Talle de Remera: <strong>${item.talle || 'Sin talle'}</strong>
+                    </span>
+                    <span style="font-size:0.82rem; font-weight:800; padding:5px 12px; border-radius:8px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
                         ${item.pagado ? '✅ Pago Confirmado' : '⏳ Pago Pendiente'}
                     </span>
                 </div>
+
+                ${boxAlertaSalud}
+
                 <div>
                     ${filaDato('Cédula', item.cedula)}
                     ${filaDato('Teléfono / WhatsApp', item.telefono)}
                     ${filaDato('Base', item.base)}
-                    ${filaDato('Talle de Remera', item.talle)}
                     ${filaDato('Contacto de Emergencia', item.contactoEmergencia)}
                     ${filaDato('Enfermedades / Medicación', item.enfermedades)}
                     ${filaDato('Limitación Física', item.limitacionesFisicas)}
@@ -3560,6 +3920,10 @@
             `;
 
             document.getElementById('recepcion-ficha-modal').style.display = 'flex';
+        }
+
+        function cerrarFichaParticipante() {
+            document.getElementById('recepcion-ficha-modal').style.display = 'none';
         }
 
         function cerrarFichaParticipante() {

@@ -247,6 +247,9 @@ function doPost(e) {
   if (payload && payload.action === 'recepcion') {
     return createJsonResponse(obtenerDatosRecepcion(payload.pin));
   }
+  if (payload && payload.action === 'actualizarRecepcion') {
+    return createJsonResponse(actualizarRecepcion(payload.tipo, payload.cedula, payload.campo, payload.valor));
+  }
 
   const esParejaTios = payload && (payload.tipo === 'tios' || payload.nombreTio || payload.cedulaTio);
   const result = esParejaTios
@@ -584,6 +587,13 @@ function senaPagada(valor) {
   return tienePagoValido(valor);
 }
 
+function esVerdadero(val) {
+  if (val === true || val === 1) return true;
+  if (!val) return false;
+  const v = String(val).toLowerCase().trim();
+  return v === 'sí' || v === 'si' || v === 'yes' || v === 'presente' || v === 'entregado' || v === 'true' || v === '1' || v === 'ok';
+}
+
 /**
  * Pesos dinámicos para el sorteo balanceado (misma regla que jóvenes)
  */
@@ -611,6 +621,8 @@ function calcularPesos(totalCounts, baseCounts) {
 function getTiosColumnIndexes(sheet) {
   const targetSheet = sheet || getTiosSheet();
   let indexes = Object.assign({}, TIOS_COL);
+  indexes.presencia = 18;
+  indexes.entregaKit = 19;
   if (!targetSheet) return indexes;
   const lastCol = targetSheet.getLastColumn();
   if (lastCol <= 0) return indexes;
@@ -627,6 +639,8 @@ function getTiosColumnIndexes(sheet) {
     else if (s.indexOf('seña') !== -1 || s.indexOf('sena') !== -1) indexes.sena = idx;
     else if (s.indexOf('total') !== -1) indexes.total = idx;
     else if (s.indexOf('vehículo') !== -1 || s.indexOf('vehiculo') !== -1) indexes.vehiculo = idx;
+    else if (s.indexOf('presencia') !== -1 || s.indexOf('presente') !== -1) indexes.presencia = idx;
+    else if (s.indexOf('kit') !== -1) indexes.entregaKit = idx;
   });
   return indexes;
 }
@@ -705,7 +719,9 @@ function getColumnIndexes() {
       alimentacion: 10,
       sena: 11,
       total: 12,
-      timestamp: 13
+      timestamp: 13,
+      presencia: 14,
+      entregaKit: 15
     };
   }
 
@@ -742,6 +758,10 @@ function getColumnIndexes() {
       indexes.color = idx;
     } else if (headerStr.indexOf('time') !== -1 || headerStr.indexOf('marca') !== -1 || headerStr.indexOf('fecha') !== -1) {
       indexes.timestamp = idx;
+    } else if (headerStr.indexOf('presencia') !== -1 || headerStr.indexOf('presente') !== -1) {
+      indexes.presencia = idx;
+    } else if (headerStr.indexOf('kit') !== -1) {
+      indexes.entregaKit = idx;
     }
   });
 
@@ -884,7 +904,9 @@ function obtenerDatosRecepcion(pin) {
         color: String(row[colIdx.color] || '').trim(),
         sena: String(senaVal || '').trim(),
         total: String(totalVal || '').trim(),
-        pagado: estaPagado(senaVal, totalVal)
+        pagado: estaPagado(senaVal, totalVal),
+        presencia: esVerdadero(colIdx.presencia !== undefined ? row[colIdx.presencia] : false),
+        entregaKit: esVerdadero(colIdx.entregaKit !== undefined ? row[colIdx.entregaKit] : false)
       };
     });
 
@@ -919,7 +941,9 @@ function obtenerDatosRecepcion(pin) {
           color: String(r[tiosCols.color] || '').trim(),
           sena: String(senaTios || '').trim(),
           total: String(totalTios || '').trim(),
-          pagado: estaPagado(senaTios, totalTios)
+          pagado: estaPagado(senaTios, totalTios),
+          presencia: esVerdadero(r[tiosCols.presencia !== undefined ? tiosCols.presencia : 18]),
+          entregaKit: esVerdadero(r[tiosCols.entregaKit !== undefined ? tiosCols.entregaKit : 19])
         });
       }
     }
@@ -934,5 +958,74 @@ function obtenerDatosRecepcion(pin) {
       success: false,
       message: "Error al cargar datos de recepción: " + error.toString()
     };
+  }
+}
+
+/**
+ * [FUNCIÓN 12] actualizarRecepcion
+ * Marca o desmarca presencia o entrega de kit en la hoja oficial correspondiente.
+ */
+function actualizarRecepcion(tipo, cedula, campo, valor) {
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+    const esTios = tipo === 'tios' || tipo === 'Tíos';
+    const sheet = esTios ? getTiosSheet() : getInscripcionesSheet();
+    if (!sheet || sheet.getLastRow() <= 1) {
+      return { success: false, message: "No se encontró la hoja correspondiente." };
+    }
+
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    const data = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
+
+    const targetCedula = String(cedula || '').replace(/\D/g, '');
+    let rowIndex = -1;
+    let targetCol = -1;
+
+    if (esTios) {
+      const tiosCols = getTiosColumnIndexes(sheet);
+      targetCol = campo === 'entregaKit' ? (tiosCols.entregaKit !== undefined ? tiosCols.entregaKit : 19)
+                                         : (tiosCols.presencia !== undefined ? tiosCols.presencia : 18);
+      for (let i = 0; i < data.length; i++) {
+        const c1 = String(data[i][tiosCols.cedulaTio] || '').replace(/\D/g, '');
+        const c2 = String(data[i][tiosCols.cedulaTia] || '').replace(/\D/g, '');
+        if ((c1 && c1 === targetCedula) || (c2 && c2 === targetCedula) || (targetCedula && (c1.indexOf(targetCedula) !== -1 || c2.indexOf(targetCedula) !== -1))) {
+          rowIndex = i + 2;
+          break;
+        }
+      }
+    } else {
+      const colIdx = getColumnIndexes();
+      targetCol = campo === 'entregaKit' ? (colIdx.entregaKit !== undefined ? colIdx.entregaKit : 15)
+                                         : (colIdx.presencia !== undefined ? colIdx.presencia : 14);
+      for (let i = 0; i < data.length; i++) {
+        const c = String(data[i][colIdx.cedula] || '').replace(/\D/g, '');
+        if (c && c === targetCedula) {
+          rowIndex = i + 2;
+          break;
+        }
+      }
+    }
+
+    if (rowIndex === -1) {
+      return { success: false, message: "No se encontró la persona con cédula " + cedula };
+    }
+
+    const textoGuardar = valor ? (campo === 'entregaKit' ? 'ENTREGADO' : 'PRESENTE') : '';
+    sheet.getRange(rowIndex, targetCol + 1).setValue(textoGuardar);
+
+    return {
+      success: true,
+      tipo: tipo,
+      cedula: cedula,
+      campo: campo,
+      valor: !!valor,
+      texto: textoGuardar
+    };
+  } catch (err) {
+    return { success: false, message: "Error al actualizar recepción: " + err.toString() };
+  } finally {
+    try { lock.releaseLock(); } catch (e) {}
   }
 }

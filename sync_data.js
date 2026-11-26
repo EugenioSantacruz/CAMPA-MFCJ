@@ -2,10 +2,10 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 
 console.log('Obteniendo datos de PARTICIPANTES OFICIAL...');
-const partRaw = execSync('gsheets readonly read 1XKyHmXWIzGtP9jcw_VZgj94eMjo9GjC0LwTJwjVvIIU "\'PARTICIPANTES OFICIAL\'!A1:N"', { encoding: 'utf8' });
+const partRaw = execSync('gsheets readonly read 1XKyHmXWIzGtP9jcw_VZgj94eMjo9GjC0LwTJwjVvIIU "\'PARTICIPANTES OFICIAL\'!A1:P"', { encoding: 'utf8' });
 
 console.log('Obteniendo datos de Tíos...');
-const tiosRaw = execSync('gsheets readonly read 1XKyHmXWIzGtP9jcw_VZgj94eMjo9GjC0LwTJwjVvIIU "\'Tíos\'!A1:R"', { encoding: 'utf8' });
+const tiosRaw = execSync('gsheets readonly read 1XKyHmXWIzGtP9jcw_VZgj94eMjo9GjC0LwTJwjVvIIU "\'Tíos\'!A1:T"', { encoding: 'utf8' });
 
 function estaPagado(sena, total) {
   const s = String(sena || '').toLowerCase().trim();
@@ -14,7 +14,12 @@ function estaPagado(sena, total) {
          (t !== '' && t !== '0' && t !== 'no' && t !== 'pendiente');
 }
 
-// Participantes: orden real de columnas en la hoja PARTICIPANTES OFICIAL
+function esVerdadero(val) {
+  const v = String(val || '').toLowerCase().trim();
+  return v === 'sí' || v === 'si' || v === 'yes' || v === 'presente' || v === 'entregado' || v === 'true' || v === '1' || v === 'ok';
+}
+
+// Participantes: orden oficial de columnas en PARTICIPANTES OFICIAL
 // Col 0 (A): Tipo ("Participante")
 // Col 1 (B): Nombre Completo
 // Col 2 (C): Cédula
@@ -29,13 +34,15 @@ function estaPagado(sena, total) {
 // Col 11 (L): Seña
 // Col 12 (M): Total
 // Col 13 (N): Marca Temporal
+// Col 14 (O): Presencia
+// Col 15 (P): Entrega de Kit
 
 const partLines = partRaw.trim().split('\n');
 const participantes = [];
 
 for (let i = 1; i < partLines.length; i++) {
   const cols = partLines[i].split('\t').map(c => (c || '').trim());
-  if (!cols[1] && !cols[2]) continue; // Fila vacía
+  if (!cols[1] && !cols[2]) continue;
 
   participantes.push({
     tipo: 'Participante',
@@ -51,11 +58,13 @@ for (let i = 1; i < partLines.length; i++) {
     alimentacion: cols[10] || '',
     sena: cols[11] || '',
     total: cols[12] || '',
-    pagado: estaPagado(cols[11], cols[12])
+    pagado: estaPagado(cols[11], cols[12]),
+    presencia: esVerdadero(cols[14]),
+    entregaKit: esVerdadero(cols[15])
   });
 }
 
-// Tíos: mapeo por encabezados de la hoja Tíos
+// Tíos: mapeo por encabezados
 function parseTiosTSV(tsv) {
   const lines = tsv.trim().split('\n');
   if (lines.length < 2) return [];
@@ -88,7 +97,9 @@ const tios = tiosRows.map(r => ({
   color: r['Color Asignado'] || '',
   sena: r['Seña'] || '',
   total: r['Total'] || '',
-  pagado: estaPagado(r['Seña'], r['Total'])
+  pagado: estaPagado(r['Seña'], r['Total']),
+  presencia: esVerdadero(r['Presencia']),
+  entregaKit: esVerdadero(r['Entrega de Kit'])
 }));
 
 const data = {
