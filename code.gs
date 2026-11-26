@@ -248,7 +248,7 @@ function doPost(e) {
     return createJsonResponse(obtenerDatosRecepcion(payload.pin));
   }
   if (payload && payload.action === 'actualizarRecepcion') {
-    return createJsonResponse(actualizarRecepcion(payload.tipo, payload.cedula, payload.campo, payload.valor));
+    return createJsonResponse(actualizarRecepcion(payload.tipo, payload.cedula, payload.campo, payload.valor, payload.rowNumber, payload.nombre));
   }
 
   const esParejaTios = payload && (payload.tipo === 'tios' || payload.nombreTio || payload.cedulaTio);
@@ -516,36 +516,20 @@ function consultarColor(cedula) {
         message: "La próxima etapa de MFCJ CAMP 2026 se habilitará este viernes 20 de noviembre a las 19:00 hs. ¡Falta muy poco!" 
       };
     }
-    const target = String(cedula || '').trim();
-    if (!target) return { status: "error", message: "Ingresá tu número de cédula" };
+    const targetDigits = String(cedula || '').replace(/\D/g, '');
+    if (!targetDigits) return { status: "error", message: "Ingresá tu número de cédula" };
 
-    // Jóvenes
+    // Búsqueda exclusiva en PARTICIPANTES OFICIAL (soporta cédula simple y cédula doble "c1 / c2" de Tíos)
     const records = getAllRecords();
     const colIdx = getColumnIndexes();
     for (let i = 0; i < records.length; i++) {
-      if (String(records[i][colIdx.cedula] || '').trim() === target) {
-        const senaVal = records[i][colIdx.sena];
-        const totalVal = colIdx.total !== undefined ? records[i][colIdx.total] : null;
-        return armarRespuestaConsulta(records[i][colIdx.nombre], records[i][colIdx.color], senaVal, totalVal);
-      }
-    }
-
-    // Tíos (una fila por pareja, seña o total)
-    const sheetTios = getTiosSheet();
-    if (sheetTios && sheetTios.getLastRow() > 1) {
-      const tiosCols = getTiosColumnIndexes(sheetTios);
-      const rows = sheetTios.getRange(2, 1, sheetTios.getLastRow() - 1, sheetTios.getLastColumn()).getValues();
-      for (let j = 0; j < rows.length; j++) {
-        const r = rows[j];
-        const cTio = String(r[tiosCols.cedulaTio] || '').trim();
-        const cTia = String(r[tiosCols.cedulaTia] || '').trim();
-        if (cTio === target || cTia === target) {
-          const senaTios = r[tiosCols.sena];
-          const totalTios = r[tiosCols.total];
-          const nomTio = String(r[tiosCols.nombreTio !== undefined ? tiosCols.nombreTio : 0] || '').trim();
-          const nomTia = String(r[tiosCols.nombreTia !== undefined ? tiosCols.nombreTia : 1] || '').trim();
-          const nombrePareja = (nomTio && nomTia) ? (nomTio + ' y ' + nomTia) : (nomTio || nomTia || 'Pareja de Tíos');
-          return armarRespuestaConsulta(nombrePareja, r[tiosCols.color], senaTios, totalTios);
+      const rawCed = String(records[i][colIdx.cedula] || '');
+      const partes = rawCed.split(/[\/,\-]/);
+      for (let p = 0; p < partes.length; p++) {
+        if (partes[p].replace(/\D/g, '') === targetDigits) {
+          const senaVal = records[i][colIdx.sena];
+          const totalVal = colIdx.total !== undefined ? records[i][colIdx.total] : null;
+          return armarRespuestaConsulta(records[i][colIdx.nombre], records[i][colIdx.color], senaVal, totalVal);
         }
       }
     }
@@ -885,15 +869,39 @@ function obtenerDatosRecepcion(pin) {
       return { success: false, message: "PIN de recepción incorrecto." };
     }
 
+    // Fuente única oficial: hoja PARTICIPANTES OFICIAL
     const records = getAllRecords();
     const colIdx = getColumnIndexes();
-    const participantes = records.map(function(row) {
+    const participantes = [];
+    const tios = [];
+    const hijos = [];
+
+    for (let i = 0; i < records.length; i++) {
+      const row = records[i];
+      const nombre = String(row[colIdx.nombre] || '').trim();
+      const cedula = String(row[colIdx.cedula] || '').trim();
+      if (!nombre && !cedula) continue;
+
+      const tipoCol = colIdx.tipo !== undefined ? String(row[colIdx.tipo] || '').trim() : 'Participante';
+      const tipoNorm = tipoCol.toLowerCase();
+
+      let categoria = 'Participante';
+      if (tipoNorm.indexOf('hijo') !== -1) {
+        categoria = 'Hijo de Tíos';
+      } else if (tipoNorm.indexOf('tío') !== -1 || tipoNorm.indexOf('tio') !== -1) {
+        categoria = 'Tíos';
+      }
+
       const senaVal = row[colIdx.sena];
       const totalVal = colIdx.total !== undefined ? row[colIdx.total] : null;
-      return {
-        tipo: 'Participante',
-        nombre: String(row[colIdx.nombre] || '').trim(),
-        cedula: String(row[colIdx.cedula] || '').trim(),
+      const rowNumber = i + 2;
+
+      const item = {
+        id: 'po-' + rowNumber,
+        rowNumber: rowNumber,
+        tipo: categoria,
+        nombre: nombre,
+        cedula: cedula,
         telefono: String(row[colIdx.telefono] || '').trim(),
         base: String(row[colIdx.base] || '').trim(),
         talle: String(row[colIdx.talleRemera] || '').trim(),
@@ -908,50 +916,22 @@ function obtenerDatosRecepcion(pin) {
         presencia: esVerdadero(colIdx.presencia !== undefined ? row[colIdx.presencia] : false),
         entregaKit: esVerdadero(colIdx.entregaKit !== undefined ? row[colIdx.entregaKit] : false)
       };
-    });
 
-    const tios = [];
-    const sheetTios = getTiosSheet();
-    if (sheetTios && sheetTios.getLastRow() > 1) {
-      const tiosCols = getTiosColumnIndexes(sheetTios);
-      const rows = sheetTios.getRange(2, 1, sheetTios.getLastRow() - 1, sheetTios.getLastColumn()).getValues();
-      for (let j = 0; j < rows.length; j++) {
-        const r = rows[j];
-        const nomTio = String(r[tiosCols.nombreTio !== undefined ? tiosCols.nombreTio : 0] || '').trim();
-        const nomTia = String(r[tiosCols.nombreTia !== undefined ? tiosCols.nombreTia : 1] || '').trim();
-        const nombrePareja = (nomTio && nomTia) ? (nomTio + ' y ' + nomTia) : (nomTio || nomTia || 'Pareja de Tíos');
-        const cTio = String(r[tiosCols.cedulaTio] || '').trim();
-        const cTia = String(r[tiosCols.cedulaTia] || '').trim();
-        const cedulas = (cTio && cTia) ? (cTio + ' / ' + cTia) : (cTio || cTia);
-        const senaTios = r[tiosCols.sena];
-        const totalTios = r[tiosCols.total];
-
-        tios.push({
-          tipo: 'Tíos',
-          nombre: nombrePareja,
-          cedula: cedulas,
-          telefono: String(r[4] || '').trim(),
-          base: String(r[tiosCols.base] || '').trim(),
-          talle: String(r[6] || '').trim() + ' / ' + String(r[7] || '').trim(),
-          contactoEmergencia: String(r[8] || '').trim(),
-          llevaVehiculo: String(r[tiosCols.vehiculo !== undefined ? tiosCols.vehiculo : 9] || '').trim(),
-          enfermedades: String(r[10] || '').trim(),
-          limitacionesFisicas: String(r[11] || '').trim(),
-          alimentacion: String(r[12] || '').trim(),
-          color: String(r[tiosCols.color] || '').trim(),
-          sena: String(senaTios || '').trim(),
-          total: String(totalTios || '').trim(),
-          pagado: estaPagado(senaTios, totalTios),
-          presencia: esVerdadero(r[tiosCols.presencia !== undefined ? tiosCols.presencia : 18]),
-          entregaKit: esVerdadero(r[tiosCols.entregaKit !== undefined ? tiosCols.entregaKit : 19])
-        });
+      if (categoria === 'Hijo de Tíos') {
+        hijos.push(item);
+      } else if (categoria === 'Tíos') {
+        tios.push(item);
+      } else {
+        participantes.push(item);
       }
     }
 
     return {
       success: true,
+      fuente: 'PARTICIPANTES OFICIAL',
       participantes: participantes,
-      tios: tios
+      tios: tios,
+      hijos: hijos
     };
   } catch (error) {
     return {
@@ -963,45 +943,47 @@ function obtenerDatosRecepcion(pin) {
 
 /**
  * [FUNCIÓN 12] actualizarRecepcion
- * Marca o desmarca presencia o entrega de kit en la hoja oficial correspondiente.
+ * Marca o desmarca presencia o entrega de kit directamente en PARTICIPANTES OFICIAL.
  */
-function actualizarRecepcion(tipo, cedula, campo, valor) {
+function actualizarRecepcion(tipo, cedula, campo, valor, rowNumber, nombre) {
   const lock = LockService.getScriptLock();
   try {
     lock.waitLock(10000);
-    const esTios = tipo === 'tios' || tipo === 'Tíos';
-    const sheet = esTios ? getTiosSheet() : getInscripcionesSheet();
+    const sheet = getInscripcionesSheet();
     if (!sheet || sheet.getLastRow() <= 1) {
-      return { success: false, message: "No se encontró la hoja correspondiente." };
+      return { success: false, message: "No se encontró la hoja PARTICIPANTES OFICIAL." };
     }
 
+    const colIdx = getColumnIndexes();
+    const targetCol = campo === 'entregaKit'
+      ? (colIdx.entregaKit !== undefined ? colIdx.entregaKit : 15)
+      : (colIdx.presencia !== undefined ? colIdx.presencia : 14);
+
     const lastRow = sheet.getLastRow();
-    const lastCol = sheet.getLastColumn();
+    const lastCol = Math.max(sheet.getLastColumn(), targetCol + 1);
     const data = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
 
     const targetCedula = String(cedula || '').replace(/\D/g, '');
+    const targetNombre = String(nombre || '').trim().toLowerCase();
     let rowIndex = -1;
-    let targetCol = -1;
 
-    if (esTios) {
-      const tiosCols = getTiosColumnIndexes(sheet);
-      targetCol = campo === 'entregaKit' ? (tiosCols.entregaKit !== undefined ? tiosCols.entregaKit : 19)
-                                         : (tiosCols.presencia !== undefined ? tiosCols.presencia : 18);
-      for (let i = 0; i < data.length; i++) {
-        const c1 = String(data[i][tiosCols.cedulaTio] || '').replace(/\D/g, '');
-        const c2 = String(data[i][tiosCols.cedulaTia] || '').replace(/\D/g, '');
-        if ((c1 && c1 === targetCedula) || (c2 && c2 === targetCedula) || (targetCedula && (c1.indexOf(targetCedula) !== -1 || c2.indexOf(targetCedula) !== -1))) {
-          rowIndex = i + 2;
-          break;
-        }
+    // 1. Verificar coincidencia directa por número de fila si se proporcionó
+    const parsedRow = parseInt(rowNumber, 10);
+    if (parsedRow >= 2 && parsedRow <= lastRow) {
+      const candidate = data[parsedRow - 2];
+      const candNom = String(candidate[colIdx.nombre] || '').trim().toLowerCase();
+      const candCed = String(candidate[colIdx.cedula] || '').replace(/\D/g, '');
+      if ((targetNombre && candNom === targetNombre) || (targetCedula && candCed === targetCedula)) {
+        rowIndex = parsedRow;
       }
-    } else {
-      const colIdx = getColumnIndexes();
-      targetCol = campo === 'entregaKit' ? (colIdx.entregaKit !== undefined ? colIdx.entregaKit : 15)
-                                         : (colIdx.presencia !== undefined ? colIdx.presencia : 14);
+    }
+
+    // 2. Fallback por cédula o nombre exacto en PARTICIPANTES OFICIAL
+    if (rowIndex === -1) {
       for (let i = 0; i < data.length; i++) {
         const c = String(data[i][colIdx.cedula] || '').replace(/\D/g, '');
-        if (c && c === targetCedula) {
+        const n = String(data[i][colIdx.nombre] || '').trim().toLowerCase();
+        if ((targetCedula && c === targetCedula) || (!targetCedula && targetNombre && n === targetNombre)) {
           rowIndex = i + 2;
           break;
         }
@@ -1009,7 +991,7 @@ function actualizarRecepcion(tipo, cedula, campo, valor) {
     }
 
     if (rowIndex === -1) {
-      return { success: false, message: "No se encontró la persona con cédula " + cedula };
+      return { success: false, message: "No se encontró el registro en PARTICIPANTES OFICIAL." };
     }
 
     const textoGuardar = valor ? (campo === 'entregaKit' ? 'ENTREGADO' : 'PRESENTE') : '';
@@ -1017,6 +999,7 @@ function actualizarRecepcion(tipo, cedula, campo, valor) {
 
     return {
       success: true,
+      rowNumber: rowIndex,
       tipo: tipo,
       cedula: cedula,
       campo: campo,

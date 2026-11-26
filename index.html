@@ -4428,7 +4428,7 @@
         // ==========================================
         // SISTEMA DE RECEPCIÓN (PANTALLA COMPLETA · CHECK-IN Y KITS)
         // ==========================================
-        let datosRecepcion = { participantes: [], tios: [] };
+        let datosRecepcion = { participantes: [], tios: [], hijos: [] };
         let colorSeleccionadoRecepcion = null;
         let filtroEstadoRecepcion = 'todos';
         let recepcionCargando = false;
@@ -4602,31 +4602,37 @@
             `;
         }
 
+        function claveUnicaPersona(item) {
+            if (!item) return '';
+            if (item.id) return String(item.id);
+            return `${String(item.tipo || '').toLowerCase()}|${String(item.nombre || '').trim().toLowerCase()}|${String(item.cedula || '').trim()}`;
+        }
+
+        function obtenerListaRecepcionPorTipo(tipoLista) {
+            if (tipoLista === 'tios') return datosRecepcion.tios || [];
+            if (tipoLista === 'hijos') return datosRecepcion.hijos || [];
+            return datosRecepcion.participantes || [];
+        }
+
         function integrarEstadoLocalRecepcion(baseDatos) {
             try {
                 const localSaved = localStorage.getItem('mfcj_recepcion_local');
                 if (!localSaved) return;
                 const parsed = JSON.parse(localSaved);
-                if (parsed && Array.isArray(parsed.participantes)) {
-                    parsed.participantes.forEach(lp => {
-                        if (!lp.cedula) return;
-                        const p = baseDatos.participantes.find(x => x.cedula === lp.cedula);
-                        if (p) {
-                            if (lp.presencia !== undefined) p.presencia = !!lp.presencia;
-                            if (lp.entregaKit !== undefined) p.entregaKit = !!lp.entregaKit;
+                ['participantes', 'tios', 'hijos'].forEach(grupo => {
+                    if (!parsed || !Array.isArray(parsed[grupo]) || !Array.isArray(baseDatos[grupo])) return;
+                    parsed[grupo].forEach(savedItem => {
+                        const key = claveUnicaPersona(savedItem);
+                        const match = baseDatos[grupo].find(x =>
+                            (key && claveUnicaPersona(x) === key) ||
+                            (savedItem.cedula && x.cedula === savedItem.cedula && x.nombre === savedItem.nombre)
+                        );
+                        if (match) {
+                            if (savedItem.presencia !== undefined) match.presencia = !!savedItem.presencia;
+                            if (savedItem.entregaKit !== undefined) match.entregaKit = !!savedItem.entregaKit;
                         }
                     });
-                }
-                if (parsed && Array.isArray(parsed.tios)) {
-                    parsed.tios.forEach(lt => {
-                        if (!lt.cedula) return;
-                        const t = baseDatos.tios.find(x => x.cedula === lt.cedula);
-                        if (t) {
-                            if (lt.presencia !== undefined) t.presencia = !!lt.presencia;
-                            if (lt.entregaKit !== undefined) t.entregaKit = !!lt.entregaKit;
-                        }
-                    });
-                }
+                });
             } catch (e) {
                 console.warn('Error leyendo localStorage:', e);
             }
@@ -4717,7 +4723,8 @@
                     if (res && res.success) {
                         datosRecepcion = {
                             participantes: res.participantes || [],
-                            tios: res.tios || []
+                            tios: res.tios || [],
+                            hijos: res.hijos || []
                         };
                         integrarEstadoLocalRecepcion(datosRecepcion);
                         mostrarVistaRecepcion();
@@ -4761,7 +4768,8 @@
                     if (res && res.success) {
                         datosRecepcion = {
                             participantes: res.participantes || [],
-                            tios: res.tios || []
+                            tios: res.tios || [],
+                            hijos: res.hijos || []
                         };
                         integrarEstadoLocalRecepcion(datosRecepcion);
                         actualizarMetricasGlobales();
@@ -4844,6 +4852,7 @@
 
             const parts = datosRecepcion.participantes || [];
             const tios = datosRecepcion.tios || [];
+            const hijos = datosRecepcion.hijos || [];
 
             const totalParts = parts.length;
             const presParts = parts.filter(p => p.presencia).length;
@@ -4863,9 +4872,12 @@
 
             const metaEl = document.getElementById('rcp-equipos-meta');
             if (metaEl) {
-                metaEl.textContent = totalParts === 0 && totalTios === 0
-                    ? 'Sin registros cargados'
-                    : `${totalParts} jóvenes · ${totalTios} parejas de tíos`;
+                if (totalParts === 0 && totalTios === 0 && hijos.length === 0) {
+                    metaEl.textContent = 'Sin registros cargados';
+                } else {
+                    const extraHijos = hijos.length > 0 ? ` · ${hijos.length} ${hijos.length === 1 ? 'hijo de tíos' : 'hijos de tíos'}` : '';
+                    metaEl.textContent = `${totalParts} jóvenes · ${totalTios} parejas de tíos${extraHijos}`;
+                }
             }
 
             box.innerHTML = `
@@ -5102,12 +5114,12 @@
             if (!colorSeleccionadoRecepcion) return;
             const parts = datosRecepcion.participantes.filter(p => coincideColorEquipo(p.color, colorSeleccionadoRecepcion));
             const tios = datosRecepcion.tios.filter(t => coincideColorEquipo(t.color, colorSeleccionadoRecepcion));
+            const hijos = (datosRecepcion.hijos || []).filter(h => coincideColorEquipo(h.color, colorSeleccionadoRecepcion));
 
             const cantPres = parts.filter(p => p.presencia).length;
             const cantKits = parts.filter(p => p.entregaKit).length;
 
-            // Contadores de los tabs segmentados (jóvenes + tíos del equipo)
-            const todosEquipo = [...parts, ...tios];
+            const todosEquipo = [...parts, ...tios, ...hijos];
             const countTodos = todosEquipo.length;
             const countSinLlegar = todosEquipo.filter(x => !x.presencia).length;
             const countSinKit = todosEquipo.filter(x => x.presencia && !x.entregaKit).length;
@@ -5121,10 +5133,11 @@
 
             const box = document.getElementById('recepcion-color-stats');
             if (box) {
+                const txtHijos = hijos.length > 0 ? ` · ${hijos.length} ${hijos.length === 1 ? 'hijo' : 'hijos'}` : '';
                 box.innerHTML = `
                     <div class="rcp-mini-metric">
                         <span class="rcp-mini-metric-lbl">Integrantes</span>
-                        <span class="rcp-mini-metric-val">${parts.length} jóvenes · ${tios.length} ${tios.length === 1 ? 'pareja' : 'parejas'}</span>
+                        <span class="rcp-mini-metric-val">${parts.length} jóvenes · ${tios.length} ${tios.length === 1 ? 'pareja' : 'parejas'}${txtHijos}</span>
                     </div>
                     <div class="rcp-mini-divider"></div>
                     <div class="rcp-mini-metric">
@@ -5187,17 +5200,22 @@
             }
         }
 
-        function sincronizarCambioRecepcionRemoto(tipo, cedula, campo, valor) {
+        function sincronizarCambioRecepcionRemoto(item, campo, valor) {
+            const tipo = item.tipo || 'Participante';
+            const cedula = item.cedula || '';
+            const rowNumber = item.rowNumber || null;
+            const nombre = item.nombre || '';
+
             if (typeof google !== 'undefined' && google.script && google.script.run) {
                 google.script.run
-                    .withSuccessHandler(r => console.log('Sincronizado con Sheets:', r))
+                    .withSuccessHandler(r => console.log('Sincronizado con PARTICIPANTES OFICIAL:', r))
                     .withFailureHandler(err => console.warn('Error sincronizando con Sheets:', err))
-                    .actualizarRecepcion(tipo, cedula, campo, valor);
+                    .actualizarRecepcion(tipo, cedula, campo, valor, rowNumber, nombre);
             } else {
                 fetch(RCP_APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'actualizarRecepcion', tipo, cedula, campo, valor }),
+                    body: JSON.stringify({ action: 'actualizarRecepcion', tipo, cedula, campo, valor, rowNumber, nombre }),
                     redirect: 'follow'
                 })
                 .then(r => r.json())
@@ -5224,13 +5242,13 @@
         }
 
         function alternarPresencia(tipoLista, idx) {
-            const lista = tipoLista === 'tios' ? datosRecepcion.tios : datosRecepcion.participantes;
+            const lista = obtenerListaRecepcionPorTipo(tipoLista);
             const item = lista[idx];
             if (!item) return;
 
             item.presencia = !item.presencia;
             guardarCambiosRecepcionLocal();
-            sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'presencia', item.presencia);
+            sincronizarCambioRecepcionRemoto(item, 'presencia', item.presencia);
 
             mostrarToastRecepcion(item.presencia ? `Asistencia registrada: ${item.nombre || 'Participante'}` : `Asistencia removida: ${item.nombre || 'Participante'}`);
             actualizarMetricasGlobales();
@@ -5244,18 +5262,18 @@
         }
 
         function alternarKit(tipoLista, idx) {
-            const lista = tipoLista === 'tios' ? datosRecepcion.tios : datosRecepcion.participantes;
+            const lista = obtenerListaRecepcionPorTipo(tipoLista);
             const item = lista[idx];
             if (!item) return;
 
             item.entregaKit = !item.entregaKit;
             if (item.entregaKit && !item.presencia) {
                 item.presencia = true;
-                sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'presencia', true);
+                sincronizarCambioRecepcionRemoto(item, 'presencia', true);
             }
 
             guardarCambiosRecepcionLocal();
-            sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'entregaKit', item.entregaKit);
+            sincronizarCambioRecepcionRemoto(item, 'entregaKit', item.entregaKit);
 
             mostrarToastRecepcion(item.entregaKit ? `Kit entregado: ${item.nombre || 'Participante'}` : `Entrega de kit revertida: ${item.nombre || 'Participante'}`);
             actualizarMetricasGlobales();
@@ -5410,11 +5428,15 @@
                 .map((t, i) => ({ item: t, idx: i }))
                 .filter(x => matchPersona(x.item));
 
-            if (parts.length === 0 && tios.length === 0) {
+            const hijos = (datosRecepcion.hijos || [])
+                .map((h, i) => ({ item: h, idx: i }))
+                .filter(x => matchPersona(x.item));
+
+            if (parts.length === 0 && tios.length === 0 && hijos.length === 0) {
                 resBox.innerHTML = renderEmptyStateCard(
                     RCP_ICONS.searchEmpty,
                     'Sin coincidencias para «' + rawQ + '»',
-                    'No encontramos ningún participante ni pareja de tíos con ese nombre, base o número de documento.',
+                    'No encontramos ningún integrante en PARTICIPANTES OFICIAL con ese nombre, base o número de documento.',
                     'Limpiar búsqueda',
                     'limpiarBusquedaGlobalRecepcion()'
                 );
@@ -5448,6 +5470,19 @@
                 `;
             }
 
+            if (hijos.length > 0) {
+                html += `
+                    <div class="rcp-group-section">
+                        <div class="rcp-group-header">
+                            <span class="rcp-group-title">Hijos de Tíos <span class="rcp-group-count">${hijos.length}</span></span>
+                        </div>
+                        <div class="rcp-rows-container">
+                            ${hijos.map(x => renderItemRecepcion(x.item, x.idx, 'hijos', true)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
             resBox.innerHTML = html;
         }
 
@@ -5471,12 +5506,15 @@
                 .map((t, i) => ({ item: t, idx: i }))
                 .filter(x => coincideColorEquipo(x.item.color, colorSeleccionadoRecepcion));
 
-            // Si el equipo completo no tiene absolutamente a nadie asignado
-            if (basePartsEquipo.length === 0 && baseTiosEquipo.length === 0) {
+            const baseHijosEquipo = (datosRecepcion.hijos || [])
+                .map((h, i) => ({ item: h, idx: i }))
+                .filter(x => coincideColorEquipo(x.item.color, colorSeleccionadoRecepcion));
+
+            if (basePartsEquipo.length === 0 && baseTiosEquipo.length === 0 && baseHijosEquipo.length === 0) {
                 cont.innerHTML = renderEmptyStateCard(
                     RCP_ICONS.inbox,
                     'Equipo sin integrantes asignados',
-                    'Todavía no hay jóvenes ni parejas de tíos asignados a este color en la planilla oficial.',
+                    'Todavía no hay personas asignadas a este color en PARTICIPANTES OFICIAL.',
                     'Volver a equipos',
                     'volverAGrillaRecepcion()'
                 );
@@ -5501,9 +5539,9 @@
 
             const parts = basePartsEquipo.filter(x => pasaTexto(x.item) && pasaEstado(x.item));
             const tios = baseTiosEquipo.filter(x => pasaTexto(x.item) && pasaEstado(x.item));
+            const hijos = baseHijosEquipo.filter(x => pasaTexto(x.item) && pasaEstado(x.item));
 
-            // Si ambas listas quedan vacías por búsqueda o por filtro de estado, mostrar Empty State contextual rico
-            if (parts.length === 0 && tios.length === 0) {
+            if (parts.length === 0 && tios.length === 0 && hijos.length === 0) {
                 if (rawQ) {
                     cont.innerHTML = renderEmptyStateCard(
                         RCP_ICONS.searchEmpty,
@@ -5574,17 +5612,37 @@
                     ` : `
                         <div class="rcp-empty-compact">
                             ${RCP_ICONS.users}
-                            <span>${baseTiosEquipo.length === 0 ? 'Este equipo aún no tiene parejas de tíos asignadas en planilla.' : 'Ninguna pareja de tíos coincide con el filtro seleccionado.'}</span>
+                            <span>${baseTiosEquipo.length === 0 ? 'Este equipo aún no tiene parejas de tíos en PARTICIPANTES OFICIAL.' : 'Ninguna pareja de tíos coincide con el filtro seleccionado.'}</span>
                         </div>
                     `}
                 </div>
             `;
 
+            if (baseHijosEquipo.length > 0) {
+                html += `
+                    <div class="rcp-group-section">
+                        <div class="rcp-group-header">
+                            <span class="rcp-group-title">Hijos de Tíos <span class="rcp-group-count">${hijos.length}</span></span>
+                        </div>
+                        ${hijos.length > 0 ? `
+                            <div class="rcp-rows-container">
+                                ${hijos.map(x => renderItemRecepcion(x.item, x.idx, 'hijos', false)).join('')}
+                            </div>
+                        ` : `
+                            <div class="rcp-empty-compact">
+                                ${RCP_ICONS.users}
+                                <span>Ningún hijo de tíos coincide con el filtro seleccionado.</span>
+                            </div>
+                        `}
+                    </div>
+                `;
+            }
+
             cont.innerHTML = html;
         }
 
         function abrirFichaParticipante(tipoLista, idx) {
-            const lista = tipoLista === 'tios' ? datosRecepcion.tios : datosRecepcion.participantes;
+            const lista = obtenerListaRecepcionPorTipo(tipoLista);
             const item = lista[idx];
             if (!item) return;
 
