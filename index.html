@@ -1773,87 +1773,1283 @@
                         </svg>
                         <span>Recordá confirmar tu lugar abonando la seña con los coordinadores de tu base.</span>
                     </div>
-                    <button type="button" onclick="abrirAccesoRecepcion()" style="display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--green-dark); font-size:0.82rem; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(25,51,39,0.06);">
-                        <span>🎫</span>
-                        <span>Ir a Recepción</span>
+                    <button type="button" onclick="abrirAccesoRecepcion()" style="display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--green-dark); font-size:0.82rem; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(25,51,39,0.06); transition:all 0.2s ease;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                        </svg>
+                        <span>Panel de Recepción</span>
                     </button>
-                </div>
-            </div>
-
-            <!-- VISTA 5: SISTEMA DE RECEPCIÓN (CHECK-IN Y ENTREGA DE KITS) -->
-            <div id="recepcion-view" class="closed-view" style="text-align:left;">
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
-                    <div>
-                        <h2 style="font-size:1.35rem; font-weight:800; color:var(--green-dark); margin:0;">🎫 Recepción · MFCJ CAMP 2026</h2>
-                        <p style="font-size:0.82rem; color:var(--text-muted); margin:2px 0 0;">Control de check-in de llegada y entrega de kits oficiales</p>
-                    </div>
-                    <button type="button" onclick="cerrarRecepcion()" style="padding:7px 14px; border-radius:10px; border:1px solid var(--border-color); background:#FAF6EF; color:var(--green-dark); font-size:0.8rem; font-weight:700; cursor:pointer;">← Salir</button>
-                </div>
-
-                <!-- Métricas generales de recepción -->
-                <div id="recepcion-metricas-globales" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
-                    <div style="background:#FFFFFF; border:1.5px solid #86EFAC; border-radius:14px; padding:10px 14px; box-shadow:0 2px 8px rgba(34,197,94,0.08);">
-                        <div style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:#15803D; display:flex; align-items:center; gap:5px;">
-                            <span>🟢</span><span>Presentes en Campa</span>
-                        </div>
-                        <div style="display:flex; align-items:baseline; gap:6px; margin-top:2px;">
-                            <span id="metric-presencia-total" style="font-size:1.35rem; font-weight:900; color:#15803D;">0</span>
-                            <span id="metric-presencia-sub" style="font-size:0.75rem; color:#475569; font-weight:700;">/ 0 (0%)</span>
-                        </div>
-                    </div>
-                    <div style="background:#FFFFFF; border:1.5px solid #93C5FD; border-radius:14px; padding:10px 14px; box-shadow:0 2px 8px rgba(37,99,235,0.08);">
-                        <div style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:#1D4ED8; display:flex; align-items:center; gap:5px;">
-                            <span>🎒</span><span>Kits Entregados</span>
-                        </div>
-                        <div style="display:flex; align-items:baseline; gap:6px; margin-top:2px;">
-                            <span id="metric-kit-total" style="font-size:1.35rem; font-weight:900; color:#1D4ED8;">0</span>
-                            <span id="metric-kit-sub" style="font-size:0.75rem; color:#475569; font-weight:700;">/ 0 (0%)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Buscador global por nombre o cédula -->
-                <div id="recepcion-global-search-wrap" style="margin-bottom:14px;">
-                    <input type="text" id="recepcion-global-search" placeholder="🔍 Buscar participante o tío por nombre o cédula..." oninput="buscarGlobalRecepcion()"
-                        style="width:100%; padding:11px 14px; border-radius:12px; border:1.5px solid var(--border-color); font-size:0.9rem; outline:none; background:#FAF6EF;">
-                </div>
-
-                <!-- Resultados de búsqueda global -->
-                <div id="recepcion-global-results" style="display:none; margin-bottom:14px;"></div>
-
-                <!-- Grilla de 12 tarjetas grandes -->
-                <div id="recepcion-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(145px, 1fr)); gap:12px;"></div>
-
-                <!-- Detalle de un color seleccionado -->
-                <div id="recepcion-detalle" style="display:none;">
-                    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
-                        <button type="button" onclick="volverAGrillaRecepcion()" style="padding:8px 14px; border-radius:10px; border:1px solid var(--border-color); background:#FAF6EF; color:var(--green-dark); font-size:0.82rem; font-weight:700; cursor:pointer;">← Todos los colores</button>
-                        <div id="recepcion-color-badge" style="padding:6px 14px; border-radius:999px; font-weight:800; font-size:0.85rem;"></div>
-                    </div>
-
-                    <!-- Resumen del color -->
-                    <div id="recepcion-color-stats" style="background:#FAF6EF; border:1px solid var(--border-color); border-radius:12px; padding:10px 14px; margin-bottom:12px; font-size:0.8rem; font-weight:700; color:var(--green-dark); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-                    </div>
-
-                    <!-- Pestañas de filtro rápido -->
-                    <div id="recepcion-filtros-estado" style="display:flex; gap:6px; margin-bottom:12px; overflow-x:auto; padding-bottom:4px;">
-                        <button type="button" class="recepcion-filtro-btn active" onclick="setFiltroRecepcion('todos', this)" style="padding:6px 12px; border-radius:999px; border:1.5px solid var(--green-dark); background:var(--green-dark); color:#FFFFFF; font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">Todos</button>
-                        <button type="button" class="recepcion-filtro-btn" onclick="setFiltroRecepcion('sin_llegar', this)" style="padding:6px 12px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--text-main); font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">⚪ Sin Llegar</button>
-                        <button type="button" class="recepcion-filtro-btn" onclick="setFiltroRecepcion('sin_kit', this)" style="padding:6px 12px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--text-main); font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">📦 Falta Kit</button>
-                        <button type="button" class="recepcion-filtro-btn" onclick="setFiltroRecepcion('listos', this)" style="padding:6px 12px; border-radius:999px; border:1px solid var(--border-color); background:#FFFFFF; color:var(--text-main); font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">✅ Listos</button>
-                    </div>
-
-                    <input type="text" id="recepcion-search" placeholder="Filtrar por nombre o cédula..." oninput="filtrarListaRecepcion()"
-                        style="width:100%; padding:10px 14px; border-radius:12px; border:1.5px solid var(--border-color); margin-bottom:12px; font-size:0.9rem; outline:none; background:#FAF6EF;">
-
-                    <div id="recepcion-lista-contenido"></div>
                 </div>
             </div>
 
         </main>
     </div>
 
+    <!-- ==========================================
+         VISTA 5: SISTEMA DE RECEPCIÓN (PANTALLA COMPLETA)
+         ========================================== -->
+    <section id="recepcion-view" class="rcp-app" style="display:none;" aria-label="Panel de Recepción">
+        <!-- Barra superior fija -->
+        <header class="rcp-topbar">
+            <div class="rcp-topbar-inner">
+                <div class="rcp-brand">
+                    <img id="rcp-brand-logo" class="rcp-brand-logo" alt="MFCJ Camp 2026">
+                    <div class="rcp-brand-text">
+                        <div class="rcp-brand-title-row">
+                            <span class="rcp-brand-name">MFCJ CAMP 2026</span>
+                            <span class="rcp-brand-divider"></span>
+                            <span class="rcp-brand-module">Recepción y Acreditación</span>
+                        </div>
+                        <p class="rcp-brand-sub">Control de asistencia presencial y entrega de kits oficiales</p>
+                    </div>
+                </div>
+
+                <div class="rcp-topbar-actions">
+                    <button type="button" class="rcp-btn-ghost" id="rcp-btn-refresh" onclick="recargarDatosRecepcion()" title="Sincronizar datos">
+                        <svg id="rcp-refresh-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        <span>Sincronizar</span>
+                    </button>
+                    <button type="button" class="rcp-btn-exit" onclick="cerrarRecepcion()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Salir</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Cuerpo principal a pantalla completa -->
+        <div class="rcp-container">
+            <!-- Resumen Ejecutivo (KPIs) -->
+            <div id="recepcion-metricas-globales" class="rcp-kpi-grid"></div>
+
+            <!-- Barra de búsqueda global (visible en vista de equipos) -->
+            <div id="recepcion-global-search-wrap" class="rcp-Overview-toolbar">
+                <div class="rcp-section-heading">
+                    <h2 class="rcp-section-title">Equipos del Campamento</h2>
+                    <span id="rcp-equipos-meta" class="rcp-section-meta">12 grupos oficiales</span>
+                </div>
+                <div class="rcp-search-box rcp-search-global">
+                    <svg class="rcp-search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="recepcion-global-search" class="rcp-search-input"
+                        placeholder="Buscar participante o tío por nombre o número de cédula..."
+                        oninput="buscarGlobalRecepcion()" autocomplete="off">
+                    <button type="button" id="rcp-global-clear" class="rcp-search-clear" style="display:none;" onclick="limpiarBusquedaGlobalRecepcion()" aria-label="Limpiar búsqueda">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Resultados de búsqueda global -->
+            <div id="recepcion-global-results" style="display:none;"></div>
+
+            <!-- Grilla de 12 equipos -->
+            <div id="recepcion-grid" class="rcp-teams-grid"></div>
+
+            <!-- Aviso discreto de participantes sin color asignado (si existen) -->
+            <div id="recepcion-unassigned-wrap" style="display:none; margin-top:18px;"></div>
+
+            <!-- Vista Detalle de un Equipo Seleccionado -->
+            <div id="recepcion-detalle" class="rcp-detail-view" style="display:none;">
+                <div class="rcp-detail-header">
+                    <div class="rcp-detail-title-group">
+                        <button type="button" class="rcp-btn-back" onclick="volverAGrillaRecepcion()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            <span>Equipos</span>
+                        </button>
+                        <div class="rcp-detail-team-heading">
+                            <span id="recepcion-color-swatch" class="rcp-team-swatch-lg"></span>
+                            <div>
+                                <h2 id="recepcion-color-title" class="rcp-detail-team-name">Equipo</h2>
+                                <p id="recepcion-color-sub" class="rcp-detail-team-sub"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="recepcion-color-stats" class="rcp-detail-metrics"></div>
+                </div>
+
+                <!-- Barra de filtros y buscador interno -->
+                <div class="rcp-detail-Controls">
+                    <div id="recepcion-filtros-estado" class="rcp-segmented" role="tablist">
+                        <button type="button" class="rcp-seg-btn active" data-filtro="todos" onclick="setFiltroRecepcion('todos', this)">
+                            <span>Todos</span>
+                            <span class="rcp-seg-count" id="seg-count-todos">0</span>
+                        </button>
+                        <button type="button" class="rcp-seg-btn" data-filtro="sin_llegar" onclick="setFiltroRecepcion('sin_llegar', this)">
+                            <span>Sin llegar</span>
+                            <span class="rcp-seg-count" id="seg-count-sin_llegar">0</span>
+                        </button>
+                        <button type="button" class="rcp-seg-btn" data-filtro="sin_kit" onclick="setFiltroRecepcion('sin_kit', this)">
+                            <span>Falta kit</span>
+                            <span class="rcp-seg-count" id="seg-count-sin_kit">0</span>
+                        </button>
+                        <button type="button" class="rcp-seg-btn" data-filtro="listos" onclick="setFiltroRecepcion('listos', this)">
+                            <span>Completados</span>
+                            <span class="rcp-seg-count" id="seg-count-listos">0</span>
+                        </button>
+                    </div>
+
+                    <div class="rcp-search-box rcp-search-inline">
+                        <svg class="rcp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="recepcion-search" class="rcp-search-input"
+                            placeholder="Filtrar en este equipo por nombre o CI..."
+                            oninput="filtrarListaRecepcion()" autocomplete="off">
+                        <button type="button" id="rcp-local-clear" class="rcp-search-clear" style="display:none;" onclick="limpiarBusquedaLocalRecepcion()" aria-label="Limpiar filtro">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="recepcion-lista-contenido" class="rcp-list-wrapper"></div>
+            </div>
+        </div>
+    </section>
+
     <style>
+        /* ==========================================
+           DISEÑO EDITORIAL FULL-SCREEN DE RECEPCIÓN
+           ========================================== */
+        body.is-recepcion {
+            padding: 0 !important;
+            display: block !important;
+            background-color: #F6F4EF !important;
+            background-image: none !important;
+            min-height: 100vh;
+        }
+
+        body.is-recepcion #camp-canvas {
+            display: none !important;
+        }
+
+        body.is-recepcion .app-layout {
+            display: none !important;
+        }
+
+        .rcp-app {
+            min-height: 100vh;
+            width: 100%;
+            color: #16221C;
+            font-variant-numeric: tabular-nums;
+            animation: rcpFadeIn 0.22s ease-out;
+        }
+
+        @keyframes rcpFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .rcp-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid #E5E0D5;
+        }
+
+        .rcp-topbar-inner {
+            max-width: 1340px;
+            margin: 0 auto;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .rcp-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .rcp-brand-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+        }
+
+        .rcp-brand-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-brand-name {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: #15281F;
+        }
+
+        .rcp-brand-divider {
+            width: 1px;
+            height: 14px;
+            background: #D5CFC2;
+        }
+
+        .rcp-brand-module {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #254637;
+            background: #EDF2EE;
+            border: 1px solid #D5E2D9;
+            padding: 2px 9px;
+            border-radius: 6px;
+            letter-spacing: -0.01em;
+        }
+
+        .rcp-brand-sub {
+            font-size: 0.78rem;
+            color: #68766E;
+            margin-top: 2px;
+        }
+
+        .rcp-topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .rcp-btn-ghost,
+        .rcp-btn-exit {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 14px;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 0.81rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+
+        .rcp-btn-ghost {
+            background: #FFFFFF;
+            border: 1px solid #DED8CC;
+            color: #2C3E35;
+        }
+
+        .rcp-btn-ghost:hover {
+            background: #FAF8F4;
+            border-color: #C5BCAE;
+            color: #15281F;
+        }
+
+        .rcp-btn-exit {
+            background: #193327;
+            border: 1px solid #193327;
+            color: #FFFFFF;
+        }
+
+        .rcp-btn-exit:hover {
+            background: #234536;
+        }
+
+        .rcp-container {
+            max-width: 1340px;
+            margin: 0 auto;
+            padding: 26px 28px 64px;
+        }
+
+        /* KPIs Superiores */
+        .rcp-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .rcp-kpi-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E0D5;
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 1px 2px rgba(20, 35, 28, 0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .rcp-kpi-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .rcp-kpi-label {
+            font-size: 0.73rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #68766E;
+        }
+
+        .rcp-kpi-pill {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #F3F1EC;
+            color: #415249;
+        }
+
+        .rcp-kpi-value-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .rcp-kpi-num {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #14241C;
+            letter-spacing: -0.02em;
+        }
+
+        .rcp-kpi-denom {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #7A8780;
+        }
+
+        .rcp-kpi-bar {
+            width: 100%;
+            height: 4px;
+            background: #EFECE5;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .rcp-kpi-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .rcp-kpi-foot {
+            font-size: 0.76rem;
+            color: #6B7871;
+            font-weight: 500;
+        }
+
+        /* Cabecera de sección + Buscador */
+        .rcp-Overview-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-section-heading {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .rcp-section-title {
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: #16231C;
+            letter-spacing: -0.015em;
+        }
+
+        .rcp-section-meta {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #76847D;
+        }
+
+        .rcp-search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .rcp-search-global {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .rcp-search-inline {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .rcp-search-icon {
+            position: absolute;
+            left: 13px;
+            color: #7D8B83;
+            pointer-events: none;
+        }
+
+        .rcp-search-input {
+            width: 100%;
+            padding: 10px 36px 10px 38px;
+            border-radius: 10px;
+            border: 1px solid #DDD7CA;
+            background: #FFFFFF;
+            color: #16231C;
+            font-family: inherit;
+            font-size: 0.88rem !important;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .rcp-search-input::placeholder {
+            color: #8E9B94;
+            font-weight: 400;
+        }
+
+        .rcp-search-input:focus {
+            border-color: #254637;
+            box-shadow: 0 0 0 3px rgba(37, 70, 55, 0.1);
+        }
+
+        .rcp-search-clear {
+            position: absolute;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: none;
+            background: #F1EFEA;
+            color: #5C6B63;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .rcp-search-clear:hover {
+            background: #E4E0D7;
+            color: #16231C;
+        }
+
+        /* Grilla de 12 Equipos Sobria (4x3 en desktop) */
+        .rcp-teams-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .rcp-team-card {
+            position: relative;
+            background: #FFFFFF;
+            border: 1px solid #E5E0D5;
+            border-radius: 14px;
+            padding: 18px 18px 16px;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+            box-shadow: 0 1px 2px rgba(20, 35, 28, 0.03);
+            font-family: inherit;
+            overflow: hidden;
+        }
+
+        .rcp-team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3.5px;
+            background: var(--team-accent, #254637);
+        }
+
+        .rcp-team-card:hover {
+            transform: translateY(-2px);
+            border-color: #CBC3B4;
+            box-shadow: 0 10px 24px -10px rgba(20, 35, 28, 0.12), 0 2px 6px rgba(20, 35, 28, 0.04);
+        }
+
+        .rcp-team-card:active {
+            transform: translateY(0);
+        }
+
+        .rcp-team-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .rcp-team-id {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .rcp-team-swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+        }
+
+        .rcp-team-name {
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: #16231C;
+            letter-spacing: -0.015em;
+        }
+
+        .rcp-team-pct {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #5A6961;
+            background: #F5F3EE;
+            border: 1px solid #EAE5DA;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .rcp-team-progress {
+            width: 100%;
+            height: 5px;
+            background: #EFECE5;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .rcp-team-progress-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: var(--team-bar, #254637);
+            transition: width 0.3s ease;
+        }
+
+        .rcp-team-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding-top: 12px;
+            border-top: 1px solid #F1EDE4;
+        }
+
+        .rcp-team-stat-col {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .rcp-team-stat-lbl {
+            font-size: 0.66rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #7D8B83;
+        }
+
+        .rcp-team-stat-val {
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: #18261F;
+        }
+
+        .rcp-team-stat-val span {
+            color: #8A9790;
+            font-weight: 500;
+        }
+
+        .rcp-team-stat-muted {
+            color: #9AA69F !important;
+            font-weight: 500 !important;
+        }
+
+        /* Vista Detalle de Equipo */
+        .rcp-detail-header {
+            background: #FFFFFF;
+            border: 1px solid #E5E0D5;
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-detail-title-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 13px;
+            border-radius: 9px;
+            border: 1px solid #DED8CC;
+            background: #FAF8F4;
+            color: #1D2E25;
+            font-family: inherit;
+            font-size: 0.81rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .rcp-btn-back:hover {
+            background: #F1EDE5;
+            border-color: #C7BFAF;
+        }
+
+        .rcp-detail-team-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rcp-team-swatch-lg {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+            flex-shrink: 0;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+        }
+
+        .rcp-detail-team-name {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #15251D;
+            line-height: 1.15;
+            margin: 0;
+        }
+
+        .rcp-detail-team-sub {
+            font-size: 0.79rem;
+            color: #6B7971;
+            margin-top: 2px;
+        }
+
+        .rcp-detail-metrics {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-mini-metric {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .rcp-mini-metric-lbl {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #7D8B83;
+        }
+
+        .rcp-mini-metric-val {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #16231C;
+        }
+
+        .rcp-mini-divider {
+            width: 1px;
+            height: 28px;
+            background: #EAE5DA;
+        }
+
+        /* Controles: Segmented + Search */
+        .rcp-detail-Controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-segmented {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px;
+            background: #ECE8DF;
+            border: 1px solid #DFD9CC;
+            border-radius: 11px;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        .rcp-seg-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: #4E5E55;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+        }
+
+        .rcp-seg-btn:hover {
+            color: #16231C;
+        }
+
+        .rcp-seg-btn.active {
+            background: #FFFFFF;
+            color: #15251D;
+            font-weight: 700;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .rcp-seg-count {
+            font-size: 0.71rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: rgba(25, 51, 39, 0.08);
+            color: #32473C;
+        }
+
+        .rcp-seg-btn.active .rcp-seg-count {
+            background: #193327;
+            color: #FFFFFF;
+        }
+
+        /* Secciones de lista y filas ejecutivas */
+        .rcp-group-section {
+            margin-bottom: 24px;
+        }
+
+        .rcp-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 0 4px;
+        }
+
+        .rcp-group-title {
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #53635A;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rcp-group-count {
+            background: #E8E3D8;
+            color: #2B3B32;
+            padding: 1px 7px;
+            border-radius: 999px;
+            font-size: 0.71rem;
+        }
+
+        .rcp-rows-container {
+            background: #FFFFFF;
+            border: 1px solid #E5E0D5;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(20, 35, 28, 0.03);
+        }
+
+        .rcp-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.9fr) auto;
+            align-items: center;
+            gap: 16px;
+            padding: 13px 18px;
+            border-bottom: 1px solid #F0ECE3;
+            cursor: pointer;
+            transition: background-color 0.14s ease;
+        }
+
+        .rcp-row:last-child {
+            border-bottom: none;
+        }
+
+        .rcp-row:hover {
+            background-color: #FAF9F6;
+        }
+
+        .rcp-row.is-complete {
+            background-color: #F8FBF9;
+        }
+
+        .rcp-row-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .rcp-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #F2EFE9;
+            border: 1px solid #E3DDD1;
+            color: #2A3D33;
+            font-size: 0.78rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            letter-spacing: 0.02em;
+        }
+
+        .rcp-row.is-present .rcp-avatar {
+            background: #E6F2EB;
+            border-color: #B7DBC5;
+            color: #165B36;
+        }
+
+        .rcp-person-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .rcp-person-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-person-name {
+            font-size: 0.93rem;
+            font-weight: 700;
+            color: #15241C;
+            line-height: 1.3;
+        }
+
+        .rcp-team-pill-sm {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #F5F3EE;
+            border: 1px solid #E5E0D5;
+            color: #2D3D35;
+        }
+
+        .rcp-health-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.69rem;
+            font-weight: 700;
+            color: #B45309;
+            background: #FEF3C7;
+            border: 1px solid #FDE68A;
+            padding: 1px 7px;
+            border-radius: 6px;
+        }
+
+        .rcp-person-sub {
+            font-size: 0.78rem;
+            color: #6B7971;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-sub-sep {
+            color: #C9C3B6;
+        }
+
+        .rcp-empty-inline {
+            color: #9AA69F;
+            font-style: italic;
+        }
+
+        .rcp-row-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .rcp-badge-neutral {
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 4px 9px;
+            border-radius: 7px;
+            background: #F4F2ED;
+            border: 1px solid #E5E0D5;
+            color: #2F3E36;
+            white-space: nowrap;
+        }
+
+        .rcp-badge-neutral.is-empty {
+            background: #FAF9F6;
+            color: #95A19A;
+            font-weight: 500;
+            border-style: dashed;
+        }
+
+        .rcp-badge-pay {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.73rem;
+            font-weight: 700;
+            padding: 4px 9px;
+            border-radius: 7px;
+            white-space: nowrap;
+        }
+
+        .rcp-badge-pay.paid {
+            background: #ECF6F0;
+            border: 1px solid #CBE6D6;
+            color: #166534;
+        }
+
+        .rcp-badge-pay.pending {
+            background: #FEF6E7;
+            border: 1px solid #F5DFB5;
+            color: #9A5B13;
+        }
+
+        .rcp-pay-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .rcp-row-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .rcp-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 13px;
+            border-radius: 9px;
+            border: 1px solid #D8D2C5;
+            background: #FFFFFF;
+            color: #36463E;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.14s ease;
+            min-width: 118px;
+        }
+
+        .rcp-action-btn:hover {
+            border-color: #B6AFA0;
+            background: #F8F6F2;
+            color: #15241C;
+        }
+
+        .rcp-action-btn.active-presencia {
+            background: #193327;
+            border-color: #193327;
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+
+        .rcp-action-btn.active-presencia:hover {
+            background: #234536;
+        }
+
+        .rcp-action-btn.active-kit {
+            background: #EAF2EE;
+            border-color: #254637;
+            color: #193327;
+            font-weight: 700;
+        }
+
+        .rcp-action-btn.active-kit:hover {
+            background: #DCEAE2;
+        }
+
+        .rcp-row-chevron {
+            color: #9AA69F;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+
+        .rcp-row:hover .rcp-row-chevron {
+            color: #254637;
+            transform: translateX(2px);
+        }
+
+        /* Empty States Elegantes */
+        .rcp-empty-state {
+            background: #FFFFFF;
+            border: 1px solid #E5E0D5;
+            border-radius: 14px;
+            padding: 38px 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rcp-empty-compact {
+            background: #FAF9F6;
+            border: 1px dashed #DFD9CC;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #6E7C74;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .rcp-empty-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #F3F0E9;
+            border: 1px solid #E5E0D4;
+            color: #52635A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .rcp-empty-title {
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: #18261F;
+            margin-bottom: 4px;
+        }
+
+        .rcp-empty-desc {
+            font-size: 0.82rem;
+            color: #6E7C74;
+            max-width: 380px;
+            line-height: 1.45;
+        }
+
+        .rcp-empty-action {
+            margin-top: 14px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            border: 1px solid #D8D2C5;
+            background: #FFFFFF;
+            color: #193327;
+            font-family: inherit;
+            font-size: 0.79rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .rcp-empty-action:hover {
+            background: #F5F3EE;
+        }
+
+        /* Skeletons Shimmer */
+        @keyframes rcpShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .rcp-skel {
+            background: linear-gradient(90deg, #EFECE5 25%, #F8F6F2 50%, #EFECE5 75%);
+            background-size: 200% 100%;
+            animation: rcpShimmer 1.35s ease-in-out infinite;
+            border-radius: 6px;
+        }
+
+        /* Modal Ficha Elegante */
+        .rcp-ficha-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .rcp-ficha-field {
+            background: #FAF9F6;
+            border: 1px solid #ECE7DC;
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .rcp-ficha-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .rcp-ficha-lbl {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #7A8780;
+            margin-bottom: 3px;
+        }
+
+        .rcp-ficha-val {
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: #16231C;
+            word-break: break-word;
+        }
+
+        .rcp-ficha-val.empty {
+            color: #9AA69F;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        /* Responsividad Recepción */
+        @media (max-width: 1100px) {
+            .rcp-teams-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .rcp-kpi-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 820px) {
+            .rcp-topbar-inner {
+                padding: 12px 16px;
+            }
+            .rcp-brand-sub {
+                display: none;
+            }
+            .rcp-container {
+                padding: 18px 16px 48px;
+            }
+            .rcp-teams-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .rcp-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 14px;
+            }
+            .rcp-row-meta {
+                padding-left: 50px;
+            }
+            .rcp-row-actions {
+                width: 100%;
+                justify-content: stretch;
+                padding-top: 8px;
+                border-top: 1px solid #F3EFE7;
+            }
+            .rcp-action-btn {
+                flex: 1;
+                min-width: 0;
+            }
+            .rcp-row-chevron {
+                display: none;
+            }
+            .rcp-search-global,
+            .rcp-search-inline {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .rcp-teams-grid {
+                grid-template-columns: 1fr;
+            }
+            .rcp-kpi-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .rcp-kpi-card {
+                padding: 13px 14px;
+            }
+            .rcp-kpi-num {
+                font-size: 1.5rem;
+            }
+            .rcp-brand-divider,
+            .rcp-brand-module {
+                display: none;
+            }
+            .rcp-btn-ghost span {
+                display: none;
+            }
+            .rcp-ficha-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .spin-icon {
             animation: spinRotate 1.5s linear infinite;
         }
@@ -2980,10 +4176,21 @@
             if (!closedView) return;
 
             // Resetear vistas
+            document.body.classList.remove('is-recepcion');
+            const recepcionView = document.getElementById('recepcion-view');
+            if (recepcionView) recepcionView.style.display = 'none';
             formView.style.display = 'none';
             spinnerView.style.display = 'none';
             consultaView.style.display = 'none';
             closedView.style.display = 'none';
+
+            if (h === '#recepcion' || h === '#recepcion-pin') {
+                closedView.style.display = 'block';
+                document.title = 'MFCJ CAMP 2026 · Recepción';
+                iniciarContador();
+                setTimeout(abrirAccesoRecepcion, 60);
+                return;
+            }
 
             if (h === '#form' || h === '#inscripcion') {
                 formView.style.display = 'block';
@@ -3219,11 +4426,69 @@
         }
 
         // ==========================================
-        // SISTEMA DE RECEPCIÓN (CHECK-IN Y KITS)
+        // SISTEMA DE RECEPCIÓN (PANTALLA COMPLETA · CHECK-IN Y KITS)
         // ==========================================
         let datosRecepcion = { participantes: [], tios: [] };
         let colorSeleccionadoRecepcion = null;
         let filtroEstadoRecepcion = 'todos';
+        let recepcionCargando = false;
+
+        const RCP_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwu-klsU_e4g1PGv6wzn5QUtiHeMqti-pbkfVciElQ94oDpGZkz-KKoyFV8A7MQXshM/exec";
+
+        const RCP_ICONS = {
+            check: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+            circle: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>',
+            box: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
+            boxCheck: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"></path><polyline points="16.5 16.5 18.5 18.5 22 15"></polyline></svg>',
+            chevron: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+            searchEmpty: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>',
+            checkShield: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>',
+            users: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>',
+            inbox: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>',
+            alert: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+        };
+
+        function escapeHtmlRcp(str) {
+            return String(str == null ? '' : str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // Normaliza valores de salud/observaciones para distinguir "vacío / sin novedad" de observaciones reales
+        function obtenerObservacionReal(val) {
+            const raw = String(val == null ? '' : val).trim();
+            if (!raw) return '';
+            const norm = raw.toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[.,;:\-_/()!¡?¿]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            const vacios = [
+                'no', 'ninguna', 'ninguno', 'nada', 'no tengo', 'no tiene',
+                'sin enfermedad', 'sin enfermedades', 'ninguna enfermedad',
+                'ninguna enfermedad tengo', 'sin limitaciones', 'sin restricciones',
+                'normal', 'todo bien', 'n a', 'na', 's d', 'sd', '0'
+            ];
+            if (vacios.includes(norm)) return '';
+            return raw;
+        }
+
+        function obtenerIniciales(nombre) {
+            const limpio = String(nombre || '').trim();
+            if (!limpio) return '—';
+            const partes = limpio.split(/\s+/).filter(w => w.toLowerCase() !== 'y' && w.length > 0);
+            if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
+            return (partes[0][0] + partes[1][0]).toUpperCase();
+        }
+
+        function formatearCedulaVista(ced) {
+            const raw = String(ced || '').trim();
+            const sinSep = raw.replace(/[/,\-\s]/g, '');
+            if (!sinSep) return '';
+            return raw;
+        }
 
         function abrirAccesoRecepcion() {
             const modal = document.getElementById('recepcion-pin-modal');
@@ -3241,100 +4506,148 @@
             if (modal) modal.style.display = 'none';
         }
 
-        function verificarPinRecepcion(e) {
-            e.preventDefault();
-            const input = document.getElementById('recepcion-pin-input');
-            const errEl = document.getElementById('recepcion-pin-error');
-            const btn = document.getElementById('recepcion-pin-btn');
-            const pin = (input ? input.value : '').trim();
-
-            if (pin !== '121997') {
-                errEl.textContent = 'PIN incorrecto. Verificá el código de recepción.';
-                errEl.style.display = 'block';
-                return;
+        function activarShellRecepcion() {
+            const brandLogo = document.getElementById('rcp-brand-logo');
+            if (brandLogo && !brandLogo.getAttribute('src')) {
+                brandLogo.src = DEFAULT_CAMP_LOGO;
             }
+            document.body.classList.add('is-recepcion');
+            document.getElementById('closed-view').style.display = 'none';
+            document.getElementById('form-view').style.display = 'none';
+            document.getElementById('consulta-view').style.display = 'none';
+            document.getElementById('recepcion-view').style.display = 'block';
+            document.title = 'Recepción · MFCJ CAMP 2026';
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
 
-            btn.disabled = true;
-            btn.textContent = 'Cargando...';
-            errEl.style.display = 'none';
+        function renderSkeletonKPIs() {
+            const box = document.getElementById('recepcion-metricas-globales');
+            if (!box) return;
+            box.innerHTML = Array.from({ length: 4 }).map(() => `
+                <div class="rcp-kpi-card" aria-hidden="true">
+                    <div class="rcp-kpi-top">
+                        <div class="rcp-skel" style="width:110px; height:11px;"></div>
+                        <div class="rcp-skel" style="width:42px; height:18px; border-radius:999px;"></div>
+                    </div>
+                    <div class="rcp-kpi-value-row" style="margin:4px 0;">
+                        <div class="rcp-skel" style="width:74px; height:28px;"></div>
+                        <div class="rcp-skel" style="width:46px; height:14px;"></div>
+                    </div>
+                    <div class="rcp-skel" style="width:100%; height:4px; border-radius:999px;"></div>
+                    <div class="rcp-skel" style="width:130px; height:11px;"></div>
+                </div>
+            `).join('');
+        }
 
-            function onDatos(res) {
-                btn.disabled = false;
-                btn.textContent = 'Ingresar';
-                if (res && res.success) {
-                    datosRecepcion = {
-                        participantes: res.participantes || [],
-                        tios: res.tios || []
-                    };
+        function renderSkeletonTeams() {
+            const grid = document.getElementById('recepcion-grid');
+            if (!grid) return;
+            grid.style.display = 'grid';
+            grid.innerHTML = Array.from({ length: 12 }).map(() => `
+                <div class="rcp-team-card" style="pointer-events:none;" aria-hidden="true">
+                    <div class="rcp-team-head">
+                        <div class="rcp-team-id">
+                            <div class="rcp-skel" style="width:12px; height:12px; border-radius:50%;"></div>
+                            <div class="rcp-skel" style="width:86px; height:16px;"></div>
+                        </div>
+                        <div class="rcp-skel" style="width:42px; height:20px; border-radius:6px;"></div>
+                    </div>
+                    <div class="rcp-skel" style="width:100%; height:5px; border-radius:999px;"></div>
+                    <div class="rcp-team-stats">
+                        <div class="rcp-team-stat-col">
+                            <div class="rcp-skel" style="width:48px; height:9px; margin-bottom:4px;"></div>
+                            <div class="rcp-skel" style="width:36px; height:14px;"></div>
+                        </div>
+                        <div class="rcp-team-stat-col">
+                            <div class="rcp-skel" style="width:34px; height:9px; margin-bottom:4px;"></div>
+                            <div class="rcp-skel" style="width:36px; height:14px;"></div>
+                        </div>
+                        <div class="rcp-team-stat-col">
+                            <div class="rcp-skel" style="width:30px; height:9px; margin-bottom:4px;"></div>
+                            <div class="rcp-skel" style="width:44px; height:14px;"></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-                    // Integrar posibles cambios guardados en localStorage
-                    try {
-                        const localSaved = localStorage.getItem('mfcj_recepcion_local');
-                        if (localSaved) {
-                            const parsed = JSON.parse(localSaved);
-                            if (parsed && parsed.participantes) {
-                                parsed.participantes.forEach(lp => {
-                                    const p = datosRecepcion.participantes.find(x => x.cedula === lp.cedula);
-                                    if (p) {
-                                        if (lp.presencia !== undefined) p.presencia = lp.presencia;
-                                        if (lp.entregaKit !== undefined) p.entregaKit = lp.entregaKit;
-                                    }
-                                });
-                            }
-                            if (parsed && parsed.tios) {
-                                parsed.tios.forEach(lt => {
-                                    const t = datosRecepcion.tios.find(x => x.cedula === lt.cedula);
-                                    if (t) {
-                                        if (lt.presencia !== undefined) t.presencia = lt.presencia;
-                                        if (lt.entregaKit !== undefined) t.entregaKit = lt.entregaKit;
-                                    }
-                                });
-                            }
+        function renderSkeletonRows(count = 5) {
+            return `
+                <div class="rcp-group-section" aria-hidden="true">
+                    <div class="rcp-group-header">
+                        <div class="rcp-skel" style="width:120px; height:12px;"></div>
+                    </div>
+                    <div class="rcp-rows-container">
+                        ${Array.from({ length: count }).map(() => `
+                            <div class="rcp-row" style="pointer-events:none;">
+                                <div class="rcp-row-main">
+                                    <div class="rcp-skel" style="width:38px; height:38px; border-radius:10px; flex-shrink:0;"></div>
+                                    <div style="flex:1;">
+                                        <div class="rcp-skel" style="width:180px; max-width:75%; height:15px; margin-bottom:7px;"></div>
+                                        <div class="rcp-skel" style="width:140px; max-width:60%; height:11px;"></div>
+                                    </div>
+                                </div>
+                                <div class="rcp-row-meta">
+                                    <div class="rcp-skel" style="width:58px; height:24px; border-radius:7px;"></div>
+                                    <div class="rcp-skel" style="width:68px; height:24px; border-radius:7px;"></div>
+                                </div>
+                                <div class="rcp-row-actions">
+                                    <div class="rcp-skel" style="width:118px; height:34px; border-radius:9px;"></div>
+                                    <div class="rcp-skel" style="width:118px; height:34px; border-radius:9px;"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function integrarEstadoLocalRecepcion(baseDatos) {
+            try {
+                const localSaved = localStorage.getItem('mfcj_recepcion_local');
+                if (!localSaved) return;
+                const parsed = JSON.parse(localSaved);
+                if (parsed && Array.isArray(parsed.participantes)) {
+                    parsed.participantes.forEach(lp => {
+                        if (!lp.cedula) return;
+                        const p = baseDatos.participantes.find(x => x.cedula === lp.cedula);
+                        if (p) {
+                            if (lp.presencia !== undefined) p.presencia = !!lp.presencia;
+                            if (lp.entregaKit !== undefined) p.entregaKit = !!lp.entregaKit;
                         }
-                    } catch (e) {
-                        console.warn('Error leyendo localStorage:', e);
-                    }
-
-                    cerrarAccesoRecepcion();
-                    mostrarVistaRecepcion();
-                } else {
-                    errEl.textContent = (res && res.message) || 'No se pudieron cargar los datos.';
-                    errEl.style.display = 'block';
+                    });
                 }
+                if (parsed && Array.isArray(parsed.tios)) {
+                    parsed.tios.forEach(lt => {
+                        if (!lt.cedula) return;
+                        const t = baseDatos.tios.find(x => x.cedula === lt.cedula);
+                        if (t) {
+                            if (lt.presencia !== undefined) t.presencia = !!lt.presencia;
+                            if (lt.entregaKit !== undefined) t.entregaKit = !!lt.entregaKit;
+                        }
+                    });
+                }
+            } catch (e) {
+                console.warn('Error leyendo localStorage:', e);
             }
+        }
 
+        function obtenerDatosServidorRecepcion(pin, callback) {
             const esLocal = (typeof isLocalEnvironment !== 'undefined' && isLocalEnvironment) ||
                             location.hostname === 'localhost' ||
                             location.hostname === '127.0.0.1' ||
                             location.protocol === 'file:';
 
-            function consultarRemoto() {
-                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSEPfNFDDqpfHYQilIE3VtLyAx4XSB0hsB36SXhw3yrl0NCvc-PiD0WP3xHWd1wlKU/exec";
-                fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'recepcion', pin: pin }),
-                    redirect: 'follow'
-                })
-                .then(r => r.json())
-                .then(onDatos)
-                .catch(err => {
-                    console.warn('Fallo petición remota, intentando datos locales:', err);
-                    cargarDatosLocalesOFallback();
-                });
-            }
-
             function cargarDatosLocalesOFallback() {
-                fetch('datos-recepcion.json')
+                fetch('datos-recepcion.json?t=' + Date.now())
                     .then(r => {
                         if (!r.ok) throw new Error('HTTP ' + r.status);
                         return r.json();
                     })
-                    .then(onDatos)
+                    .then(callback)
                     .catch(() => {
-                        console.warn('Cargando datos demo de recepción.');
                         const demo = generarDatosRecepcionDemo();
-                        onDatos({
+                        callback({
                             success: true,
                             participantes: demo.participantes,
                             tios: demo.tios
@@ -3342,15 +4655,22 @@
                     });
             }
 
+            function consultarRemoto() {
+                fetch(RCP_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'recepcion', pin: pin }),
+                    redirect: 'follow'
+                })
+                .then(r => r.json())
+                .then(callback)
+                .catch(() => cargarDatosLocalesOFallback());
+            }
+
             if (typeof google !== 'undefined' && google.script && google.script.run) {
                 google.script.run
-                    .withSuccessHandler(onDatos)
-                    .withFailureHandler(err => {
-                        btn.disabled = false;
-                        btn.textContent = 'Ingresar';
-                        errEl.textContent = 'Error de conexión: ' + err;
-                        errEl.style.display = 'block';
-                    })
+                    .withSuccessHandler(callback)
+                    .withFailureHandler(err => callback({ success: false, message: 'Error de conexión: ' + err }))
                     .obtenerDatosRecepcion(pin);
             } else if (esLocal) {
                 cargarDatosLocalesOFallback();
@@ -3359,194 +4679,462 @@
             }
         }
 
+        function verificarPinRecepcion(e) {
+            e.preventDefault();
+            const input = document.getElementById('recepcion-pin-input');
+            const errEl = document.getElementById('recepcion-pin-error');
+            const btn = document.getElementById('recepcion-pin-btn');
+            const pin = (input ? input.value : '').trim();
+
+            if (pin !== '121997') {
+                errEl.textContent = 'Código inválido. Verificá el PIN de recepción.';
+                errEl.style.display = 'block';
+                return;
+            }
+
+            errEl.style.display = 'none';
+            cerrarAccesoRecepcion();
+
+            // Mostrar inmediatamente el panel a pantalla completa con Skeletons
+            activarShellRecepcion();
+            document.getElementById('recepcion-detalle').style.display = 'none';
+            document.getElementById('recepcion-global-results').style.display = 'none';
+            document.getElementById('recepcion-unassigned-wrap').style.display = 'none';
+            document.getElementById('recepcion-global-search-wrap').style.display = 'flex';
+            renderSkeletonKPIs();
+            renderSkeletonTeams();
+
+            const startedAt = Date.now();
+            obtenerDatosServidorRecepcion(pin, function(res) {
+                const elapsed = Date.now() - startedAt;
+                const delay = Math.max(0, 280 - elapsed); // Transición suave de skeleton
+
+                setTimeout(() => {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.textContent = 'Acceder al panel';
+                    }
+                    if (res && res.success) {
+                        datosRecepcion = {
+                            participantes: res.participantes || [],
+                            tios: res.tios || []
+                        };
+                        integrarEstadoLocalRecepcion(datosRecepcion);
+                        mostrarVistaRecepcion();
+                    } else {
+                        const grid = document.getElementById('recepcion-grid');
+                        if (grid) {
+                            grid.style.display = 'block';
+                            grid.innerHTML = renderEmptyStateCard(
+                                RCP_ICONS.inbox,
+                                'No se pudieron cargar las inscripciones',
+                                (res && res.message) || 'Verificá tu conexión e intentá sincronizar nuevamente.',
+                                'Reintentar carga',
+                                'recargarDatosRecepcion()'
+                            );
+                        }
+                    }
+                }, delay);
+            });
+        }
+
+        function recargarDatosRecepcion() {
+            if (recepcionCargando) return;
+            recepcionCargando = true;
+            const icon = document.getElementById('rcp-refresh-icon');
+            if (icon) icon.classList.add('spin-icon');
+
+            if (colorSeleccionadoRecepcion) {
+                const cont = document.getElementById('recepcion-lista-contenido');
+                if (cont) cont.innerHTML = renderSkeletonRows(5);
+            } else {
+                renderSkeletonKPIs();
+                renderSkeletonTeams();
+            }
+
+            const startedAt = Date.now();
+            obtenerDatosServidorRecepcion('121997', function(res) {
+                const delay = Math.max(0, 320 - (Date.now() - startedAt));
+                setTimeout(() => {
+                    recepcionCargando = false;
+                    if (icon) icon.classList.remove('spin-icon');
+                    if (res && res.success) {
+                        datosRecepcion = {
+                            participantes: res.participantes || [],
+                            tios: res.tios || []
+                        };
+                        integrarEstadoLocalRecepcion(datosRecepcion);
+                        actualizarMetricasGlobales();
+                        if (colorSeleccionadoRecepcion) {
+                            actualizarStatsColorSeleccionado();
+                            filtrarListaRecepcion();
+                        } else {
+                            renderizarTarjetasRecepcion();
+                            const q = (document.getElementById('recepcion-global-search').value || '').trim();
+                            if (q) buscarGlobalRecepcion();
+                        }
+                        mostrarToastRecepcion('Datos sincronizados correctamente');
+                    } else {
+                        mostrarToastRecepcion('No se pudo sincronizar con el servidor');
+                    }
+                }, delay);
+            });
+        }
+
         function generarDatosRecepcionDemo() {
             const bases = ["San José Obrero", "Virgen de Fátima", "Espíritu Santo", "San Antonio de Padua", "San Lucas", "Sagrado Corazón de Jesús", "Niño Jesús"];
             const talles = ["P", "M", "G", "XG"];
             const nombres = [
                 "Sady Luján Quiroga", "Zamira Aylen Carrillo", "Tatiana Melissa Franco", "Jorge Valentino Brizueña",
                 "Fernando Emanuel López", "Damaris Paixão", "Kevin Damian Ortiz", "Josias David Ruiz Diaz",
-                "Guillermo Villar", "Matías Benítez", "Camila Rolón", "Lucas Vera",
-                "Sofía Galeano", "Álvaro Coronel", "Luciana Giménez", "Thiago Bogado"
+                "Guillermo Villar", "Matías Benítez", "Camila Rolón", "Lucas Vera"
             ];
 
-            const participantes = [];
-            nombres.forEach((nom, i) => {
-                const color = COLORS_CONFIG[i % COLORS_CONFIG.length].name;
-                participantes.push({
-                    tipo: 'Participante',
-                    nombre: nom,
-                    cedula: String(6000000 + i * 11111),
-                    telefono: '0981' + String(100000 + i * 1234).slice(-6),
-                    base: bases[i % bases.length],
-                    talle: talles[i % talles.length],
-                    contactoEmergencia: '0971' + String(200000 + i * 2345).slice(-6),
-                    enfermedades: i % 3 === 0 ? 'Alergia al polvo' : '',
-                    limitacionesFisicas: i % 4 === 0 ? 'Lesión leve de tobillo' : '',
-                    alimentacion: i % 2 === 0 ? 'Intolerancia a la lactosa' : '',
-                    color: color,
-                    sena: '',
-                    total: 'PAGADO',
-                    pagado: true,
-                    presencia: i % 2 === 0,
-                    entregaKit: i % 3 === 0
-                });
-            });
+            const participantes = nombres.map((nom, i) => ({
+                tipo: 'Participante',
+                nombre: nom,
+                cedula: String(6000000 + i * 11111),
+                telefono: '0981' + String(100000 + i * 1234).slice(-6),
+                base: bases[i % bases.length],
+                talle: talles[i % talles.length],
+                contactoEmergencia: '0971' + String(200000 + i * 2345).slice(-6),
+                enfermedades: i % 4 === 0 ? 'Alergia al polvo' : '',
+                limitacionesFisicas: '',
+                alimentacion: i % 5 === 0 ? 'Intolerancia a la lactosa' : '',
+                color: COLORS_CONFIG[i % COLORS_CONFIG.length].name,
+                sena: '',
+                total: 'PAGADO',
+                pagado: true,
+                presencia: false,
+                entregaKit: false
+            }));
 
-            const tios = [
-                {
-                    tipo: 'Tíos',
-                    nombre: 'Jorge y Griselda',
-                    cedula: '2147585 / 35403',
-                    telefono: '0973510868',
-                    base: 'Virgen de Fátima',
-                    talle: 'XXXG / M',
-                    contactoEmergencia: '0973510868',
-                    llevaVehiculo: 'SÍ',
-                    enfermedades: 'Alergia al cambio climático',
-                    limitacionesFisicas: 'Lesión de rodilla',
-                    alimentacion: 'Tía celíaca',
-                    color: 'Rojo',
-                    sena: '',
-                    total: 'PAGADO',
-                    pagado: true,
-                    presencia: true,
-                    entregaKit: true
-                }
-            ];
-
-            return { participantes, tios };
+            return { participantes, tios: [] };
         }
 
         function mostrarVistaRecepcion() {
-            document.getElementById('closed-view').style.display = 'none';
-            document.getElementById('form-view').style.display = 'none';
-            document.getElementById('consulta-view').style.display = 'none';
-            document.getElementById('recepcion-view').style.display = 'block';
-            document.title = 'Recepción · MFCJ CAMP 2026';
+            activarShellRecepcion();
             actualizarMetricasGlobales();
             volverAGrillaRecepcion();
-            renderizarTarjetasRecepcion();
         }
 
         function cerrarRecepcion() {
+            document.body.classList.remove('is-recepcion');
             document.getElementById('recepcion-view').style.display = 'none';
-            document.getElementById('closed-view').style.display = 'block';
-            document.title = 'MFCJ CAMP 2026 · Inicio';
+            if (location.hash && location.hash.toLowerCase().startsWith('#recepcion')) {
+                history.replaceState(null, '', location.pathname + location.search);
+            }
+            aplicarVistaSegunHash();
+        }
+
+        function renderEmptyStateCard(svgIcon, titulo, descripcion, textoBoton, accionOnclick) {
+            return `
+                <div class="rcp-empty-state">
+                    <div class="rcp-empty-icon">${svgIcon}</div>
+                    <div class="rcp-empty-title">${escapeHtmlRcp(titulo)}</div>
+                    <p class="rcp-empty-desc">${escapeHtmlRcp(descripcion)}</p>
+                    ${textoBoton ? `<button type="button" class="rcp-empty-action" onclick="${accionOnclick}">${escapeHtmlRcp(textoBoton)}</button>` : ''}
+                </div>
+            `;
         }
 
         function actualizarMetricasGlobales() {
+            const box = document.getElementById('recepcion-metricas-globales');
+            if (!box) return;
+
             const parts = datosRecepcion.participantes || [];
-            const presTotal = parts.filter(p => p.presencia).length;
-            const kitTotal = parts.filter(p => p.entregaKit).length;
-            const total = parts.length || 1;
+            const tios = datosRecepcion.tios || [];
 
-            const pctPres = Math.round((presTotal / total) * 100);
-            const pctKit = Math.round((kitTotal / total) * 100);
+            const totalParts = parts.length;
+            const presParts = parts.filter(p => p.presencia).length;
+            const kitParts = parts.filter(p => p.entregaKit).length;
 
-            const elPres = document.getElementById('metric-presencia-total');
-            const elPresSub = document.getElementById('metric-presencia-sub');
-            const elKit = document.getElementById('metric-kit-total');
-            const elKitSub = document.getElementById('metric-kit-sub');
+            const totalTios = tios.length;
+            const presTios = tios.filter(t => t.presencia).length;
+            const kitTios = tios.filter(t => t.entregaKit).length;
 
-            if (elPres) elPres.textContent = presTotal;
-            if (elPresSub) elPresSub.textContent = `/ ${total} (${pctPres}%)`;
-            if (elKit) elKit.textContent = kitTotal;
-            if (elKitSub) elKitSub.textContent = `/ ${total} (${pctKit}%)`;
+            const pendientesParts = Math.max(0, totalParts - presParts);
+            const presSinKit = parts.filter(p => p.presencia && !p.entregaKit).length;
+
+            const pctPres = totalParts > 0 ? Math.round((presParts / totalParts) * 100) : 0;
+            const pctKit = totalParts > 0 ? Math.round((kitParts / totalParts) * 100) : 0;
+            const pctTios = totalTios > 0 ? Math.round((presTios / totalTios) * 100) : 0;
+            const pctPend = totalParts > 0 ? Math.round((pendientesParts / totalParts) * 100) : 0;
+
+            const metaEl = document.getElementById('rcp-equipos-meta');
+            if (metaEl) {
+                metaEl.textContent = totalParts === 0 && totalTios === 0
+                    ? 'Sin registros cargados'
+                    : `${totalParts} jóvenes · ${totalTios} parejas de tíos`;
+            }
+
+            box.innerHTML = `
+                <div class="rcp-kpi-card">
+                    <div class="rcp-kpi-top">
+                        <span class="rcp-kpi-label">Jóvenes Presentes</span>
+                        <span class="rcp-kpi-pill">${pctPres}%</span>
+                    </div>
+                    <div class="rcp-kpi-value-row">
+                        <span class="rcp-kpi-num">${presParts}</span>
+                        <span class="rcp-kpi-denom">/ ${totalParts}</span>
+                    </div>
+                    <div class="rcp-kpi-bar">
+                        <div class="rcp-kpi-bar-fill" style="width:${pctPres}%; background:#193327;"></div>
+                    </div>
+                    <div class="rcp-kpi-foot">${presParts === 0 ? 'Aún sin ingresos registrados' : `${totalParts - presParts} pendientes de llegada`}</div>
+                </div>
+
+                <div class="rcp-kpi-card">
+                    <div class="rcp-kpi-top">
+                        <span class="rcp-kpi-label">Kits Entregados</span>
+                        <span class="rcp-kpi-pill">${pctKit}%</span>
+                    </div>
+                    <div class="rcp-kpi-value-row">
+                        <span class="rcp-kpi-num">${kitParts}</span>
+                        <span class="rcp-kpi-denom">/ ${totalParts}</span>
+                    </div>
+                    <div class="rcp-kpi-bar">
+                        <div class="rcp-kpi-bar-fill" style="width:${pctKit}%; background:#B8742A;"></div>
+                    </div>
+                    <div class="rcp-kpi-foot">${presSinKit > 0 ? `${presSinKit} presentes aún sin kit` : (kitParts === 0 ? 'Sin kits entregados aún' : 'Al día con los presentes')}</div>
+                </div>
+
+                <div class="rcp-kpi-card">
+                    <div class="rcp-kpi-top">
+                        <span class="rcp-kpi-label">Parejas de Tíos</span>
+                        <span class="rcp-kpi-pill">${pctTios}%</span>
+                    </div>
+                    <div class="rcp-kpi-value-row">
+                        <span class="rcp-kpi-num">${presTios}</span>
+                        <span class="rcp-kpi-denom">/ ${totalTios}</span>
+                    </div>
+                    <div class="rcp-kpi-bar">
+                        <div class="rcp-kpi-bar-fill" style="width:${pctTios}%; background:#3D6352;"></div>
+                    </div>
+                    <div class="rcp-kpi-foot">${totalTios === 0 ? 'Sin parejas registradas' : `${kitTios} de ${totalTios} kits entregados`}</div>
+                </div>
+
+                <div class="rcp-kpi-card">
+                    <div class="rcp-kpi-top">
+                        <span class="rcp-kpi-label">Por Acreditar</span>
+                        <span class="rcp-kpi-pill">${pctPend}%</span>
+                    </div>
+                    <div class="rcp-kpi-value-row">
+                        <span class="rcp-kpi-num">${pendientesParts}</span>
+                        <span class="rcp-kpi-denom">jóvenes</span>
+                    </div>
+                    <div class="rcp-kpi-bar">
+                        <div class="rcp-kpi-bar-fill" style="width:${100 - pctPend}%; background:#7A8A82;"></div>
+                    </div>
+                    <div class="rcp-kpi-foot">${pendientesParts === 0 && totalParts > 0 ? 'Asistencia 100% completada' : 'Pendientes de check-in en mesa'}</div>
+                </div>
+            `;
         }
 
         function renderizarTarjetasRecepcion() {
             const grid = document.getElementById('recepcion-grid');
+            const unassignedWrap = document.getElementById('recepcion-unassigned-wrap');
             if (!grid) return;
 
+            const totalRegistros = (datosRecepcion.participantes || []).length + (datosRecepcion.tios || []).length;
+            if (totalRegistros === 0) {
+                grid.style.display = 'block';
+                grid.innerHTML = renderEmptyStateCard(
+                    RCP_ICONS.inbox,
+                    'No hay participantes registrados',
+                    'La planilla oficial aún no contiene inscripciones cargadas para recepción.',
+                    'Sincronizar nuevamente',
+                    'recargarDatosRecepcion()'
+                );
+                if (unassignedWrap) unassignedWrap.style.display = 'none';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            const nombresColores = COLORS_CONFIG.map(c => c.name.toLowerCase());
+
             grid.innerHTML = COLORS_CONFIG.map(c => {
-                const partsColor = datosRecepcion.participantes.filter(p => p.color.toLowerCase() === c.name.toLowerCase());
+                const partsColor = datosRecepcion.participantes.filter(p => (p.color || '').trim().toLowerCase() === c.name.toLowerCase());
+                const tiosColor = datosRecepcion.tios.filter(t => (t.color || '').trim().toLowerCase() === c.name.toLowerCase());
+
                 const cantPart = partsColor.length;
                 const cantPres = partsColor.filter(p => p.presencia).length;
                 const cantKits = partsColor.filter(p => p.entregaKit).length;
-                const cantTios = datosRecepcion.tios.filter(t => t.color.toLowerCase() === c.name.toLowerCase()).length;
-                const dotColor = c.name === 'Blanco' ? '#CBD5E1' : c.hex;
+                const cantTios = tiosColor.length;
+
+                const isBlanco = c.name === 'Blanco';
+                const accentHex = isBlanco ? '#94A3B8' : c.hex;
+                const swatchBg = isBlanco ? '#F8FAFC' : c.hex;
                 const pct = cantPart > 0 ? Math.round((cantPres / cantPart) * 100) : 0;
 
+                const tiosTexto = cantTios === 0
+                    ? '<span class="rcp-team-stat-muted">Sin asignar</span>'
+                    : `${cantTios} ${cantTios === 1 ? 'pareja' : 'parejas'}`;
+
+                const partPresTexto = cantPart === 0
+                    ? '<span class="rcp-team-stat-muted">0</span>'
+                    : `${cantPres} <span>/ ${cantPart}</span>`;
+
+                const partKitTexto = cantPart === 0
+                    ? '<span class="rcp-team-stat-muted">0</span>'
+                    : `${cantKits} <span>/ ${cantPart}</span>`;
+
                 return `
-                    <button type="button" onclick="abrirColorRecepcion('${c.name}')"
-                        style="display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:10px; padding:15px; border-radius:16px; border:2px solid ${c.borderColor}; background:${c.bgLight}; cursor:pointer; text-align:left; transition:all 0.15s ease; box-shadow:0 4px 14px rgba(0,0,0,0.05); position:relative; overflow:hidden;">
-                        <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <span style="width:16px; height:16px; border-radius:50%; background:${dotColor}; border:1px solid rgba(0,0,0,0.15); flex-shrink:0;"></span>
-                                <span style="font-size:1.05rem; font-weight:800; color:${c.textColor || c.hex};">${c.name}</span>
+                    <button type="button" class="rcp-team-card"
+                        style="--team-accent:${accentHex}; --team-bar:${accentHex};"
+                        onclick="abrirColorRecepcion('${c.name}')">
+                        <div class="rcp-team-head">
+                            <div class="rcp-team-id">
+                                <span class="rcp-team-swatch" style="background:${swatchBg};"></span>
+                                <span class="rcp-team-name">${c.name}</span>
                             </div>
-                            <span style="font-size:0.75rem; font-weight:800; color:${c.textColor || c.hex};">${cantPres}/${cantPart}</span>
-                        </div>
-                        
-                        <div style="width:100%; height:5px; background:rgba(0,0,0,0.08); border-radius:999px; overflow:hidden;">
-                            <div style="height:100%; width:${pct}%; background:${c.hex}; border-radius:999px;"></div>
+                            <span class="rcp-team-pct">${cantPart > 0 ? pct + '%' : 'Vacío'}</span>
                         </div>
 
-                        <div style="font-size:0.75rem; color:#475569; font-weight:700; line-height:1.4; width:100%;">
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>🟢 Presentes:</span>
-                                <span><strong>${cantPres}</strong>/${cantPart}</span>
+                        <div class="rcp-team-progress">
+                            <div class="rcp-team-progress-fill" style="width:${pct}%;"></div>
+                        </div>
+
+                        <div class="rcp-team-stats">
+                            <div class="rcp-team-stat-col">
+                                <span class="rcp-team-stat-lbl">Presentes</span>
+                                <span class="rcp-team-stat-val">${partPresTexto}</span>
                             </div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span>🎒 Kits:</span>
-                                <span><strong>${cantKits}</strong>/${cantPart}</span>
+                            <div class="rcp-team-stat-col">
+                                <span class="rcp-team-stat-lbl">Kits</span>
+                                <span class="rcp-team-stat-val">${partKitTexto}</span>
                             </div>
-                            <div style="font-size:0.7rem; color:#64748B; margin-top:2px;">👥 ${cantTios} parejas tíos</div>
+                            <div class="rcp-team-stat-col">
+                                <span class="rcp-team-stat-lbl">Tíos</span>
+                                <span class="rcp-team-stat-val">${tiosTexto}</span>
+                            </div>
                         </div>
                     </button>
                 `;
             }).join('');
+
+            // Detectar registros sin color asignado para no perder ningún dato vacío
+            if (unassignedWrap) {
+                const sinColorParts = datosRecepcion.participantes.filter(p => !nombresColores.includes((p.color || '').trim().toLowerCase()));
+                const sinColorTios = datosRecepcion.tios.filter(t => !nombresColores.includes((t.color || '').trim().toLowerCase()));
+                const totalSinColor = sinColorParts.length + sinColorTios.length;
+
+                if (totalSinColor > 0 && !colorSeleccionadoRecepcion) {
+                    unassignedWrap.style.display = 'block';
+                    unassignedWrap.innerHTML = `
+                        <button type="button" onclick="abrirColorRecepcion('__SIN_COLOR__')"
+                            style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 18px; border-radius:12px; background:#FFFFFF; border:1px dashed #CBC3B4; color:#2C3E35; font-family:inherit; font-size:0.83rem; cursor:pointer; text-align:left;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="width:10px; height:10px; border-radius:50%; background:#94A3B8;"></span>
+                                <span><strong>Registros sin equipo asignado</strong> · ${sinColorParts.length} ${sinColorParts.length === 1 ? 'joven' : 'jóvenes'}${sinColorTios.length ? ` y ${sinColorTios.length} ${sinColorTios.length === 1 ? 'pareja de tíos' : 'parejas de tíos'}` : ''} sin color en planilla</span>
+                            </div>
+                            <span style="font-weight:700; color:#193327;">Revisar ›</span>
+                        </button>
+                    `;
+                } else {
+                    unassignedWrap.style.display = 'none';
+                }
+            }
+        }
+
+        function coincideColorEquipo(itemColor, colorTarget) {
+            const limpio = String(itemColor || '').trim().toLowerCase();
+            if (colorTarget === '__SIN_COLOR__') {
+                const oficiales = COLORS_CONFIG.map(c => c.name.toLowerCase());
+                return !oficiales.includes(limpio);
+            }
+            return limpio === String(colorTarget || '').toLowerCase();
         }
 
         function abrirColorRecepcion(colorName) {
             colorSeleccionadoRecepcion = colorName;
             filtroEstadoRecepcion = 'todos';
+
             document.getElementById('recepcion-global-search-wrap').style.display = 'none';
             document.getElementById('recepcion-global-results').style.display = 'none';
             document.getElementById('recepcion-grid').style.display = 'none';
-            document.getElementById('recepcion-detalle').style.display = 'block';
-            document.getElementById('recepcion-search').value = '';
+            const unWrap = document.getElementById('recepcion-unassigned-wrap');
+            if (unWrap) unWrap.style.display = 'none';
 
-            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === colorName.toLowerCase());
-            const badge = document.getElementById('recepcion-color-badge');
-            if (c && badge) {
-                badge.textContent = 'Equipo ' + c.name;
-                badge.style.background = c.bgLight;
-                badge.style.color = c.textColor || c.hex;
-                badge.style.border = '1.5px solid ' + c.borderColor;
+            document.getElementById('recepcion-detalle').style.display = 'block';
+            const searchIn = document.getElementById('recepcion-search');
+            if (searchIn) searchIn.value = '';
+            const clearBtn = document.getElementById('rcp-local-clear');
+            if (clearBtn) clearBtn.style.display = 'none';
+
+            const swatch = document.getElementById('recepcion-color-swatch');
+            const title = document.getElementById('recepcion-color-title');
+            const sub = document.getElementById('recepcion-color-sub');
+
+            if (colorName === '__SIN_COLOR__') {
+                if (swatch) swatch.style.background = '#94A3B8';
+                if (title) title.textContent = 'Sin equipo asignado';
+                if (sub) sub.textContent = 'Inscripciones pendientes de asignación de color en la planilla';
+            } else {
+                const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === colorName.toLowerCase());
+                if (c) {
+                    if (swatch) swatch.style.background = c.name === 'Blanco' ? '#F8FAFC' : c.hex;
+                    if (title) title.textContent = 'Equipo ' + c.name;
+                    if (sub) sub.textContent = 'Listado nominal de acreditación y entrega de indumentaria';
+                }
             }
 
-            // Resetear botones de filtro
-            document.querySelectorAll('.recepcion-filtro-btn').forEach((b, i) => {
-                if (i === 0) {
-                    b.style.background = 'var(--green-dark)';
-                    b.style.color = '#FFFFFF';
-                    b.style.borderColor = 'var(--green-dark)';
-                } else {
-                    b.style.background = '#FFFFFF';
-                    b.style.color = 'var(--text-main)';
-                    b.style.borderColor = 'var(--border-color)';
-                }
+            document.querySelectorAll('.rcp-seg-btn').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-filtro') === 'todos');
             });
 
             actualizarStatsColorSeleccionado();
-            filtrarListaRecepcion();
+
+            // Skeleton breve para transición visual limpia
+            const cont = document.getElementById('recepcion-lista-contenido');
+            if (cont) {
+                cont.innerHTML = renderSkeletonRows(4);
+                setTimeout(() => {
+                    if (colorSeleccionadoRecepcion === colorName) {
+                        filtrarListaRecepcion();
+                    }
+                }, 140);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function actualizarStatsColorSeleccionado() {
             if (!colorSeleccionadoRecepcion) return;
-            const parts = datosRecepcion.participantes.filter(p => p.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase());
+            const parts = datosRecepcion.participantes.filter(p => coincideColorEquipo(p.color, colorSeleccionadoRecepcion));
+            const tios = datosRecepcion.tios.filter(t => coincideColorEquipo(t.color, colorSeleccionadoRecepcion));
+
             const cantPres = parts.filter(p => p.presencia).length;
             const cantKits = parts.filter(p => p.entregaKit).length;
-            const cantTios = datosRecepcion.tios.filter(t => t.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase()).length;
+
+            // Contadores de los tabs segmentados (jóvenes + tíos del equipo)
+            const todosEquipo = [...parts, ...tios];
+            const countTodos = todosEquipo.length;
+            const countSinLlegar = todosEquipo.filter(x => !x.presencia).length;
+            const countSinKit = todosEquipo.filter(x => x.presencia && !x.entregaKit).length;
+            const countListos = todosEquipo.filter(x => x.presencia && x.entregaKit).length;
+
+            const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            setTxt('seg-count-todos', countTodos);
+            setTxt('seg-count-sin_llegar', countSinLlegar);
+            setTxt('seg-count-sin_kit', countSinKit);
+            setTxt('seg-count-listos', countListos);
 
             const box = document.getElementById('recepcion-color-stats');
             if (box) {
                 box.innerHTML = `
-                    <div>👤 <strong>${parts.length}</strong> jóvenes · 👥 <strong>${cantTios}</strong> tíos</div>
-                    <div style="display:flex; gap:12px;">
-                        <span>🟢 Presentes: <strong>${cantPres}/${parts.length}</strong></span>
-                        <span>🎒 Kits: <strong>${cantKits}/${parts.length}</strong></span>
+                    <div class="rcp-mini-metric">
+                        <span class="rcp-mini-metric-lbl">Integrantes</span>
+                        <span class="rcp-mini-metric-val">${parts.length} jóvenes · ${tios.length} ${tios.length === 1 ? 'pareja' : 'parejas'}</span>
+                    </div>
+                    <div class="rcp-mini-divider"></div>
+                    <div class="rcp-mini-metric">
+                        <span class="rcp-mini-metric-lbl">Presentes</span>
+                        <span class="rcp-mini-metric-val">${cantPres} / ${parts.length}</span>
+                    </div>
+                    <div class="rcp-mini-divider"></div>
+                    <div class="rcp-mini-metric">
+                        <span class="rcp-mini-metric-lbl">Kits Jóvenes</span>
+                        <span class="rcp-mini-metric-val">${cantKits} / ${parts.length}</span>
                     </div>
                 `;
             }
@@ -3554,15 +5142,26 @@
 
         function setFiltroRecepcion(filtro, btnEl) {
             filtroEstadoRecepcion = filtro;
-            document.querySelectorAll('.recepcion-filtro-btn').forEach(b => {
-                b.style.background = '#FFFFFF';
-                b.style.color = 'var(--text-main)';
-                b.style.borderColor = 'var(--border-color)';
+            document.querySelectorAll('.rcp-seg-btn').forEach(b => {
+                b.classList.toggle('active', b === btnEl || b.getAttribute('data-filtro') === filtro);
             });
-            if (btnEl) {
-                btnEl.style.background = 'var(--green-dark)';
-                btnEl.style.color = '#FFFFFF';
-                btnEl.style.borderColor = 'var(--green-dark)';
+            filtrarListaRecepcion();
+        }
+
+        function limpiarBusquedaGlobalRecepcion() {
+            const inp = document.getElementById('recepcion-global-search');
+            if (inp) {
+                inp.value = '';
+                inp.focus();
+            }
+            buscarGlobalRecepcion();
+        }
+
+        function limpiarBusquedaLocalRecepcion() {
+            const inp = document.getElementById('recepcion-search');
+            if (inp) {
+                inp.value = '';
+                inp.focus();
             }
             filtrarListaRecepcion();
         }
@@ -3570,10 +5169,12 @@
         function volverAGrillaRecepcion() {
             colorSeleccionadoRecepcion = null;
             document.getElementById('recepcion-detalle').style.display = 'none';
-            document.getElementById('recepcion-global-search-wrap').style.display = 'block';
-            document.getElementById('recepcion-global-search').value = '';
+            document.getElementById('recepcion-global-search-wrap').style.display = 'flex';
+            const gSearch = document.getElementById('recepcion-global-search');
+            if (gSearch) gSearch.value = '';
+            const gClear = document.getElementById('rcp-global-clear');
+            if (gClear) gClear.style.display = 'none';
             document.getElementById('recepcion-global-results').style.display = 'none';
-            document.getElementById('recepcion-grid').style.display = 'grid';
             actualizarMetricasGlobales();
             renderizarTarjetasRecepcion();
         }
@@ -3593,16 +5194,14 @@
                     .withFailureHandler(err => console.warn('Error sincronizando con Sheets:', err))
                     .actualizarRecepcion(tipo, cedula, campo, valor);
             } else {
-                const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSEPfNFDDqpfHYQilIE3VtLyAx4XSB0hsB36SXhw3yrl0NCvc-PiD0WP3xHWd1wlKU/exec";
-                fetch(APPS_SCRIPT_URL, {
+                fetch(RCP_APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: 'actualizarRecepcion', tipo, cedula, campo, valor }),
                     redirect: 'follow'
                 })
                 .then(r => r.json())
-                .then(r => console.log('Remoto OK:', r))
-                .catch(err => console.warn('Aviso conexión remota (guardado en local):', err));
+                .catch(() => {});
             }
         }
 
@@ -3611,29 +5210,16 @@
             if (!toast) {
                 toast = document.createElement('div');
                 toast.id = 'recepcion-toast';
-                toast.style.position = 'fixed';
-                toast.style.bottom = '24px';
-                toast.style.left = '50%';
-                toast.style.transform = 'translateX(-50%)';
-                toast.style.background = '#193327';
-                toast.style.color = '#FFFFFF';
-                toast.style.padding = '10px 18px';
-                toast.style.borderRadius = '999px';
-                toast.style.fontWeight = '700';
-                toast.style.fontSize = '0.84rem';
-                toast.style.boxShadow = '0 10px 30px rgba(0,0,0,0.35)';
-                toast.style.zIndex = '100000';
-                toast.style.pointerEvents = 'none';
-                toast.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                toast.style.cssText = 'position:fixed; bottom:24px; right:24px; background:#15251D; color:#FFFFFF; padding:11px 18px; border-radius:10px; font-weight:600; font-size:0.82rem; box-shadow:0 12px 28px rgba(0,0,0,0.24); border:1px solid rgba(255,255,255,0.08); z-index:100000; pointer-events:none; transition:opacity 0.22s ease, transform 0.22s ease;';
                 document.body.appendChild(toast);
             }
             toast.textContent = texto;
             toast.style.opacity = '1';
-            toast.style.transform = 'translateX(-50%) translateY(0)';
+            toast.style.transform = 'translateY(0)';
             clearTimeout(toast._timeout);
             toast._timeout = setTimeout(() => {
                 toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(10px)';
+                toast.style.transform = 'translateY(8px)';
             }, 1800);
         }
 
@@ -3646,11 +5232,10 @@
             guardarCambiosRecepcionLocal();
             sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'presencia', item.presencia);
 
-            mostrarToastRecepcion(item.presencia ? `🟢 Presencia marcada: ${item.nombre}` : `⚪ Presencia desmarcada: ${item.nombre}`);
+            mostrarToastRecepcion(item.presencia ? `Asistencia registrada: ${item.nombre || 'Participante'}` : `Asistencia removida: ${item.nombre || 'Participante'}`);
             actualizarMetricasGlobales();
             actualizarStatsColorSeleccionado();
 
-            // Refrescar vistas
             if (colorSeleccionadoRecepcion) {
                 filtrarListaRecepcion();
             } else {
@@ -3664,7 +5249,6 @@
             if (!item) return;
 
             item.entregaKit = !item.entregaKit;
-            // Si le entrega el kit y no estaba marcado presente, se marca automáticamente presente también
             if (item.entregaKit && !item.presencia) {
                 item.presencia = true;
                 sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'presencia', true);
@@ -3673,11 +5257,10 @@
             guardarCambiosRecepcionLocal();
             sincronizarCambioRecepcionRemoto(item.tipo, item.cedula, 'entregaKit', item.entregaKit);
 
-            mostrarToastRecepcion(item.entregaKit ? `🎒 Kit entregado: ${item.nombre}` : `📦 Kit desmarcado: ${item.nombre}`);
+            mostrarToastRecepcion(item.entregaKit ? `Kit entregado: ${item.nombre || 'Participante'}` : `Entrega de kit revertida: ${item.nombre || 'Participante'}`);
             actualizarMetricasGlobales();
             actualizarStatsColorSeleccionado();
 
-            // Refrescar vistas
             if (colorSeleccionadoRecepcion) {
                 filtrarListaRecepcion();
             } else {
@@ -3685,140 +5268,317 @@
             }
         }
 
-        function renderItemRecepcion(item, idx, tipoLista) {
-            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').toLowerCase());
-            const colorTag = c ? `<span style="font-size:0.7rem; font-weight:800; padding:2px 7px; border-radius:999px; background:${c.bgLight}; color:${c.textColor || c.hex}; border:1px solid ${c.borderColor};">${c.name}</span>` : '';
-            
-            // Botón de Presencia
+        function renderItemRecepcion(item, idx, tipoLista, mostrarTagEquipo) {
+            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').trim().toLowerCase());
+            const swatchColor = c ? (c.name === 'Blanco' ? '#E2E8F0' : c.hex) : '#94A3B8';
+
+            const teamPill = mostrarTagEquipo ? (c
+                ? `<span class="rcp-team-pill-sm"><span style="width:7px; height:7px; border-radius:50%; background:${swatchColor}; box-shadow:inset 0 0 0 1px rgba(0,0,0,0.15);"></span>${escapeHtmlRcp(c.name)}</span>`
+                : `<span class="rcp-team-pill-sm" style="color:#8A9790;">Sin color</span>`
+            ) : '';
+
+            // Evaluación limpia de campos potencialmente vacíos
+            const nombreLimpio = String(item.nombre || '').replace(/^y$/i, '').trim();
+            const nombreHtml = nombreLimpio
+                ? `<span class="rcp-person-name">${escapeHtmlRcp(nombreLimpio)}</span>`
+                : `<span class="rcp-person-name rcp-empty-inline">Nombre no registrado</span>`;
+
+            const cedulaVal = formatearCedulaVista(item.cedula);
+            const cedulaHtml = cedulaVal
+                ? `<span>CI ${escapeHtmlRcp(cedulaVal)}</span>`
+                : `<span class="rcp-empty-inline">CI sin dato</span>`;
+
+            const baseLimpia = String(item.base || '').trim();
+            const baseHtml = baseLimpia
+                ? `<span>${escapeHtmlRcp(baseLimpia)}</span>`
+                : `<span class="rcp-empty-inline">Base no especificada</span>`;
+
+            const talleRaw = String(item.talle || '').replace(/^\/\s*$/, '').trim();
+            const talleBadge = talleRaw
+                ? `<span class="rcp-badge-neutral">Talle ${escapeHtmlRcp(talleRaw)}</span>`
+                : `<span class="rcp-badge-neutral is-empty">Talle s/d</span>`;
+
+            const obsMedica = obtenerObservacionReal(item.enfermedades) ||
+                              obtenerObservacionReal(item.limitacionesFisicas) ||
+                              obtenerObservacionReal(item.alimentacion);
+
+            const healthIndicator = obsMedica
+                ? `<span class="rcp-health-dot" title="Contiene observaciones médicas o alimentarias">${RCP_ICONS.alert}<span>Ficha médica</span></span>`
+                : '';
+
+            const payBadge = item.pagado
+                ? `<span class="rcp-badge-pay paid"><span class="rcp-pay-dot"></span>Pagado</span>`
+                : `<span class="rcp-badge-pay pending"><span class="rcp-pay-dot"></span>Pago pendiente</span>`;
+
             const btnPresencia = item.presencia ? `
-                <button type="button" onclick="event.stopPropagation(); alternarPresencia('${tipoLista}', ${idx})"
-                    style="padding:8px 12px; border-radius:10px; border:1.5px solid #16A34A; background:#DCFCE7; color:#166534; font-size:0.76rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:transform 0.1s ease;">
-                    <span>🟢</span><span>Presente</span>
+                <button type="button" class="rcp-action-btn active-presencia" onclick="event.stopPropagation(); alternarPresencia('${tipoLista}', ${idx})">
+                    ${RCP_ICONS.check}
+                    <span>Presente</span>
                 </button>
             ` : `
-                <button type="button" onclick="event.stopPropagation(); alternarPresencia('${tipoLista}', ${idx})"
-                    style="padding:8px 12px; border-radius:10px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#64748B; font-size:0.76rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:transform 0.1s ease;">
-                    <span>⚪</span><span>Llegada</span>
+                <button type="button" class="rcp-action-btn" onclick="event.stopPropagation(); alternarPresencia('${tipoLista}', ${idx})">
+                    ${RCP_ICONS.circle}
+                    <span>Marcar llegada</span>
                 </button>
             `;
 
-            // Botón de Entrega de Kit
             const btnKit = item.entregaKit ? `
-                <button type="button" onclick="event.stopPropagation(); alternarKit('${tipoLista}', ${idx})"
-                    style="padding:8px 12px; border-radius:10px; border:1.5px solid #2563EB; background:#DBEAFE; color:#1D4ED8; font-size:0.76rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:transform 0.1s ease;">
-                    <span>🎒</span><span>Kit Entregado</span>
+                <button type="button" class="rcp-action-btn active-kit" onclick="event.stopPropagation(); alternarKit('${tipoLista}', ${idx})">
+                    ${RCP_ICONS.boxCheck}
+                    <span>Kit entregado</span>
                 </button>
             ` : `
-                <button type="button" onclick="event.stopPropagation(); alternarKit('${tipoLista}', ${idx})"
-                    style="padding:8px 12px; border-radius:10px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#64748B; font-size:0.76rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:transform 0.1s ease;">
-                    <span>📦</span><span>Entregar Kit</span>
+                <button type="button" class="rcp-action-btn" onclick="event.stopPropagation(); alternarKit('${tipoLista}', ${idx})">
+                    ${RCP_ICONS.box}
+                    <span>Entregar kit</span>
                 </button>
             `;
+
+            const rowStateClass = [
+                'rcp-row',
+                item.presencia ? 'is-present' : '',
+                (item.presencia && item.entregaKit) ? 'is-complete' : ''
+            ].filter(Boolean).join(' ');
 
             return `
-                <div onclick="abrirFichaParticipante('${tipoLista}', ${idx})"
-                    style="width:100%; display:flex; flex-direction:column; gap:10px; padding:12px 14px; border-radius:14px; background:#FFFFFF; border:1.5px solid ${item.presencia ? '#86EFAC' : 'var(--border-color)'}; margin-bottom:10px; cursor:pointer; text-align:left; transition:all 0.15s ease; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
-                    
-                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
-                        <div style="min-width:0; flex:1;">
-                            <div style="font-weight:800; font-size:0.95rem; color:var(--green-dark); display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                                <span>${item.nombre || 'Sin nombre'}</span>
-                                ${colorTag}
+                <div class="${rowStateClass}" onclick="abrirFichaParticipante('${tipoLista}', ${idx})">
+                    <div class="rcp-row-main">
+                        <div class="rcp-avatar">${escapeHtmlRcp(obtenerIniciales(nombreLimpio))}</div>
+                        <div class="rcp-person-info">
+                            <div class="rcp-person-name-row">
+                                ${nombreHtml}
+                                ${teamPill}
+                                ${healthIndicator}
                             </div>
-                            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:3px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                                <span>CI: ${item.cedula || '-'}</span>
-                                <span>·</span>
-                                <span>${item.base || '-'}</span>
+                            <div class="rcp-person-sub">
+                                ${cedulaHtml}
+                                <span class="rcp-sub-sep">·</span>
+                                ${baseHtml}
                             </div>
-                        </div>
-
-                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0;">
-                            <span style="font-size:0.72rem; font-weight:800; padding:2px 8px; border-radius:6px; background:#F1F5F9; color:#334155; border:1px solid #E2D9CA;">
-                                👕 ${item.talle || 'Sin talle'}
-                            </span>
-                            <span style="font-size:0.7rem; font-weight:800; padding:2px 7px; border-radius:999px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
-                                ${item.pagado ? '✅ Pago' : '⏳ Pendiente'}
-                            </span>
                         </div>
                     </div>
 
-                    <!-- Botones de Acción Rápida -->
-                    <div style="display:flex; gap:8px; align-items:center; justify-content:flex-end; border-top:1px dashed #F1ECE1; padding-top:8px;">
+                    <div class="rcp-row-meta">
+                        ${talleBadge}
+                        ${payBadge}
+                    </div>
+
+                    <div class="rcp-row-actions">
                         ${btnPresencia}
                         ${btnKit}
-                        <span style="color:var(--text-muted); font-size:0.9rem; margin-left:2px;">›</span>
+                        <span class="rcp-row-chevron" aria-hidden="true">${RCP_ICONS.chevron}</span>
                     </div>
                 </div>
             `;
         }
 
         function buscarGlobalRecepcion() {
-            const q = (document.getElementById('recepcion-global-search').value || '').trim().toLowerCase();
+            const inputEl = document.getElementById('recepcion-global-search');
+            const rawQ = (inputEl ? inputEl.value : '').trim();
+            const q = rawQ.toLowerCase();
             const grid = document.getElementById('recepcion-grid');
             const resBox = document.getElementById('recepcion-global-results');
+            const clearBtn = document.getElementById('rcp-global-clear');
+            const unWrap = document.getElementById('recepcion-unassigned-wrap');
+
+            if (clearBtn) clearBtn.style.display = rawQ ? 'inline-flex' : 'none';
 
             if (!q) {
                 resBox.style.display = 'none';
-                grid.style.display = 'grid';
+                renderizarTarjetasRecepcion();
                 return;
             }
 
             grid.style.display = 'none';
+            if (unWrap) unWrap.style.display = 'none';
             resBox.style.display = 'block';
+
+            const qDigits = q.replace(/\D/g, '');
+            const matchPersona = (p) => {
+                const nom = String(p.nombre || '').toLowerCase();
+                const ced = String(p.cedula || '').toLowerCase();
+                const cedDigits = ced.replace(/\D/g, '');
+                const base = String(p.base || '').toLowerCase();
+                return nom.includes(q) || ced.includes(q) || base.includes(q) || (qDigits.length >= 3 && cedDigits.includes(qDigits));
+            };
 
             const parts = datosRecepcion.participantes
                 .map((p, i) => ({ item: p, idx: i }))
-                .filter(x => x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q));
+                .filter(x => matchPersona(x.item));
 
             const tios = datosRecepcion.tios
                 .map((t, i) => ({ item: t, idx: i }))
-                .filter(x => x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q));
+                .filter(x => matchPersona(x.item));
 
-            let html = `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:4px 0 8px;">👤 Participantes (${parts.length})</h4>`;
-            html += parts.length ? parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:10px;">Sin coincidencias.</p>';
+            if (parts.length === 0 && tios.length === 0) {
+                resBox.innerHTML = renderEmptyStateCard(
+                    RCP_ICONS.searchEmpty,
+                    'Sin coincidencias para «' + rawQ + '»',
+                    'No encontramos ningún participante ni pareja de tíos con ese nombre, base o número de documento.',
+                    'Limpiar búsqueda',
+                    'limpiarBusquedaGlobalRecepcion()'
+                );
+                return;
+            }
 
-            html += `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:12px 0 8px;">👥 Tíos (${tios.length})</h4>`;
-            html += tios.length ? tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin coincidencias.</p>';
+            let html = '';
+            if (parts.length > 0) {
+                html += `
+                    <div class="rcp-group-section">
+                        <div class="rcp-group-header">
+                            <span class="rcp-group-title">Jóvenes Participantes <span class="rcp-group-count">${parts.length}</span></span>
+                        </div>
+                        <div class="rcp-rows-container">
+                            ${parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes', true)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (tios.length > 0) {
+                html += `
+                    <div class="rcp-group-section">
+                        <div class="rcp-group-header">
+                            <span class="rcp-group-title">Parejas de Tíos <span class="rcp-group-count">${tios.length}</span></span>
+                        </div>
+                        <div class="rcp-rows-container">
+                            ${tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios', true)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
 
             resBox.innerHTML = html;
         }
 
         function filtrarListaRecepcion() {
             if (!colorSeleccionadoRecepcion) return;
-            const q = (document.getElementById('recepcion-search').value || '').trim().toLowerCase();
+            const searchEl = document.getElementById('recepcion-search');
+            const rawQ = (searchEl ? searchEl.value : '').trim();
+            const q = rawQ.toLowerCase();
+            const qDigits = q.replace(/\D/g, '');
+            const clearBtn = document.getElementById('rcp-local-clear');
+            if (clearBtn) clearBtn.style.display = rawQ ? 'inline-flex' : 'none';
+
             const cont = document.getElementById('recepcion-lista-contenido');
+            if (!cont) return;
 
-            let parts = datosRecepcion.participantes
+            const basePartsEquipo = datosRecepcion.participantes
                 .map((p, i) => ({ item: p, idx: i }))
-                .filter(x =>
-                    x.item.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
-                    (!q || x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q))
-                );
+                .filter(x => coincideColorEquipo(x.item.color, colorSeleccionadoRecepcion));
 
-            let tios = datosRecepcion.tios
+            const baseTiosEquipo = datosRecepcion.tios
                 .map((t, i) => ({ item: t, idx: i }))
-                .filter(x =>
-                    x.item.color.toLowerCase() === colorSeleccionadoRecepcion.toLowerCase() &&
-                    (!q || x.item.nombre.toLowerCase().includes(q) || x.item.cedula.toLowerCase().includes(q))
-                );
+                .filter(x => coincideColorEquipo(x.item.color, colorSeleccionadoRecepcion));
 
-            // Aplicar filtro de estado
-            if (filtroEstadoRecepcion === 'sin_llegar') {
-                parts = parts.filter(x => !x.item.presencia);
-                tios = tios.filter(x => !x.item.presencia);
-            } else if (filtroEstadoRecepcion === 'sin_kit') {
-                parts = parts.filter(x => x.item.presencia && !x.item.entregaKit);
-                tios = tios.filter(x => x.item.presencia && !x.item.entregaKit);
-            } else if (filtroEstadoRecepcion === 'listos') {
-                parts = parts.filter(x => x.item.presencia && x.item.entregaKit);
-                tios = tios.filter(x => x.item.presencia && x.item.entregaKit);
+            // Si el equipo completo no tiene absolutamente a nadie asignado
+            if (basePartsEquipo.length === 0 && baseTiosEquipo.length === 0) {
+                cont.innerHTML = renderEmptyStateCard(
+                    RCP_ICONS.inbox,
+                    'Equipo sin integrantes asignados',
+                    'Todavía no hay jóvenes ni parejas de tíos asignados a este color en la planilla oficial.',
+                    'Volver a equipos',
+                    'volverAGrillaRecepcion()'
+                );
+                return;
             }
 
-            let html = `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:8px 0;">👤 Jóvenes (${parts.length})</h4>`;
-            html += parts.length ? parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">Sin participantes en esta categoría.</p>';
+            const pasaTexto = (p) => {
+                if (!q) return true;
+                const nom = String(p.nombre || '').toLowerCase();
+                const ced = String(p.cedula || '').toLowerCase();
+                const cedDigits = ced.replace(/\D/g, '');
+                const base = String(p.base || '').toLowerCase();
+                return nom.includes(q) || ced.includes(q) || base.includes(q) || (qDigits.length >= 2 && cedDigits.includes(qDigits));
+            };
 
-            html += `<h4 style="font-size:0.82rem; text-transform:uppercase; color:var(--green-matte); margin:14px 0 8px;">👥 Parejas de Tíos (${tios.length})</h4>`;
-            html += tios.length ? tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios')).join('') : '<p style="font-size:0.82rem; color:var(--text-muted);">Sin tíos en esta categoría.</p>';
+            const pasaEstado = (p) => {
+                if (filtroEstadoRecepcion === 'sin_llegar') return !p.presencia;
+                if (filtroEstadoRecepcion === 'sin_kit') return p.presencia && !p.entregaKit;
+                if (filtroEstadoRecepcion === 'listos') return p.presencia && p.entregaKit;
+                return true;
+            };
+
+            const parts = basePartsEquipo.filter(x => pasaTexto(x.item) && pasaEstado(x.item));
+            const tios = baseTiosEquipo.filter(x => pasaTexto(x.item) && pasaEstado(x.item));
+
+            // Si ambas listas quedan vacías por búsqueda o por filtro de estado, mostrar Empty State contextual rico
+            if (parts.length === 0 && tios.length === 0) {
+                if (rawQ) {
+                    cont.innerHTML = renderEmptyStateCard(
+                        RCP_ICONS.searchEmpty,
+                        'Sin resultados en este equipo',
+                        `No encontramos coincidencias para «${rawQ}» con el filtro seleccionado.`,
+                        'Limpiar filtro de texto',
+                        'limpiarBusquedaLocalRecepcion()'
+                    );
+                    return;
+                }
+                if (filtroEstadoRecepcion === 'sin_llegar') {
+                    cont.innerHTML = renderEmptyStateCard(
+                        RCP_ICONS.checkShield,
+                        'Asistencia completa en este equipo',
+                        'Todos los integrantes asignados a este color ya registraron su llegada.',
+                        'Ver todos los integrantes',
+                        "setFiltroRecepcion('todos')"
+                    );
+                    return;
+                }
+                if (filtroEstadoRecepcion === 'sin_kit') {
+                    cont.innerHTML = renderEmptyStateCard(
+                        RCP_ICONS.checkShield,
+                        'Sin entregas de kit pendientes',
+                        'Ningún integrante presente tiene pendiente el retiro de su kit oficial.',
+                        'Ver lista completa',
+                        "setFiltroRecepcion('todos')"
+                    );
+                    return;
+                }
+                if (filtroEstadoRecepcion === 'listos') {
+                    cont.innerHTML = renderEmptyStateCard(
+                        RCP_ICONS.inbox,
+                        'Aún no hay acreditaciones completadas',
+                        'Cuando registres tanto la llegada como la entrega de kit de una persona, aparecerá en esta vista.',
+                        'Ver pendientes de llegada',
+                        "setFiltroRecepcion('sin_llegar')"
+                    );
+                    return;
+                }
+            }
+
+            let html = `
+                <div class="rcp-group-section">
+                    <div class="rcp-group-header">
+                        <span class="rcp-group-title">Jóvenes <span class="rcp-group-count">${parts.length}</span></span>
+                    </div>
+                    ${parts.length > 0 ? `
+                        <div class="rcp-rows-container">
+                            ${parts.map(x => renderItemRecepcion(x.item, x.idx, 'participantes', false)).join('')}
+                        </div>
+                    ` : `
+                        <div class="rcp-empty-compact">
+                            ${RCP_ICONS.users}
+                            <span>${basePartsEquipo.length === 0 ? 'No hay jóvenes asignados a este color.' : 'Ningún joven coincide con el filtro actual.'}</span>
+                        </div>
+                    `}
+                </div>
+
+                <div class="rcp-group-section">
+                    <div class="rcp-group-header">
+                        <span class="rcp-group-title">Parejas de Tíos <span class="rcp-group-count">${tios.length}</span></span>
+                    </div>
+                    ${tios.length > 0 ? `
+                        <div class="rcp-rows-container">
+                            ${tios.map(x => renderItemRecepcion(x.item, x.idx, 'tios', false)).join('')}
+                        </div>
+                    ` : `
+                        <div class="rcp-empty-compact">
+                            ${RCP_ICONS.users}
+                            <span>${baseTiosEquipo.length === 0 ? 'Este equipo aún no tiene parejas de tíos asignadas en planilla.' : 'Ninguna pareja de tíos coincide con el filtro seleccionado.'}</span>
+                        </div>
+                    `}
+                </div>
+            `;
 
             cont.innerHTML = html;
         }
@@ -3828,94 +5588,101 @@
             const item = lista[idx];
             if (!item) return;
 
-            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').toLowerCase());
+            const c = COLORS_CONFIG.find(x => x.name.toLowerCase() === (item.color || '').trim().toLowerCase());
             const body = document.getElementById('recepcion-ficha-body');
-            const badgeColor = c ? `<span style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:800; background:${c.bgLight}; color:${c.textColor || c.hex}; border:1.5px solid ${c.borderColor};">Equipo ${c.name}</span>` : '';
+            const swatchColor = c ? (c.name === 'Blanco' ? '#E2E8F0' : c.hex) : '#94A3B8';
 
-            const tieneSalud = (item.enfermedades && item.enfermedades !== 'Ninguna' && item.enfermedades !== 'No') ||
-                               (item.limitacionesFisicas && item.limitacionesFisicas !== 'Ninguna' && item.limitacionesFisicas !== 'No') ||
-                               (item.alimentacion && item.alimentacion !== 'Ninguna' && item.alimentacion !== 'No');
+            const badgeColor = c
+                ? `<span class="rcp-team-pill-sm" style="font-size:0.75rem; padding:4px 10px;"><span style="width:8px; height:8px; border-radius:50%; background:${swatchColor}; box-shadow:inset 0 0 0 1px rgba(0,0,0,0.16);"></span>Equipo ${escapeHtmlRcp(c.name)}</span>`
+                : `<span class="rcp-team-pill-sm" style="font-size:0.75rem; padding:4px 10px; color:#7A8780;">Sin color asignado</span>`;
 
-            const filaDato = (label, val) => `
-                <div style="padding:8px 0; border-bottom:1px solid #F1ECE1; display:flex; justify-content:space-between; gap:12px; font-size:0.84rem;">
-                    <span style="color:var(--text-muted); font-weight:600;">${label}</span>
-                    <span style="color:var(--green-dark); font-weight:700; text-align:right; word-break:break-word;">${val || '—'}</span>
-                </div>
-            `;
+            const obsEnfermedad = obtenerObservacionReal(item.enfermedades);
+            const obsFisica = obtenerObservacionReal(item.limitacionesFisicas);
+            const obsAlim = obtenerObservacionReal(item.alimentacion);
+            const tieneSalud = !!(obsEnfermedad || obsFisica || obsAlim);
 
-            // Botones de acción modal
+            const campoGrid = (label, rawVal, fallbackText, isFull = false) => {
+                const limpio = String(rawVal == null ? '' : rawVal).replace(/^\/\s*$/, '').trim();
+                const tieneValor = limpio.length > 0;
+                return `
+                    <div class="rcp-ficha-field ${isFull ? 'full' : ''}">
+                        <div class="rcp-ficha-lbl">${escapeHtmlRcp(label)}</div>
+                        <div class="rcp-ficha-val ${tieneValor ? '' : 'empty'}">${tieneValor ? escapeHtmlRcp(limpio) : escapeHtmlRcp(fallbackText)}</div>
+                    </div>
+                `;
+            };
+
             const btnPresModal = item.presencia ? `
-                <button type="button" onclick="alternarPresencia('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})"
-                    style="flex:1; padding:11px; border-radius:12px; border:1.5px solid #16A34A; background:#DCFCE7; color:#166534; font-size:0.82rem; font-weight:800; cursor:pointer;">
-                    🟢 Presente (Quitar)
+                <button type="button" class="rcp-action-btn active-presencia" style="flex:1; padding:11px 14px;"
+                    onclick="alternarPresencia('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})">
+                    ${RCP_ICONS.check}
+                    <span>Presente (revertir)</span>
                 </button>
             ` : `
-                <button type="button" onclick="alternarPresencia('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})"
-                    style="flex:1; padding:11px; border-radius:12px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#334155; font-size:0.82rem; font-weight:700; cursor:pointer;">
-                    ⚪ Marcar Presente
+                <button type="button" class="rcp-action-btn" style="flex:1; padding:11px 14px;"
+                    onclick="alternarPresencia('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})">
+                    ${RCP_ICONS.circle}
+                    <span>Marcar llegada</span>
                 </button>
             `;
 
             const btnKitModal = item.entregaKit ? `
-                <button type="button" onclick="alternarKit('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})"
-                    style="flex:1; padding:11px; border-radius:12px; border:1.5px solid #2563EB; background:#DBEAFE; color:#1D4ED8; font-size:0.82rem; font-weight:800; cursor:pointer;">
-                    🎒 Kit Entregado (Quitar)
+                <button type="button" class="rcp-action-btn active-kit" style="flex:1; padding:11px 14px;"
+                    onclick="alternarKit('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})">
+                    ${RCP_ICONS.boxCheck}
+                    <span>Kit entregado (revertir)</span>
                 </button>
             ` : `
-                <button type="button" onclick="alternarKit('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})"
-                    style="flex:1; padding:11px; border-radius:12px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#334155; font-size:0.82rem; font-weight:700; cursor:pointer;">
-                    📦 Entregar Kit
+                <button type="button" class="rcp-action-btn" style="flex:1; padding:11px 14px;"
+                    onclick="alternarKit('${tipoLista}', ${idx}); abrirFichaParticipante('${tipoLista}', ${idx})">
+                    ${RCP_ICONS.box}
+                    <span>Entregar kit</span>
                 </button>
             `;
 
             const boxAlertaSalud = tieneSalud ? `
-                <div style="background:#FEF2F2; border:1.5px solid #F87171; border-radius:12px; padding:10px 12px; margin-bottom:12px;">
-                    <div style="font-size:0.75rem; font-weight:800; color:#B91C1C; text-transform:uppercase; margin-bottom:4px;">⚠️ Atención Médica / Especial:</div>
-                    <div style="font-size:0.82rem; color:#7F1D1D; line-height:1.4;">
-                        ${item.enfermedades ? `<div><strong>Medicación/Enfermedad:</strong> ${item.enfermedades}</div>` : ''}
-                        ${item.limitacionesFisicas ? `<div><strong>Físico:</strong> ${item.limitacionesFisicas}</div>` : ''}
-                        ${item.alimentacion ? `<div><strong>Comida:</strong> ${item.alimentacion}</div>` : ''}
+                <div style="background:#FFFBEB; border:1px solid #F59E0B; border-radius:12px; padding:12px 14px; margin-bottom:14px;">
+                    <div style="font-size:0.72rem; font-weight:800; color:#92400E; text-transform:uppercase; letter-spacing:0.05em; display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                        ${RCP_ICONS.alert}
+                        <span>Observaciones Médicas y Alimentarias</span>
+                    </div>
+                    <div style="font-size:0.83rem; color:#78350F; line-height:1.45; display:flex; flex-direction:column; gap:3px;">
+                        ${obsEnfermedad ? `<div><strong>Salud / Medicación:</strong> ${escapeHtmlRcp(obsEnfermedad)}</div>` : ''}
+                        ${obsFisica ? `<div><strong>Actividad física:</strong> ${escapeHtmlRcp(obsFisica)}</div>` : ''}
+                        ${obsAlim ? `<div><strong>Alimentación:</strong> ${escapeHtmlRcp(obsAlim)}</div>` : ''}
                     </div>
                 </div>
             ` : '';
 
+            const senaMostrada = String(item.sena || '').trim() || (item.pagado ? 'Incluida en pago total' : '');
+
             body.innerHTML = `
                 <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
-                    <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted);">${item.tipo || 'Participante'}</span>
+                    <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:#68766E;">${escapeHtmlRcp(item.tipo || 'Participante')}</span>
                     ${badgeColor}
                 </div>
-                
-                <h3 style="margin:0 0 10px; font-size:1.25rem; color:var(--green-dark); font-weight:800;">${item.nombre || 'Sin nombre'}</h3>
 
-                <!-- Acciones directas de Recepción -->
-                <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <h3 style="margin:0 0 14px; font-family:'Cabinet Grotesk',sans-serif; font-size:1.4rem; color:#15251D; font-weight:800; line-height:1.2;">
+                    ${escapeHtmlRcp(item.nombre || 'Sin nombre registrado')}
+                </h3>
+
+                <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
                     ${btnPresModal}
                     ${btnKitModal}
                 </div>
 
-                <!-- Talle y Pago -->
-                <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
-                    <span style="font-size:0.82rem; font-weight:800; padding:5px 12px; border-radius:8px; background:#F1F5F9; color:#1E293B; border:1px solid #CBD5E1;">
-                        👕 Talle de Remera: <strong>${item.talle || 'Sin talle'}</strong>
-                    </span>
-                    <span style="font-size:0.82rem; font-weight:800; padding:5px 12px; border-radius:8px; background:${item.pagado ? '#DCFCE7' : '#FEF3C7'}; color:${item.pagado ? '#166534' : '#92400E'};">
-                        ${item.pagado ? '✅ Pago Confirmado' : '⏳ Pago Pendiente'}
-                    </span>
-                </div>
-
                 ${boxAlertaSalud}
 
-                <div>
-                    ${filaDato('Cédula', item.cedula)}
-                    ${filaDato('Teléfono / WhatsApp', item.telefono)}
-                    ${filaDato('Base', item.base)}
-                    ${filaDato('Contacto de Emergencia', item.contactoEmergencia)}
-                    ${filaDato('Enfermedades / Medicación', item.enfermedades)}
-                    ${filaDato('Limitación Física', item.limitacionesFisicas)}
-                    ${filaDato('Restricciones Alimentarias', item.alimentacion)}
-                    ${item.tipo === 'Tíos' ? filaDato('Vehículo', item.llevaVehiculo) : ''}
-                    ${filaDato('Seña', item.sena)}
-                    ${filaDato('Total', item.total)}
+                <div class="rcp-ficha-grid">
+                    ${campoGrid('Documento (CI)', formatearCedulaVista(item.cedula), 'No registrado')}
+                    ${campoGrid('Talle de Remera', item.talle, 'No especificado')}
+                    ${campoGrid('Base Parroquial', item.base, 'No especificada')}
+                    ${campoGrid('Teléfono / WhatsApp', item.telefono, 'No registrado')}
+                    ${campoGrid('Contacto de Emergencia', item.contactoEmergencia, 'No registrado', item.tipo !== 'Tíos')}
+                    ${item.tipo === 'Tíos' ? campoGrid('Estacionamiento / Vehículo', item.llevaVehiculo, 'No especificado') : ''}
+                    ${campoGrid('Seña', senaMostrada, 'Sin registro')}
+                    ${campoGrid('Estado Total', item.total, item.pagado ? 'Confirmado' : 'Pendiente')}
+                    ${!tieneSalud ? campoGrid('Ficha de Salud y Alimentación', '', 'Sin restricciones ni observaciones declaradas', true) : ''}
                 </div>
             `;
 
@@ -3925,34 +5692,35 @@
         function cerrarFichaParticipante() {
             document.getElementById('recepcion-ficha-modal').style.display = 'none';
         }
-
-        function cerrarFichaParticipante() {
-            document.getElementById('recepcion-ficha-modal').style.display = 'none';
-        }
     </script>
 
     <!-- MODAL FICHA COMPLETA DEL PARTICIPANTE -->
-    <div id="recepcion-ficha-modal" style="display:none; position:fixed; inset:0; background:rgba(15,27,21,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarFichaParticipante()">
-        <div style="background:#FFFFFF; border-radius:20px; padding:22px; max-width:440px; width:100%; max-height:88vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.35); border-top:6px solid var(--green-matte); text-align:left;">
+    <div id="recepcion-ficha-modal" style="display:none; position:fixed; inset:0; background:rgba(15,24,19,0.62); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarFichaParticipante()">
+        <div style="background:#FFFFFF; border-radius:18px; padding:24px; max-width:500px; width:100%; max-height:88vh; overflow-y:auto; box-shadow:0 24px 60px rgba(0,0,0,0.28); border:1px solid #E5E0D5; text-align:left;">
             <div id="recepcion-ficha-body"></div>
-            <button type="button" onclick="cerrarFichaParticipante()" style="width:100%; margin-top:16px; padding:11px; border-radius:12px; border:none; background:var(--green-dark); color:#FFFFFF; font-weight:700; cursor:pointer;">Cerrar</button>
+            <button type="button" onclick="cerrarFichaParticipante()" style="width:100%; padding:11px; border-radius:10px; border:1px solid #D8D2C5; background:#FAF8F4; color:#18261F; font-family:inherit; font-size:0.84rem; font-weight:700; cursor:pointer;">Cerrar ficha</button>
         </div>
     </div>
 
     <!-- MODAL DE ACCESO RECEPCIÓN -->
-    <div id="recepcion-pin-modal" style="display:none; position:fixed; inset:0; background:rgba(15,27,21,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarAccesoRecepcion()">
-        <div style="background:#FFFFFF; border-radius:20px; padding:24px; max-width:340px; width:100%; box-shadow:0 20px 50px rgba(0,0,0,0.35); text-align:center; border-top:6px solid #E59F38;">
-            <div style="font-size:1.8rem; margin-bottom:6px;">🎫</div>
-            <h3 style="margin:0 0 6px; font-size:1.15rem; color:#193327; font-weight:800;">Acceso Recepción</h3>
-            <p style="margin:0 0 16px; font-size:0.84rem; color:#5F7167;">Ingresá el PIN de 6 dígitos para acceder al panel de recepción.</p>
+    <div id="recepcion-pin-modal" style="display:none; position:fixed; inset:0; background:rgba(15,24,19,0.65); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;" onclick="if(event.target===this) cerrarAccesoRecepcion()">
+        <div style="background:#FFFFFF; border-radius:18px; padding:28px 24px 24px; max-width:360px; width:100%; box-shadow:0 24px 60px rgba(0,0,0,0.3); text-align:center; border:1px solid #E5E0D5;">
+            <div style="width:44px; height:44px; margin:0 auto 12px; border-radius:12px; background:#EDF2EE; border:1px solid #D5E2D9; color:#193327; display:flex; align-items:center; justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+            <h3 style="margin:0 0 6px; font-family:'Cabinet Grotesk',sans-serif; font-size:1.25rem; color:#15251D; font-weight:800;">Control de Recepción</h3>
+            <p style="margin:0 0 18px; font-size:0.83rem; color:#68766E; line-height:1.4;">Ingresá el código de autorización de 6 dígitos para abrir la consola de acreditación.</p>
             <form onsubmit="verificarPinRecepcion(event)">
                 <input type="password" id="recepcion-pin-input" maxlength="6" inputmode="numeric" placeholder="••••••" autocomplete="off"
                     oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)"
-                    style="width:100%; padding:12px; font-size:1.4rem; text-align:center; letter-spacing:8px; border-radius:12px; border:2px solid #E2D9CA; margin-bottom:10px; font-family:monospace; outline:none;" required>
-                <div id="recepcion-pin-error" style="display:none; color:#DC2626; font-size:0.82rem; font-weight:600; margin-bottom:10px;"></div>
+                    style="width:100%; padding:12px; font-size:1.35rem !important; text-align:center; letter-spacing:10px; border-radius:10px; border:1.5px solid #DDD7CA; background:#FAF9F6; margin-bottom:12px; font-family:monospace; outline:none; color:#15251D;" required>
+                <div id="recepcion-pin-error" style="display:none; color:#B91C1C; background:#FEF2F2; border:1px solid #FECACA; border-radius:8px; padding:8px 10px; font-size:0.79rem; font-weight:600; margin-bottom:12px;"></div>
                 <div style="display:flex; gap:8px;">
-                    <button type="button" onclick="cerrarAccesoRecepcion()" style="flex:1; padding:11px; border-radius:12px; border:1px solid #E2D9CA; background:#FAF6EF; color:#1A2821; font-weight:700; cursor:pointer;">Cancelar</button>
-                    <button type="submit" id="recepcion-pin-btn" style="flex:1.4; padding:11px; border-radius:12px; border:none; background:#193327; color:#FFFFFF; font-weight:700; cursor:pointer;">Ingresar</button>
+                    <button type="button" onclick="cerrarAccesoRecepcion()" style="flex:1; padding:11px; border-radius:10px; border:1px solid #DDD7CA; background:#FFFFFF; color:#34443C; font-family:inherit; font-size:0.83rem; font-weight:600; cursor:pointer;">Cancelar</button>
+                    <button type="submit" id="recepcion-pin-btn" style="flex:1.4; padding:11px; border-radius:10px; border:none; background:#193327; color:#FFFFFF; font-family:inherit; font-size:0.83rem; font-weight:700; cursor:pointer;">Acceder al panel</button>
                 </div>
             </form>
         </div>

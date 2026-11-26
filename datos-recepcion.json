@@ -15,7 +15,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -31,7 +33,9 @@
       "alimentacion": "Intolerancia a la lactosa",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -47,7 +51,9 @@
       "alimentacion": "Ninguna",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -63,7 +69,9 @@
       "alimentacion": "No tengo",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -79,7 +87,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -95,7 +105,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -111,7 +123,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -127,7 +141,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -143,7 +159,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -159,7 +177,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -175,7 +195,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -191,7 +213,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -207,7 +231,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -223,7 +249,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -239,7 +267,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -255,7 +285,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -271,7 +303,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -287,7 +321,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -303,7 +339,9 @@
       "alimentacion": "Intolerancia a la lactosa",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -319,7 +357,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -335,7 +375,9 @@
       "alimentacion": "Nada",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -351,7 +393,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -367,7 +411,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -383,7 +429,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -399,7 +447,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -415,7 +465,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -431,7 +483,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -447,7 +501,9 @@
       "alimentacion": "Nada",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -463,7 +519,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -479,7 +537,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -495,7 +555,9 @@
       "alimentacion": "Nd",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -511,7 +573,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -527,7 +591,9 @@
       "alimentacion": "No",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -543,7 +609,9 @@
       "alimentacion": "No",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -559,7 +627,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -575,7 +645,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -591,7 +663,9 @@
       "alimentacion": "Nada",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -607,7 +681,9 @@
       "alimentacion": "Pues nose abra que probarlo",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -623,7 +699,9 @@
       "alimentacion": "Pimienta no",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -639,7 +717,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -655,7 +735,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -671,7 +753,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -687,7 +771,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -703,7 +789,9 @@
       "alimentacion": "ninguno",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -719,7 +807,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -735,7 +825,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -751,7 +843,9 @@
       "alimentacion": "Nada",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -767,7 +861,9 @@
       "alimentacion": "Tomo leche sin lactosa",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -783,7 +879,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -799,7 +897,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -815,7 +915,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -831,7 +933,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -847,7 +951,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -863,7 +969,9 @@
       "alimentacion": "Ninguna",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -879,7 +987,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -895,7 +1005,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -911,7 +1023,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -927,7 +1041,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -943,7 +1059,9 @@
       "alimentacion": "Intolerancia a la lactosa",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -959,7 +1077,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -975,7 +1095,9 @@
       "alimentacion": "Intolerancia a la lactosa",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -991,7 +1113,9 @@
       "alimentacion": "No tengo",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1007,7 +1131,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1023,7 +1149,9 @@
       "alimentacion": "Intolerancia a la lactosa",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1039,7 +1167,9 @@
       "alimentacion": "Come de todo",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1055,7 +1185,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1071,7 +1203,9 @@
       "alimentacion": "Nada",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1087,7 +1221,9 @@
       "alimentacion": "No tengo problemas",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1103,7 +1239,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1119,7 +1257,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1135,7 +1275,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1151,7 +1293,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1167,7 +1311,9 @@
       "alimentacion": "Intolerancia a la lactosa",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1183,7 +1329,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1199,7 +1347,9 @@
       "alimentacion": "No",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1215,7 +1365,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1231,7 +1383,9 @@
       "alimentacion": "Ninguno",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1247,7 +1401,9 @@
       "alimentacion": "No",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1263,7 +1419,9 @@
       "alimentacion": "No tiene",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1279,7 +1437,9 @@
       "alimentacion": "Lactosa",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1295,7 +1455,9 @@
       "alimentacion": "No",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1311,7 +1473,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1327,7 +1491,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1343,7 +1509,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1359,7 +1527,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1375,7 +1545,9 @@
       "alimentacion": "Nada",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1391,7 +1563,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1407,7 +1581,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1423,7 +1599,9 @@
       "alimentacion": "",
       "sena": "PAGADO",
       "total": "",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1439,7 +1617,9 @@
       "alimentacion": "Jugo Ades",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1455,7 +1635,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1471,7 +1653,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1487,7 +1671,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1503,7 +1689,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1519,7 +1707,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1535,7 +1725,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1551,7 +1743,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1567,7 +1761,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1583,7 +1779,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1599,7 +1797,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1615,7 +1815,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1631,7 +1833,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1647,7 +1851,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1663,7 +1869,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1679,7 +1887,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1695,7 +1905,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1711,7 +1923,9 @@
       "alimentacion": "Celiaca tia  y el tío no",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1727,7 +1941,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1743,7 +1959,9 @@
       "alimentacion": "La tía no toma leche😁",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1759,7 +1977,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1775,7 +1995,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1791,7 +2013,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1807,7 +2031,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1823,7 +2049,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1839,7 +2067,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1855,7 +2085,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1871,7 +2103,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1887,7 +2121,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1903,7 +2139,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Participante",
@@ -1919,7 +2157,9 @@
       "alimentacion": "",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     }
   ],
   "tios": [
@@ -1938,7 +2178,9 @@
       "color": "Rojo",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -1955,7 +2197,9 @@
       "color": "Lila",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -1972,7 +2216,9 @@
       "color": "Azul",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -1989,7 +2235,9 @@
       "color": "Gris",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2006,7 +2254,9 @@
       "color": "Beige",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2023,7 +2273,9 @@
       "color": "Celeste",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2040,7 +2292,9 @@
       "color": "Bordó",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2057,7 +2311,9 @@
       "color": "Marrón",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2074,7 +2330,9 @@
       "color": "Naranja",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2091,7 +2349,9 @@
       "color": "Amarillo",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2108,7 +2368,9 @@
       "color": "Blanco",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2125,7 +2387,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2142,7 +2406,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2159,7 +2425,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2176,7 +2444,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2193,7 +2463,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2210,7 +2482,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2227,7 +2501,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2244,7 +2520,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2261,7 +2539,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2278,7 +2558,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2295,7 +2577,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2312,7 +2596,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2329,7 +2615,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2346,7 +2634,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2363,7 +2653,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2380,7 +2672,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2397,7 +2691,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2414,7 +2710,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2431,7 +2729,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2448,7 +2748,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2465,7 +2767,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2482,7 +2786,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2499,7 +2805,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2516,7 +2824,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2533,7 +2843,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2550,7 +2862,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2567,7 +2881,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2584,7 +2900,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2601,7 +2919,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2618,7 +2938,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2635,7 +2957,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2652,7 +2976,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2669,7 +2995,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2686,7 +3014,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2703,7 +3033,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2720,7 +3052,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2737,7 +3071,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2754,7 +3090,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2771,7 +3109,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2788,7 +3128,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2805,7 +3147,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2822,7 +3166,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2839,7 +3185,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2856,7 +3204,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2873,7 +3223,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2890,7 +3242,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2907,7 +3261,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2924,7 +3280,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2941,7 +3299,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2958,7 +3318,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2975,7 +3337,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -2992,7 +3356,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3009,7 +3375,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3026,7 +3394,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3043,7 +3413,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3060,7 +3432,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3077,7 +3451,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3094,7 +3470,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3111,7 +3489,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3128,7 +3508,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3145,7 +3527,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3162,7 +3546,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3179,7 +3565,9 @@
       "color": "",
       "sena": "",
       "total": "",
-      "pagado": false
+      "pagado": false,
+      "presencia": false,
+      "entregaKit": false
     },
     {
       "tipo": "Tíos",
@@ -3196,7 +3584,9 @@
       "color": "Beige",
       "sena": "",
       "total": "PAGADO",
-      "pagado": true
+      "pagado": true,
+      "presencia": false,
+      "entregaKit": false
     }
   ]
 }
